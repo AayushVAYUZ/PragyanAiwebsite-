@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pragyan AI — 08 Capabilities</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#03040A',
+            abyss: '#050711',
+            obsidian: '#070B18',
+            cyanGlow: '#26C6FF',
+            violetGlow: '#8B2DFF',
+            accentLavender: '#C47FFF'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography-and-effects">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+    body {
+      background-color: #03040A;
+      color: #E2E8F0;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Gradient Typography */
+    .enterprise-gradient {
+      background: linear-gradient(135deg, #E2E8F0 25%, #C47FFF 65%, #26C6FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Ambient Glow Effects */
+    .glow-cyan-soft {
+      box-shadow: 0 0 25px -4px rgba(38, 198, 255, 0.28);
+    }
+
+    .glow-violet-soft {
+      box-shadow: 0 0 25px -4px rgba(139, 45, 255, 0.25);
+    }
+
+    /* Architectural Node Glass Card */
+    .glass-node {
+      background: linear-gradient(180deg, rgba(14, 20, 42, 0.65) 0%, rgba(7, 11, 24, 0.5) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(160, 175, 220, 0.14);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-node:hover {
+      border-color: rgba(38, 198, 255, 0.45);
+      background: linear-gradient(180deg, rgba(20, 28, 58, 0.75) 0%, rgba(10, 15, 32, 0.6) 100%);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -8px rgba(38, 198, 255, 0.2);
+    }
+
+    .glass-node-active {
+      border-color: rgba(196, 127, 255, 0.5);
+      box-shadow: 0 0 30px -5px rgba(139, 45, 255, 0.3), inset 0 0 16px rgba(38, 198, 255, 0.12);
+    }
+
+    /* Pulse animation for micro markers */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="relative min-h-screen bg-void selection:bg-cyanGlow/20 selection:text-cyan-200">
+<!-- BEGIN: CinematicBackgroundLayer -->
+<!-- Master cinematic background asset with edge masking for deep void integration -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" data-purpose="background-container">
+<img alt="Cinematic 4K UHD enterprise intelligence architectural core node with coherent light rays" class="w-full h-full object-cover object-center opacity-85" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx0aCQXxQ2l9ndslTi-hl9HVIDezP74qMg3ogzCWYbhWwoIfuj5aonxXX5KCWrrAUeXrA0D_1sGwqQUtltt6t4kS3_kytLlaqaox5vL7NQJubGMPqQuvSTE_sqVxavld9DHgOTyDevpxpqH8xMUzIbOrlkEuvEsc2xWvITK3LoHjNH2FCRkrVmweE-K3taIxBQxrAMwDQwtsZx_zz7czyS2lm1TLLzn8kLnDuFnmPBBLAJ-WUw-Zd4Zg">
+<!-- Deep atmospheric radial and edge vignettes -->
+<div class="absolute inset-0 bg-gradient-to-r from-void via-void/60 to-transparent w-full md:w-[65%] z-[1]"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/70 z-[1]"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_25%_50%,rgba(38,198,255,0.06),transparent_55%)] z-[1]"></div>
+</div>
+<!-- END: CinematicBackgroundLayer -->
+<!-- BEGIN: HeaderNavigation -->
+<!-- Fixed minimalist dark-glass header adhering to Pragyan AI visual continuum -->
+<header class="fixed top-0 left-0 w-full z-50 px-6 lg:px-14 py-4 flex items-center justify-between border-b border-white/[0.06] bg-void/50 backdrop-blur-md" data-purpose="site-header">
+<!-- Brand mark -->
+<div class="flex items-center space-x-2.5">
+<span class="text-sm tracking-[0.24em] font-semibold text-white uppercase">Pragyan</span>
+<span class="text-[10px] tracking-wider font-mono font-medium px-2 py-0.5 rounded-full border border-cyanGlow/40 text-cyan-300 bg-cyanGlow/10 shadow-[0_0_8px_rgba(38,198,255,0.3)]">ai</span>
+</div>
+<!-- Primary Navigation Links -->
+<nav class="hidden md:flex items-center space-x-8 text-[13px] tracking-wide text-slate-400 font-light" data-purpose="main-navigation">
+<a class="hover:text-slate-200 transition-colors" href="#who-we-are">Who We Are</a>
+<a class="hover:text-slate-200 transition-colors" href="#what-we-do">What We Do</a>
+<!-- Active navigation item with cyan glow marker -->
+<a class="text-white font-normal flex items-center gap-1.5 group" href="#capabilities">
+<span class="w-1.5 h-1.5 rounded-full bg-cyanGlow glow-cyan-soft inline-block"></span>
+        Capabilities
+      </a>
+<a class="hover:text-slate-200 transition-colors" href="#products">Products</a>
+<a class="hover:text-slate-200 transition-colors" href="#use-cases">Use Cases</a>
+<a class="hover:text-slate-200 transition-colors" href="#insights">Insights</a>
+</nav>
+<!-- Header Action Button -->
+<div class="flex items-center">
+<a class="text-xs tracking-wider uppercase text-slate-300 font-light px-4 py-1.5 rounded-full border border-slate-700/80 bg-white/[0.03] hover:bg-white/[0.08] hover:border-cyanGlow/40 hover:text-white transition-all duration-300 shadow-sm" data-purpose="cta-button" href="#contact">
+        [ Talk to Us ]
+      </a>
+</div>
+</header>
+<!-- END: HeaderNavigation -->
+<!-- BEGIN: RightVerticalNarrativeRail -->
+<!-- Micro telemetry rail reflecting the 15-frame progression -->
+<aside class="hidden xl:flex fixed right-7 top-1/2 -translate-y-1/2 z-40 flex-col items-center space-y-4 pointer-events-none" data-purpose="narrative-tracker">
+<div class="h-10 w-px bg-slate-800"></div>
+<div class="flex flex-col items-center space-y-2">
+<span class="w-1 h-1 rounded-full bg-slate-700"></span>
+<span class="w-1 h-1 rounded-full bg-slate-700"></span>
+<div class="w-2 h-2 rounded-full border border-cyanGlow bg-cyanGlow glow-cyan-soft"></div>
+<span class="w-1 h-1 rounded-full bg-slate-700"></span>
+<span class="w-1 h-1 rounded-full bg-slate-700"></span>
+</div>
+<span class="text-[9px] font-mono tracking-[0.25em] text-slate-500 uppercase -rotate-90 origin-center translate-y-6">CAPABILITIES</span>
+<div class="h-10 w-px bg-slate-800 mt-6"></div>
+</aside>
+<!-- END: RightVerticalNarrativeRail -->
+<!-- BEGIN: MainContent -->
+<main class="relative z-10 w-full min-h-screen pt-28 pb-20 px-6 sm:px-10 lg:px-16 flex flex-col justify-between" data-purpose="capabilities-stage">
+<!-- Optical Vector Network SVG Overlay connecting Core to Nodes -->
+<div class="absolute inset-0 pointer-events-none z-0 hidden lg:block overflow-hidden" data-purpose="architectural-lattice-lines">
+<svg class="w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="beamGrad1" x1="0%" x2="100%" y1="50%" y2="50%">
+<stop offset="0%" stop-color="#8B2DFF" stop-opacity="0.75"></stop>
+<stop offset="40%" stop-color="#26C6FF" stop-opacity="0.5"></stop>
+<stop offset="100%" stop-color="#26C6FF" stop-opacity="0.08"></stop>
+</linearGradient>
+<linearGradient id="beamGrad2" x1="0%" x2="100%" y1="50%" y2="50%">
+<stop offset="0%" stop-color="#26C6FF" stop-opacity="0.7"></stop>
+<stop offset="100%" stop-color="#8B2DFF" stop-opacity="0.1"></stop>
+</linearGradient>
+</defs>
+<!-- Luminous vector paths emanating from core (approx center-left ~35% X) to card coordinates -->
+<path d="M 440 450 C 580 430, 680 340, 780 340" opacity="0.65" stroke="url(#beamGrad1)" stroke-dasharray="3 3" stroke-width="0.85"></path>
+<path d="M 440 450 C 620 450, 780 450, 930 450" opacity="0.55" stroke="url(#beamGrad2)" stroke-width="1.1"></path>
+<path d="M 440 450 C 600 480, 850 560, 1100 560" opacity="0.5" stroke="url(#beamGrad1)" stroke-width="0.85"></path>
+<circle class="animate-pulse-glow" cx="780" cy="340" fill="#26C6FF" r="2.5"></circle>
+<circle class="animate-pulse-glow" cx="930" cy="450" fill="#C47FFF" r="3"></circle>
+<circle class="animate-pulse-glow" cx="1100" cy="560" fill="#26C6FF" r="2.5"></circle>
+</svg>
+</div>
+<!-- Top & Center Stage Container -->
+<div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center flex-grow my-auto">
+<!-- BEGIN: LeftEditorialNarrative -->
+<section class="lg:col-span-5 flex flex-col justify-center pr-0 lg:pr-6" data-purpose="editorial-narrative">
+<!-- Section Tracker Tag -->
+<div class="flex items-center space-x-2.5 mb-5">
+<span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-pulse-glow"></span>
+<span class="text-[11px] font-mono tracking-[0.25em] uppercase text-cyan-300/90 font-medium">08 — CAPABILITIES</span>
+</div>
+<!-- Headline -->
+<h1 class="text-4xl sm:text-5xl lg:text-[54px] font-extralight tracking-[-0.03em] leading-[1.12] text-slate-100 mb-6">
+          Intelligence<br>
+          across the <span class="enterprise-gradient font-normal">enterprise.</span>
+</h1>
+<!-- Primary Statement -->
+<p class="text-base sm:text-lg font-light text-slate-300 leading-relaxed max-w-lg mb-4">
+          From strategy to deployment, we help you operationalize AI.
+        </p>
+<!-- Secondary Substrate Description -->
+<p class="text-xs sm:text-sm font-light text-slate-400/80 leading-relaxed max-w-md mb-8">
+          A unified intelligence substrate connecting governance, engineering, and execution into measurable organizational impact.
+        </p>
+<!-- Action Link CTA -->
+<div>
+<a class="inline-flex items-center space-x-3 px-6 py-3 rounded-full text-xs font-normal tracking-wide text-slate-200 border border-slate-700/70 bg-obsidian/60 backdrop-blur-sm hover:border-cyanGlow/60 hover:text-white hover:bg-slate-900/80 transition-all duration-300 group shadow-[0_4px_16px_rgba(0,0,0,0.5)]" href="#explore-capabilities">
+<span class="">Explore Capabilities</span>
+<span class="text-cyanGlow transition-transform duration-300 group-hover:translate-x-1">→</span>
+</a>
+</div>
+</section>
+<!-- END: LeftEditorialNarrative -->
+<!-- BEGIN: CapabilityEcosystemNodes -->
+<!-- 5 Connected Architectural Nodes displayed in an elegant multi-tier arrangement -->
+<section class="lg:col-span-7 relative flex flex-col gap-4" data-purpose="capability-nodes-matrix">
+<!-- Nodes Grid Container (Staggered modern layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+<!-- Node 01: Strategy & Advisory -->
+<article class="glass-node rounded-xl p-5 relative overflow-hidden flex flex-col justify-between group min-h-[178px]" data-purpose="capability-node-01">
+<div class="flex items-start justify-between mb-4">
+<span class="text-[11px] font-mono text-cyan-300/70 tracking-wider">01</span>
+<!-- Geometric SVG Icon: Strategic Direction / Compass Prism -->
+<svg class="w-5 h-5 text-slate-400 group-hover:text-cyanGlow transition-colors" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+<polyline points="2 17 12 22 22 17"></polyline>
+<polyline points="2 12 12 17 22 12"></polyline>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-medium text-slate-100 tracking-tight group-hover:text-cyan-200 transition-colors mb-1.5">Strategy &amp; Advisory</h3>
+<p class="text-xs font-light text-slate-400 leading-snug">Shape the right AI direction and high-value roadmaps.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-0 h-[1px] bg-gradient-to-r from-transparent via-cyanGlow to-transparent group-hover:w-full transition-all duration-500"></div>
+</article>
+<!-- Node 02: Data & AI Engineering -->
+<article class="glass-node rounded-xl p-5 relative overflow-hidden flex flex-col justify-between group min-h-[178px]" data-purpose="capability-node-02">
+<div class="flex items-start justify-between mb-4">
+<span class="text-[11px] font-mono text-cyan-300/70 tracking-wider">02</span>
+<!-- Geometric SVG Icon: Data & Pipeline Lattice -->
+<svg class="w-5 h-5 text-slate-400 group-hover:text-cyanGlow transition-colors" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+<rect height="7" rx="1" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1" width="7" x="3" y="14"></rect>
+<line x1="10" x2="14" y1="6.5" y2="6.5"></line>
+<line x1="6.5" x2="6.5" y1="10" y2="14"></line>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-medium text-slate-100 tracking-tight group-hover:text-cyan-200 transition-colors mb-1.5">Data &amp; AI Engineering</h3>
+<p class="text-xs font-light text-slate-400 leading-snug">Build reliable and governed intelligence foundations.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-0 h-[1px] bg-gradient-to-r from-transparent via-cyanGlow to-transparent group-hover:w-full transition-all duration-500"></div>
+</article>
+<!-- Node 03: Intelligent Applications (Central Highlight Node) -->
+<article class="glass-node glass-node-active md:col-span-2 lg:col-span-1 rounded-xl p-5 relative overflow-hidden flex flex-col justify-between group min-h-[178px] bg-gradient-to-b from-indigo-950/40 to-obsidian/70" data-purpose="capability-node-03">
+<div class="flex items-start justify-between mb-4">
+<span class="text-[11px] font-mono text-violetGlow tracking-wider font-semibold">03 · ACTIVE</span>
+<!-- Geometric SVG Icon: Intelligent Neural Aperture -->
+<div class="p-1.5 rounded-lg bg-violetGlow/20 border border-violetGlow/40">
+<svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+</svg>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-white tracking-tight group-hover:text-accentLavender transition-colors mb-1.5 flex items-center gap-1.5">
+                Intelligent Applications
+              </h3>
+<p class="text-xs font-light text-slate-300 leading-snug">Turn raw enterprise intelligence into autonomous operational workflows.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-violetGlow via-cyanGlow to-violetGlow opacity-90"></div>
+</article>
+<!-- Node 04: Platform Modernization -->
+<article class="glass-node rounded-xl p-5 relative overflow-hidden flex flex-col justify-between group min-h-[178px] md:col-span-1 lg:col-span-1 lg:col-start-1" data-purpose="capability-node-04">
+<div class="flex items-start justify-between mb-4">
+<span class="text-[11px] font-mono text-cyan-300/70 tracking-wider">04</span>
+<!-- Geometric SVG Icon: Modular Architecture -->
+<svg class="w-5 h-5 text-slate-400 group-hover:text-cyanGlow transition-colors" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+<polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+<line x1="12" x2="12" y1="22.08" y2="12"></line>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-medium text-slate-100 tracking-tight group-hover:text-cyan-200 transition-colors mb-1.5">Platform Modernization</h3>
+<p class="text-xs font-light text-slate-400 leading-snug">Modernize the hybrid cloud systems behind core business logic.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-0 h-[1px] bg-gradient-to-r from-transparent via-cyanGlow to-transparent group-hover:w-full transition-all duration-500"></div>
+</article>
+<!-- Node 05: Managed Intelligence -->
+<article class="glass-node rounded-xl p-5 relative overflow-hidden flex flex-col justify-between group min-h-[178px] md:col-span-1 lg:col-span-2" data-purpose="capability-node-05">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center space-x-2">
+<span class="text-[11px] font-mono text-cyan-300/70 tracking-wider">05</span>
+
+</div>
+<!-- Geometric SVG Icon: Recursive Feedback Loop -->
+<svg class="w-5 h-5 text-slate-400 group-hover:text-cyanGlow transition-colors" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+<path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-sm font-medium text-slate-100 tracking-tight group-hover:text-cyan-200 transition-colors mb-1.5">Managed Intelligence</h3>
+<p class="text-xs font-light text-slate-400 leading-snug max-w-md">Continuously monitor, fine-tune, and evolve production AI models against real-time drifting and operational shifts.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-0 h-[1px] bg-gradient-to-r from-transparent via-cyanGlow to-transparent group-hover:w-full transition-all duration-500"></div>
+</article>
+</div>
+<!-- Architectural node micro-status indicator -->
+
+</section>
+<!-- END: CapabilityEcosystemNodes -->
+</div>
+<!-- BEGIN: BottomProgressionRail -->
+<!-- Cinematic frame tracking bar -->
+<footer class="w-full pt-8 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono tracking-widest text-slate-500 uppercase" data-purpose="progression-continuum">
+<!-- Left frame index -->
+<div class="flex items-center space-x-2">
+<span class="text-slate-300 font-medium">08 / 15</span>
+<span class="text-slate-700">·</span>
+<span class="text-slate-400">CAPABILITIES</span>
+</div>
+<!-- Center frame continuation prompt -->
+<a class="group flex items-center space-x-2 text-slate-400 hover:text-cyan-300 transition-colors" href="#case-studies">
+<span class="">PROCEED TO 09 — PROOF (CASE STUDIES)</span>
+<span class="transform transition-transform group-hover:translate-y-0.5 text-cyanGlow">↓</span>
+</a>
+<!-- Right interaction hint -->
+<div class="flex items-center space-x-2 text-slate-600">
+<span class="">SCROLL TO EXPLORE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+</div>
+</footer>
+<!-- END: BottomProgressionRail -->
+</main>
+<!-- END: MainContent -->
+
+
+</body></html>

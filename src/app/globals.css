@@ -1,0 +1,471 @@
+@import "tailwindcss";
+
+/* ============================================================
+   PRAGYAN AI — Design Token System
+   Source: DESIGN.md (project root)
+   ============================================================ */
+
+:root {
+  /* Background Depths */
+  --void-black: #03040A;
+  --near-black: #050711;
+  --deep-navy: #070B18;
+  --midnight-blue: #0A1024;
+
+  /* Energy Colors */
+  --electric-violet: #8B2DFF;
+  --deep-violet: #5418C8;
+  --neon-purple: #B339FF;
+  --electric-blue: #176BFF;
+  --neon-cyan: #26C6FF;
+  --deep-blue: #0D2F78;
+
+  /* Text */
+  --text-primary: #F5F7FF;
+  --text-soft: #D8DBE8;
+  --text-secondary: #A2A8BC;
+  --text-muted: #727991;
+
+  /* Structural */
+  --border-active: rgba(160, 175, 220, 0.22);
+  --border-subtle: rgba(160, 175, 220, 0.12);
+  --glass-surface: rgba(10, 15, 35, 0.52);
+
+  /* Typography (font variables are provided by next/font on <html>) */
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "SF Mono", "Fira Code", ui-monospace, monospace;
+
+  /* Layout */
+  --gutter-x: clamp(1.25rem, 4vw, 4rem);
+  --header-h: 4.5rem;
+
+  /* Viewport units: prefer small/large viewport units where supported */
+  --svh: 1vh;
+  --lvh: 1vh;
+}
+
+@supports (height: 1svh) {
+  :root {
+    --svh: 1svh;
+    --lvh: 1lvh;
+  }
+}
+
+/* ============================================================
+   BASE — lives in the base layer so Tailwind utilities win
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: auto; /* scroll is driven by the cinematic timeline */
+    scrollbar-gutter: stable; /* no layout shift when the preloader locks scroll */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--void-black);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--void-black);
+    color: var(--text-primary);
+    overflow-x: clip;
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: rgba(139, 45, 255, 0.3);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+@layer components {
+  .cinematic-headline {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
+  }
+
+  .tech-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .glass-pill {
+    background: var(--glass-surface);
+    border: 1px solid var(--border-subtle);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .glass-pill:hover {
+    border-color: rgba(139, 45, 255, 0.45);
+    box-shadow: 0 0 20px rgba(139, 45, 255, 0.2);
+  }
+
+  .vignette-layer {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(3, 4, 10, 0) 38%,
+      rgba(3, 4, 10, 0.55) 72%,
+      #03040A 100%
+    );
+  }
+
+  .film-grain {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  .scroll-indicator-dot {
+    animation: scroll-pulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  /* ---------- Cinematic scene layers ----------
+     Every layer is positioned at the top-left of the scene viewport and moved
+     only through transform / opacity (written by the master timeline). */
+  .scene-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: none;
+    transform-origin: 0 0;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* The eye plate is feathered into darkness so it can be framed on any aspect ratio. */
+  .scene-eye {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* ---------- Gateway embedded in the eye (Frame 01) ----------
+     Pupil layers use a soft organic matte of the real pupil (derived from
+     eye-plate.png), so nothing reads as a geometric disc. Light layers use
+     screen blending: they only add light to the existing iris texture. */
+  .scene-pupil-matte {
+    -webkit-mask-image: url("/images/eye-pupil-matte.png");
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: url("/images/eye-pupil-matte.png");
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+  }
+
+  /* Strongest around the distant gateway, gone before the pupil rim, so the
+     natural edge of the pupil is untouched. */
+  .scene-pupil-haze {
+    background: radial-gradient(
+      closest-side,
+      rgba(4, 6, 16, 0.95) 0%,
+      rgba(4, 6, 16, 0.6) 40%,
+      rgba(4, 6, 16, 0) 78%
+    );
+  }
+
+  /* Light scattering only in the depth around the gateway: no uniform lift of the pupil. */
+  .scene-pupil-glow {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 19% 25% at 46% 52%, rgba(139, 45, 255, 0.26) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 19% 25% at 55% 52%, rgba(38, 198, 255, 0.2) 0%, rgba(38, 198, 255, 0) 100%),
+      radial-gradient(closest-side, rgba(90, 80, 200, 0.1) 0%, rgba(0, 0, 0, 0) 42%);
+  }
+
+  .scene-iris-spill {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 46% 62% at 30% 50%, rgba(139, 45, 255, 0.2) 0%, rgba(139, 45, 255, 0) 72%),
+      radial-gradient(ellipse 46% 62% at 70% 50%, rgba(38, 198, 255, 0.17) 0%, rgba(38, 198, 255, 0) 72%);
+    /* A ring starting at the pupil rim and fading through the inner iris. */
+    -webkit-mask-image: radial-gradient(closest-side, transparent 24%, #000 32%, #000 44%, transparent 72%);
+    mask-image: radial-gradient(closest-side, transparent 24%, #000 32%, #000 44%, transparent 72%);
+  }
+
+  .scene-corneal-glint {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 55%,
+      rgba(175, 140, 255, 0.34) 0%,
+      rgba(90, 160, 255, 0.13) 45%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .scene-arrival-plate {
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+  }
+
+  .scene-gate-glow {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 34% 40% at 36% 50%, rgba(139, 45, 255, 0.34) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 34% 40% at 64% 50%, rgba(38, 198, 255, 0.26) 0%, rgba(38, 198, 255, 0) 100%),
+      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(23, 107, 255, 0.14) 0%, rgba(23, 107, 255, 0) 100%);
+  }
+
+  .scene-floor-glow {
+    background:
+      radial-gradient(ellipse 30% 50% at 30% 50%, rgba(139, 45, 255, 0.45) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 30% 50% at 70% 50%, rgba(38, 198, 255, 0.4) 0%, rgba(38, 198, 255, 0) 100%);
+  }
+
+  .scene-threshold-fog {
+    background: linear-gradient(
+      to bottom,
+      rgba(3, 4, 10, 0) 0%,
+      rgba(3, 4, 10, 0.94) 48%,
+      rgba(3, 4, 10, 0.94) 58%,
+      rgba(3, 4, 10, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 28%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 28%, #000 72%, transparent 100%);
+  }
+
+  .scene-rays {
+    background: repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(140, 150, 255, 0) 0deg,
+      rgba(140, 150, 255, 0.16) 1.2deg,
+      rgba(140, 150, 255, 0) 3.4deg,
+      rgba(140, 150, 255, 0) 7deg
+    );
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 6%, #000 22%, #000 38%, transparent 70%);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 6%, #000 22%, #000 38%, transparent 70%);
+  }
+
+  /* Screen blending adds light instead of laying a grey haze over the scene. */
+  .scene-bloom {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(214, 224, 255, 0.96) 12%,
+      rgba(130, 150, 255, 0.78) 30%,
+      rgba(139, 45, 255, 0.5) 52%,
+      rgba(23, 107, 255, 0.2) 76%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .scene-node-glow {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(236, 232, 255, 0.9) 0%,
+      rgba(150, 120, 255, 0.45) 18%,
+      rgba(38, 198, 255, 0.12) 50%,
+      rgba(3, 4, 10, 0) 100%
+    );
+  }
+}
+
+/* Navigation steps back while the cinematic moment is at its most intense (DESIGN.md §9). */
+html[data-scene-intense] .header-intensity {
+  opacity: 0.45;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(4px);
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scroll-indicator-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* ============================================================
+   PHASE 2A — CONTENT FRAMES (05–08)
+   ============================================================ */
+
+@layer components {
+  /* Frame 05 atmosphere over the constellation (the approved asset is brighter than Stitch). */
+  .scene-belief-grade {
+    background:
+      linear-gradient(to top, rgba(3, 4, 10, 0.9) 0%, rgba(3, 4, 10, 0.35) 38%, rgba(3, 4, 10, 0) 62%),
+      linear-gradient(to bottom, rgba(3, 4, 10, 0.55) 0%, rgba(3, 4, 10, 0) 22%),
+      rgba(3, 4, 10, 0.28);
+  }
+
+  @media (min-width: 1024px) {
+    .scene-belief-grade {
+      background:
+        linear-gradient(to right, rgba(3, 4, 10, 0.94) 0%, rgba(3, 4, 10, 0.72) 30%, rgba(3, 4, 10, 0) 58%),
+        linear-gradient(to top, rgba(3, 4, 10, 0.92) 0%, rgba(3, 4, 10, 0) 26%, rgba(3, 4, 10, 0) 74%, rgba(3, 4, 10, 0.6) 100%),
+        rgba(3, 4, 10, 0.4);
+    }
+  }
+
+  .belief-card {
+    background: rgba(8, 13, 31, 0.68);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .belief-filament {
+    filter: drop-shadow(0 0 4px rgba(139, 45, 255, 0.45));
+  }
+
+  .belief-node-ring {
+    animation: belief-ring 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .belief-float {
+    animation: belief-float 6s ease-in-out infinite;
+  }
+
+  .belief-float-delayed {
+    animation: belief-float 7s ease-in-out 1.5s infinite;
+  }
+}
+
+@keyframes belief-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes belief-ring {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .belief-float,
+  .belief-float-delayed,
+  .belief-node-ring {
+    animation: none;
+  }
+}
+
+@layer components {
+  .journey-vignette {
+    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(3, 4, 10, 0.75) 100%);
+  }
+}
+
+@layer components {
+  .prism-core-glow {
+    background: radial-gradient(
+      closest-side,
+      rgba(139, 45, 255, 0.1) 0%,
+      rgba(38, 198, 255, 0.05) 45%,
+      rgba(3, 4, 10, 0) 100%
+    );
+  }
+
+  .prism-stage {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .prism-stage:hover {
+    border-color: rgba(139, 45, 255, 0.45);
+    background-color: rgba(14, 20, 42, 0.75);
+  }
+
+  .prism-ring {
+    animation: prism-spin 60s linear infinite;
+  }
+}
+
+@keyframes prism-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prism-ring {
+    animation: none;
+  }
+}
+
+@layer components {
+  .capability-gradient {
+    background: linear-gradient(135deg, #e2e8f0 25%, #c47fff 65%, #26c6ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .capability-cyan-tint {
+    background: radial-gradient(circle at 25% 50%, rgba(38, 198, 255, 0.06), transparent 55%);
+  }
+
+  .capability-node {
+    background: linear-gradient(180deg, rgba(14, 20, 42, 0.65) 0%, rgba(7, 11, 24, 0.5) 100%);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.14);
+    transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .capability-node:hover {
+    border-color: rgba(38, 198, 255, 0.45);
+    background: linear-gradient(180deg, rgba(20, 28, 58, 0.75) 0%, rgba(10, 15, 32, 0.6) 100%);
+    box-shadow: 0 12px 30px -8px rgba(38, 198, 255, 0.2);
+  }
+
+  .capability-node-focus {
+    background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(7, 11, 24, 0.7) 100%);
+    border-color: rgba(196, 127, 255, 0.5);
+    box-shadow: 0 0 30px -5px rgba(139, 45, 255, 0.3), inset 0 0 16px rgba(38, 198, 255, 0.12);
+  }
+
+  .capability-pulse {
+    animation: capability-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes capability-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capability-pulse {
+    animation: none;
+  }
+}
