@@ -336,7 +336,7 @@ export default function Capabilities() {
         </div>
       </div>
 
-      <SectionContinuum index="08" title="Capabilities" />
+      <SectionContinuum index="08" title="Capabilities" next={{ href: "#case-studies", label: "Proceed to 09 — Proof (Case Studies)" }} />
     </section>
   );
 }

@@ -1,0 +1,327 @@
+<!DOCTYPE html><html class="dark scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pragyan AI — Frame 11: Use Cases</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            midnight: {
+              950: '#03040A',
+              900: '#050711',
+              850: '#070B18',
+              800: '#0C0E1A',
+            },
+            electric: {
+              cyan: '#26C6FF',
+              violet: '#8B2DFF',
+            },
+            surface: {
+              dim: '#11131b',
+              low: '#1a1b23',
+              border: 'rgba(160, 175, 220, 0.16)',
+            }
+          },
+          animation: {
+            'pulse-subtle': 'pulseSlow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            pulseSlow: {
+              '0%, 100%': { opacity: '0.2' },
+              '50%': { opacity: '0.45' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="base-typography">
+    body {
+      background-color: #03040A;
+      color: #E2E8F0;
+      overflow-x: hidden;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="glass-and-glow">
+    .glass-pill {
+      background: rgba(17, 19, 27, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(160, 175, 220, 0.18);
+    }
+    .glass-pill:hover {
+      border-color: rgba(38, 198, 255, 0.45);
+      box-shadow: 0 0 20px rgba(38, 198, 255, 0.15);
+    }
+    .glow-cyan-sm {
+      box-shadow: 0 0 10px rgba(38, 198, 255, 0.4);
+    }
+    .ambient-bg-glow {
+      background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.05) 35%, transparent 70%);
+    }
+    .text-glow-subtle {
+      text-shadow: 0 0 14px rgba(38, 198, 255, 0.35);
+    }
+  </style>
+<style data-purpose="industry-accordion-strip">
+    /* Fluid responsive vertical accordion strip */
+    .industry-strip {
+      transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .industry-strip .overlay-default {
+      transition: opacity 400ms ease;
+    }
+    .industry-strip .details-revealed {
+      transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 350ms ease;
+    }
+    .industry-strip:hover {
+      flex-grow: 2.2 !important;
+    }
+    .industry-strip:hover .overlay-default {
+      opacity: 0.15;
+    }
+    .industry-strip:hover .details-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .industry-strip:hover .active-border {
+      border-color: rgba(38, 198, 255, 0.55);
+      box-shadow: inset 0 0 24px rgba(38, 198, 255, 0.12), 0 0 30px rgba(7, 11, 24, 0.8);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-electric-cyan/20 selection:text-white relative bg-midnight-950">
+<!-- Ambient Light Orbs -->
+<div class="fixed inset-0 pointer-events-none ambient-bg-glow z-0"></div>
+<div class="fixed top-1/4 left-[-10%] w-[500px] h-[500px] bg-electric-violet/10 rounded-full blur-[140px] pointer-events-none animate-pulse-subtle"></div>
+<!-- BEGIN: TopNavigation -->
+<header class="relative z-50 w-full px-8 lg:px-14 py-6 border-b border-surface-border/40 backdrop-blur-md bg-midnight-950/60" data-purpose="desktop-nav">
+<div class="max-w-[1720px] mx-auto flex items-center justify-between">
+<!-- Brand & Status Pill -->
+<div class="flex items-center gap-3">
+<a class="text-xl font-medium tracking-tight text-white flex items-center gap-2 group" href="#hero">
+<span class="tracking-tight font-semibold text-slate-100 group-hover:text-white transition-colors">Pragyan</span>
+<span class="px-2 py-0.5 text-[11px] font-medium tracking-wide rounded-full border border-electric-cyan/40 text-electric-cyan bg-electric-cyan/5 glow-cyan-sm">ai</span>
+</a>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8 lg:gap-10 text-[13px] tracking-wide text-slate-400 font-normal">
+<a class="hover:text-slate-200 transition-colors" href="#who-we-are">Who We Are</a>
+<a class="hover:text-slate-200 transition-colors" href="#what-we-do">What We Do</a>
+<a class="hover:text-slate-200 transition-colors" href="#capabilities">Capabilities</a>
+<a class="hover:text-slate-200 transition-colors" href="#products">Products</a>
+<!-- Active Frame Indicator -->
+<a class="text-white flex items-center gap-2 font-medium relative group" href="#use-cases">
+<span class="w-1.5 h-1.5 rounded-full bg-electric-cyan glow-cyan-sm animate-pulse"></span>
+<span class="">Use Cases</span>
+<span class="absolute -bottom-2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-electric-cyan to-transparent"></span>
+</a>
+<a class="hover:text-slate-200 transition-colors" href="#insights">Insights</a>
+</nav>
+<!-- Action Button -->
+<div class="flex items-center">
+<a class="px-5 py-2 text-xs uppercase tracking-widest font-medium rounded-full text-slate-200 glass-pill transition-all duration-300 hover:scale-105 active:scale-95 border-white/20" href="#contact">
+          [ TALK TO US ]
+        </a>
+</div>
+</div>
+</header>
+<!-- END: TopNavigation -->
+<!-- BEGIN: MainContent -->
+<main class="relative z-10 flex-1 flex flex-col justify-center px-6 lg:px-14 py-8 max-w-[1720px] mx-auto w-full" data-purpose="frame-11-use-cases">
+<!-- Top Row: Editorial Headline and Introduction -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-10 lg:mb-12">
+<!-- Section Indicator & Title -->
+<div class="lg:col-span-7 flex flex-col gap-3">
+<!-- Section Tracker Tag -->
+<div class="inline-flex items-center gap-2 text-xs tracking-widest text-slate-400 font-mono uppercase">
+<span class="w-2 h-2 rounded-full bg-electric-cyan shadow-[0_0_8px_#26C6FF]"></span>
+<span class="">11 — USE CASES</span>
+</div>
+<!-- Main Editorial Headline -->
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white leading-[1.12]">
+          Where could <span class="font-normal text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-electric-cyan text-glow-subtle">intelligence</span><br>
+          change your business?
+        </h1>
+</div>
+<!-- Narrative Copy & Direct Action -->
+<div class="lg:col-span-5 flex flex-col justify-between items-start lg:items-end gap-6 pb-2">
+<p class="text-sm lg:text-[15px] font-light text-slate-400 leading-relaxed max-w-md lg:text-left">
+          From industry-specific challenges to intelligent workflows, explore precision artificial intelligence architectures designed for measurable enterprise impact.
+        </p>
+<!-- CTA Pill -->
+<a class="group inline-flex items-center gap-3 px-6 py-2.5 rounded-full text-xs font-medium tracking-wider uppercase text-white glass-pill transition-all duration-300" href="#all-use-cases">
+<span class="">Explore All Use Cases</span>
+<span class="text-electric-cyan group-hover:translate-x-1 transition-transform duration-200 text-sm">→</span>
+</a>
+</div>
+</div>
+<!-- BEGIN: IndustryVisualSystem -->
+<!-- Panoramic Dynamic Industry Showcase Strip -->
+<section class="w-full h-[470px] lg:h-[520px] flex flex-col lg:flex-row gap-3 relative rounded-2xl overflow-hidden p-1.5 bg-midnight-900/80 border border-surface-border/50 backdrop-blur-2xl shadow-2xl" data-purpose="industry-panoramic-strip">
+<!-- CARD 1: BFSI (Featured Expanded by default) -->
+<article class="industry-strip active-border group relative flex-1 rounded-xl overflow-hidden cursor-pointer border border-surface-border transition-all duration-500 ease-out bg-midnight-950 flex flex-col justify-end p-6 select-none lg:flex-1" data-industry="bfsi">
+<img alt="Cinematic financial headquarters panoramic data analytics at night" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATuH1Gb1GEm27TrOe0MeB5DHs1cdkD8cndiCDU5BDdH_3vlbsjVwg1UF-BIOZtyCmO9RC3gXJVT7N559ciqSmzBB1Gxz8IqlESaBWvX_sXbuF_MdWtQA7-XFLab4N3RYUhDsUxt_Npf2dKaF6q9P8KB3O40di_Rq2jmRTCVA3nuJoYHfsftbbMQiQ8e5tpP3ZJh3nHBP2YYgNWqfiFjHGfL7EKwoqOvrK6ToJLFpxErRnZO8h1X_51mw">
+<!-- Atmospheric Vignette Layer -->
+<div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/80 to-transparent overlay-default"></div>
+<div class="absolute inset-0 bg-midnight-950/40 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+<!-- Subtle Glowing Edge Accent -->
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-electric-cyan/60 to-transparent opacity-60 group-hover:opacity-100 transition-opacity"></div>
+<!-- Content Overlay -->
+<div class="relative z-20 flex flex-col justify-end">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-mono tracking-widest text-electric-cyan/90 uppercase bg-black/40 backdrop-blur-md px-2.5 py-1 rounded border border-electric-cyan/20">01 / BFSI</span>
+<span class="w-2 h-2 rounded-full bg-electric-cyan/80 shadow-[0_0_8px_#26C6FF]"></span>
+</div>
+<h2 class="text-xl lg:text-2xl font-normal text-white tracking-tight mb-1 group-hover:text-electric-cyan transition-colors">
+            BFSI
+          </h2>
+<p class="text-xs lg:text-[13px] font-light text-slate-300 leading-relaxed mb-4">Intelligence for high-stakes financial decisions.</p>
+<div class="details-revealed flex items-center justify-between pt-3 border-t border-white/10 opacity-80 group-hover:opacity-100 transition-all">
+<span class="text-[11px] font-medium tracking-wide uppercase text-slate-300 flex items-center gap-1.5">
+              Explore Architecture <span class="text-electric-cyan text-xs group-hover:translate-x-1 transition-transform">→</span>
+</span>
+
+</div>
+</div>
+</article>
+<!-- CARD 2: Manufacturing -->
+<article class="industry-strip active-border group relative flex-1 rounded-xl overflow-hidden cursor-pointer border border-surface-border transition-all duration-500 ease-out bg-midnight-950 flex flex-col justify-end p-6 select-none lg:flex-1" data-industry="manufacturing">
+<img alt="Advanced robotics manufacturing automation with digital telemetry lines" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1Vvrg5ZaMJfhAkVLZ_KVnb--5_N3EZGyBcrTGUjonq_miqrjI36lxC0T1-Sd-Huge-H-eSxn16Lh_m91wGNZroiEwTcO0ztyglLMlwzfXQ_TZxG30_pLPjCPnvKZtw-HlYkt5g5uJQLaorwQwCZGT9ePIsLFQae4zk6lK16uKadpR6gDN-apQN-KBoRWh3DkzO89HRXXbV9vix7gBZQwLmPloAxWfhb-Qjyr5IzHN7vNkpPiHw-hXcus7Y">
+<div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/80 to-transparent overlay-default"></div>
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-electric-violet/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-20 flex flex-col justify-end">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-mono tracking-widest text-slate-300 uppercase bg-black/40 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 group-hover:border-electric-cyan/30 group-hover:text-electric-cyan transition-colors">02 / Manufacturing</span>
+</div>
+<h2 class="text-xl lg:text-2xl font-normal text-white tracking-tight mb-1 group-hover:text-electric-cyan transition-colors">
+            Manufacturing
+          </h2>
+<p class="text-xs lg:text-[13px] font-light text-slate-300 leading-relaxed mb-4">Intelligence for autonomous operations and production.</p>
+<div class="details-revealed flex items-center justify-between pt-3 border-t border-white/10 opacity-70 group-hover:opacity-100 transition-all">
+<span class="text-[11px] font-medium tracking-wide uppercase text-slate-300 flex items-center gap-1.5">
+              Explore Operations <span class="text-electric-cyan text-xs group-hover:translate-x-1 transition-transform">→</span>
+</span>
+
+</div>
+</div>
+</article>
+<!-- CARD 3: Logistics -->
+<article class="industry-strip active-border group relative flex-1 rounded-xl overflow-hidden cursor-pointer border border-surface-border transition-all duration-500 ease-out bg-midnight-950 flex flex-col justify-end p-6 select-none lg:flex-1" data-industry="logistics">
+<img alt="Automated logistics distribution hub with AGVs and precision conveyor lines" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAornoqpWR7UR4IyT2Mm3rpz50CsBbgOxd69QcLD_uqIhMbFrj4nk14pgqT2XR_QpXa4GYonOFVKv4gjx1AKSic8PSSEFFgCPkQ2Uhz4_tZqko4IM3nodu7ecx-jk9tuve_Cz_KMt65bT-uloktcIed22AkfCS52kJaAHOWeZdaN1z6ty6weqGJHZG6vy6LA25RACikSWDCYmYFOC5VG0nphBUh5QqVfaxRhh3u1j4ClX53g90aFXnZaw">
+<div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/80 to-transparent overlay-default"></div>
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-electric-cyan/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-20 flex flex-col justify-end">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-mono tracking-widest text-slate-300 uppercase bg-black/40 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 group-hover:border-electric-cyan/30 group-hover:text-electric-cyan transition-colors">03 / Logistics</span>
+</div>
+<h2 class="text-xl lg:text-2xl font-normal text-white tracking-tight mb-1 group-hover:text-electric-cyan transition-colors">
+            Logistics
+          </h2>
+<p class="text-xs lg:text-[13px] font-light text-slate-300 leading-relaxed mb-4">Intelligence across dynamic supply chains.</p>
+<div class="details-revealed flex items-center justify-between pt-3 border-t border-white/10 opacity-70 group-hover:opacity-100 transition-all">
+<span class="text-[11px] font-medium tracking-wide uppercase text-slate-300 flex items-center gap-1.5">
+              Explore Fleet AI <span class="text-electric-cyan text-xs group-hover:translate-x-1 transition-transform">→</span>
+</span>
+
+</div>
+</div>
+</article>
+<!-- CARD 4: Healthcare -->
+<article class="industry-strip active-border group relative flex-1 rounded-xl overflow-hidden cursor-pointer border border-surface-border transition-all duration-500 ease-out bg-midnight-950 flex flex-col justify-end p-6 select-none lg:flex-1" data-industry="healthcare">
+<img alt="Healthcare research laboratory diagnostic facility with medical researchers" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJI70nKwKORj04Q9W2h4Ypfc7G66ceXlCUmmOMxhlG5QQvgU97DJTaqQXUiuzuoe9SrrgK-RldxR2x7SNBOJ-wOZq3gPIwf59DEWrl_CM-engxT7_ArlZgeQT4crYMndwo9bOEeAjzfEJ9T_ckPsH6sU02rLLjcnGa470eBKq0-rUQnMgBEuekmw1JF79BSYxUaSJD13LVCStPtn5SqkXC9QCWBcCvc194q-QAojrUJKG9OFD-bvTmQw">
+<div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/80 to-transparent overlay-default"></div>
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-electric-violet/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-20 flex flex-col justify-end">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-mono tracking-widest text-slate-300 uppercase bg-black/40 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 group-hover:border-electric-cyan/30 group-hover:text-electric-cyan transition-colors">04 / Healthcare</span>
+</div>
+<h2 class="text-xl lg:text-2xl font-normal text-white tracking-tight mb-1 group-hover:text-electric-cyan transition-colors">
+            Healthcare
+          </h2>
+<p class="text-xs lg:text-[13px] font-light text-slate-300 leading-relaxed mb-4">Intelligence for connected care and clinical operations.</p>
+<div class="details-revealed flex items-center justify-between pt-3 border-t border-white/10 opacity-70 group-hover:opacity-100 transition-all">
+<span class="text-[11px] font-medium tracking-wide uppercase text-slate-300 flex items-center gap-1.5">
+              Explore Care AI <span class="text-electric-cyan text-xs group-hover:translate-x-1 transition-transform">→</span>
+</span>
+
+</div>
+</div>
+</article>
+<!-- CARD 5: Retail & Ecommerce -->
+<article class="industry-strip active-border group relative flex-1 rounded-xl overflow-hidden cursor-pointer border border-surface-border transition-all duration-500 ease-out bg-midnight-950 flex flex-col justify-end p-6 select-none lg:flex-1" data-industry="retail">
+<img alt="Modern flagship connected luxury digital commerce showroom at night" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-Rs_wv32bj4oCg_0VANKVUUG3W17Eya8NVc3n6V1t7EGNtMFZtgZmSksm-I3IjrROXuXVCLjM-76Hye8VybeO9bkHv5JRbF0E3hug2IaiBTn2nQc6ppkNpTSNKeaPuYo2SLdFQYUBta7oWaQsC8IMIi0GKYla54cpdTV16aa69pLlPGHa0efzSE2larGgvAT1CU-crPtR58i8LUSrCnbsKKDXYlAIqNBz0XuwoZiIAkdKTK994pAP4w">
+<div class="absolute inset-0 bg-gradient-to-t from-midnight-950 via-midnight-950/80 to-transparent overlay-default"></div>
+<div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-electric-cyan/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-20 flex flex-col justify-end">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-mono tracking-widest text-slate-300 uppercase bg-black/40 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 group-hover:border-electric-cyan/30 group-hover:text-electric-cyan transition-colors">05 / Retail &amp; Commerce</span>
+</div>
+<h2 class="text-xl lg:text-2xl font-normal text-white tracking-tight mb-1 group-hover:text-electric-cyan transition-colors">
+            Retail &amp; Commerce
+          </h2>
+<p class="text-xs lg:text-[13px] font-light text-slate-300 leading-relaxed mb-4">Intelligence across personalized customer journeys.</p>
+<div class="details-revealed flex items-center justify-between pt-3 border-t border-white/10 opacity-70 group-hover:opacity-100 transition-all">
+<span class="text-[11px] font-medium tracking-wide uppercase text-slate-300 flex items-center gap-1.5">
+              Explore Commerce <span class="text-electric-cyan text-xs group-hover:translate-x-1 transition-transform">→</span>
+</span>
+
+</div>
+</div>
+</article>
+</section>
+<!-- END: IndustryVisualSystem -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: ContinuumFooterBar -->
+<footer class="relative z-40 w-full px-8 lg:px-14 py-4 border-t border-surface-border/40 backdrop-blur-md bg-midnight-950/80" data-purpose="continuum-footer">
+<div class="max-w-[1720px] mx-auto flex flex-col sm:flex-row items-center justify-between text-[11px] tracking-widest uppercase font-mono text-slate-400 gap-3">
+<!-- Frame Position Identifier -->
+<div class="flex items-center gap-2.5">
+<span class="text-white font-semibold">11 / 15</span>
+<span class="text-slate-600">|</span>
+<span class="tracking-wider text-slate-300">USE CASES</span>
+</div>
+<!-- Navigation Direction Anchor -->
+<div class="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors">
+<span class="">PROCEED TO 12 — CLIENT PROOF</span>
+<span class="text-electric-cyan text-xs transform group-hover:translate-y-0.5 transition-transform duration-200">↓</span>
+</div>
+<!-- Interaction Cue -->
+<div class="flex items-center gap-2 text-slate-400">
+<span class="w-1.5 h-1.5 rounded-full bg-electric-cyan animate-pulse"></span>
+<span class="tracking-wider">SCROLL TO EXPLORE</span>
+</div>
+</div>
+</footer>
+<!-- END: ContinuumFooterBar -->
+<script data-purpose="card-focus-interaction">
+    // Interactive mouseover behavior to dynamically emphasize current card
+    const strips = document.querySelectorAll('.industry-strip');
+    strips.forEach((strip) => {
+      strip.addEventListener('mouseenter', () => {
+        strips.forEach((s) => {
+          if (s !== strip) {
+            s.classList.remove('lg:flex-[1.8]');
+            s.classList.add('lg:flex-1');
+          }
+        });
+      });
+    });
+  </script>
+
+
+</body></html>

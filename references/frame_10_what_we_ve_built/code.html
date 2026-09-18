@@ -1,0 +1,278 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pragyan AI — Frame 10: What We've Built</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Config -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deepVoid: '#03040A',
+            surfaceNavy: '#070B18',
+            panelNavy: '#080D1F',
+            electricViolet: '#8B2DFF',
+            brightCyan: '#26C6FF',
+            textMuted: '#A0AFDC',
+            textLight: '#D8DBE8'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 40px -10px rgba(38, 198, 255, 0.25)',
+            'glow-violet': '0 0 40px -10px rgba(139, 45, 255, 0.25)',
+            'portal': '0 0 60px 2px rgba(139, 45, 255, 0.2), 0 0 30px 1px rgba(38, 198, 255, 0.2)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Cinematic Ambient Styles -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #03040A;
+      color: #D8DBE8;
+      overflow-x: hidden;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+<!-- Custom Cinematic Light Accents -->
+<style data-purpose="ambient-effects">
+    .bg-radial-gradient {
+      background: radial-gradient(circle at 50% 20%, rgba(11, 19, 43, 0.8) 0%, rgba(3, 4, 10, 1) 75%);
+    }
+
+    .light-orb-violet {
+      position: absolute;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(139, 45, 255, 0.12) 0%, rgba(139, 45, 255, 0) 70%);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .light-orb-cyan {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(38, 198, 255, 0.1) 0%, rgba(38, 198, 255, 0) 70%);
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    .glass-panel {
+      background: rgba(8, 13, 31, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(160, 175, 220, 0.14);
+    }
+
+    .glass-panel:hover {
+      background: rgba(10, 17, 40, 0.75);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative selection:bg-cyan-500/20 selection:text-cyan-200">
+<!-- BEGIN: AmbientBackdrop -->
+<!-- Ambient glowing lighting backdrops to replicate Frame 10 cinematic darkness -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="light-orb-cyan top-[-150px] right-[-100px]"></div>
+<div class="light-orb-violet top-[30%] left-[-200px]"></div>
+<div class="light-orb-cyan bottom-[-150px] right-[25%] opacity-40"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950/20 via-transparent to-deepVoid"></div>
+</div>
+<!-- END: AmbientBackdrop -->
+<!-- BEGIN: Navigation -->
+<header class="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-5 bg-[#03040A]/80 backdrop-blur-md border-b border-white/5" data-purpose="top-navigation">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<!-- Brand Identity -->
+<a aria-label="Pragyan AI Homepage" class="flex items-center gap-2.5 group" href="#">
+<span class="text-xl font-medium tracking-tight text-white group-hover:text-white/90 transition-colors">Pragyan</span>
+<span class="px-2 py-0.5 text-[11px] font-mono-tech tracking-wider font-semibold uppercase bg-gradient-to-r from-[#26C6FF]/15 to-[#8B2DFF]/25 text-[#26C6FF] border border-[#26C6FF]/40 rounded-full shadow-[0_0_12px_rgba(38,198,255,0.3)]">
+          ai
+        </span>
+</a>
+<!-- Primary Navigation Links -->
+<nav aria-label="Main Navigation" class="hidden md:flex items-center space-x-8 text-[13px] font-normal tracking-wide text-[#A0AFDC]">
+<a class="hover:text-white transition-colors duration-200" href="#who-we-are">Who We Are</a>
+<a class="hover:text-white transition-colors duration-200" href="#what-we-do">What We Do</a>
+<a class="hover:text-white transition-colors duration-200" href="#capabilities">Capabilities</a>
+<!-- Active Nav State: Products -->
+<a aria-current="page" class="relative text-white font-medium flex items-center gap-1.5 transition-colors duration-200" href="#products">
+<span class="w-1.5 h-1.5 rounded-full bg-[#26C6FF] shadow-[0_0_8px_#26C6FF]"></span>
+<span class="">Products</span>
+</a>
+<a class="hover:text-white transition-colors duration-200" href="#use-cases">Use Cases</a>
+<a class="hover:text-white transition-colors duration-200" href="#insights">Insights</a>
+</nav>
+<!-- Header Action -->
+<div class="flex items-center gap-4">
+<a class="px-5 py-2 text-xs uppercase tracking-widest text-[#D8DBE8] border border-white/20 rounded-full hover:border-white/50 hover:bg-white/[0.04] hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition duration-300" href="#contact">
+          Talk to Us
+        </a>
+</div>
+</div>
+</header>
+<!-- END: Navigation -->
+<!-- BEGIN: MainContent -->
+<main class="relative z-10 pt-28 md:pt-36 pb-24 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col justify-between min-h-screen">
+<!-- BEGIN: SectionHeader -->
+<section aria-labelledby="section-headline" class="mb-14 lg:mb-16">
+<!-- Section Tag / Numerical Tracker -->
+<div class="flex items-center gap-2.5 mb-6">
+<span class="inline-block w-2 h-2 rounded-full bg-[#26C6FF] shadow-[0_0_10px_#26C6FF]"></span>
+<span class="font-mono-tech uppercase tracking-[0.25em] text-[11px] text-[#A0AFDC]/80">
+          10 — WHAT WE'VE BUILT
+        </span>
+</div>
+<!-- Headline & Subtitle Editorial Row -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end justify-between">
+<!-- Left: Statement Headline -->
+<div class="lg:col-span-7">
+<h1 class="text-4xl md:text-5xl lg:text-[54px] font-normal tracking-tight text-white leading-[1.08]" id="section-headline">
+            We build with AI.<br>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#E0E5F5] to-[#26C6FF]">
+              We build AI too.
+            </span>
+</h1>
+</div>
+<!-- Right: Supporting Narrative & Global CTA -->
+<div class="lg:col-span-5 flex flex-col items-start lg:items-end justify-between gap-5">
+<p class="text-sm md:text-[15px] leading-relaxed text-[#A0AFDC] max-w-md lg:text-right font-light">
+            Proprietary intelligence platforms engineered from production-tested enterprise deployments—delivering immediate operational leverage.
+          </p>
+<a class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/[0.03] border border-[rgba(160,175,220,0.22)] text-xs text-white uppercase tracking-wider font-medium hover:border-[#8B2DFF]/60 hover:bg-[#8B2DFF]/10 hover:shadow-[0_0_20px_rgba(139,45,255,0.3)] transition duration-300 group" href="#explore-products">
+<span class="">Explore All Products</span>
+<svg class="w-3.5 h-3.5 text-[#26C6FF] transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+</div>
+</section>
+<!-- END: SectionHeader -->
+<!-- BEGIN: ProductShowcases -->
+<!-- Two balanced enterprise product cards (ReX and Minuta) -->
+<section aria-label="Featured AI Products" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mb-20">
+<!-- SHOWCASE 01: ReX -->
+<article class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-all duration-500 border border-white/10 hover:border-[#8B2DFF]/40 hover:shadow-glow-violet group" data-purpose="product-card-rex">
+<div>
+<!-- Visual Media Container -->
+<div class="relative w-full h-[250px] md:h-[290px] rounded-xl overflow-hidden mb-7 border border-white/10 shadow-2xl bg-[#050711]">
+<img alt="Cinematic 4K UHD editorial product visual for 'ReX — Intelligent Talent Exchange'. Dark mode futuristic AI recruitment intelligence interface. Near-black (#03040A, #070B18) layered glassmorphism UI surface with ultra-thin glowing borders in subtle cyan (#26C6FF) and electric violet (#8B2DFF). Inside the UI: sophisticated candidate matching intelligence graph, candidate profile cards with fit score percentages (e.g. 98% Match), AI semantic skill vectors, talent discovery analytics, and sleek neural data connection nodes. High depth of field, atmospheric dark ambient lighting, restrained enterprise aesthetic, clean typography, luxury technology product photograph style, zero messy clutter, zero cartoonish neon." class="w-full h-full object-cover object-center transform group-hover:scale-[1.025] transition duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdI8zxHa3y0g4pE6N20SQbwzPIAb4QnICBXZGAtOM6bNZLnfXzeluKLYjCzFg4rEVhtxjvIpSfqgSimUb47mceGOd8WPpUKSQkEBTkHcuiNb_S3CT-7SUf4xXOMCt7R5c9jBIsSlBOz51PfFlRZG3jfz__GUbLdq2tLlrL9DWzeLovJJV0Y6JeEGCCCmyMua0h01baPUu_eeUNRqXLnXuO6wpI-ZRddglV__EHfJnrpQGbuCpW45_IUw">
+<!-- Atmospheric Depth Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#080D1F] via-transparent to-transparent opacity-75 pointer-events-none"></div>
+<!-- Category Tag Floating Badge -->
+
+</div>
+<!-- Product Title & Descriptor -->
+<div class="mb-4">
+<div class="flex items-baseline justify-between gap-4">
+<h2 class="text-3xl font-light tracking-tight text-white group-hover:text-white transition-colors">
+                ReX
+              </h2>
+
+</div>
+<p class="text-xs uppercase tracking-wider font-semibold text-[#26C6FF] mt-1">
+              Intelligent Talent Exchange
+            </p>
+</div>
+<!-- Concise Editorial Overview -->
+<p class="text-[#A0AFDC] text-sm leading-relaxed mb-6 font-light">
+            An AI-powered recruitment intelligence platform designed to transform candidate discovery, semantic skill vector matching, and structured hiring workflows at enterprise scale.
+          </p>
+<!-- Capability Badges -->
+<div aria-label="ReX Key Capabilities" class="flex flex-wrap gap-2 mb-8"><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Resume Intelligence</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Match Analysis</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Fit Scoring</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">AI Interviews</span></div>
+</div>
+<!-- Action / Conversion Area -->
+<div class="pt-5 border-t border-white/10 flex items-center justify-between">
+<a class="inline-flex items-center gap-2 text-sm font-medium tracking-wide text-white group-hover:text-[#26C6FF] transition duration-200" href="#rex-overview">
+<span class="">Explore ReX</span>
+<svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+
+</div>
+</article>
+<!-- SHOWCASE 02: Minuta -->
+<article class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-all duration-500 border border-white/10 hover:border-[#26C6FF]/40 hover:shadow-glow-cyan group" data-purpose="product-card-minuta">
+<div>
+<!-- Visual Media Container -->
+<div class="relative w-full h-[250px] md:h-[290px] rounded-xl overflow-hidden mb-7 border border-white/10 shadow-2xl bg-[#050711]">
+<img alt="Cinematic 4K UHD editorial product visual for 'Minuta — Turn Meetings into Momentum'. Dark mode futuristic AI meeting intelligence and conversational synthesis interface. Deep midnight-navy (#03040A, #070B18) ambient environment. Sleek translucent glass interface showing multi-speaker audio waveform visualization with electric cyan (#26C6FF) and violet (#8B2DFF) audio frequency arcs, real-time structured conversational transcript snippets, automated action item extraction cards, and semantic key takeaway nodes. Ultra-crisp editorial product detail, realistic dark glass depth, atmospheric volumetric shadow, executive enterprise technology product render." class="w-full h-full object-cover object-center transform group-hover:scale-[1.025] transition duration-700 ease-out" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFLDMF8ebCenyaJYQ3vNy90AL8nm-vYsv8bHeYYHz89z6VjXjsuwyXdrJuVAGpeuTi2WmChCO0h_k9XycopRPXq6wlZ-gIN-RcjNq2cYEHBLzk9LnR7XerZjoMt9f1vxWqHELDBlgWc3f13lErK6q_sZr1LmGIlq4Pr61F5qPALdldV5QyEnkGS3YBLS6wCCncAaixGRCdVBcejCi9_g_4dJQx683SY8ub1BXW3wbi1upf7jxnu2DGVw">
+<!-- Atmospheric Depth Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#080D1F] via-transparent to-transparent opacity-75 pointer-events-none"></div>
+<!-- Category Tag Floating Badge -->
+
+</div>
+<!-- Product Title & Descriptor -->
+<div class="mb-4">
+<div class="flex items-baseline justify-between gap-4">
+<h2 class="text-3xl font-light tracking-tight text-white group-hover:text-white transition-colors">
+                Minuta
+              </h2>
+
+</div>
+<p class="text-xs uppercase tracking-wider font-semibold text-[#C47FFF] mt-1">
+              Turn Meetings into Momentum
+            </p>
+</div>
+<!-- Concise Editorial Overview -->
+<p class="text-[#A0AFDC] text-sm leading-relaxed mb-6 font-light">
+            An AI-powered conversational synthesis engine that translates dynamic multi-speaker dialogue into verified action items, decisions, and immediate cross-functional velocity.
+          </p>
+<!-- Capability Badges -->
+<div aria-label="Minuta Key Capabilities" class="flex flex-wrap gap-2 mb-8"><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Transcription</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Summarization</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Action Capture</span><span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs text-[#A0AFDC]/80 font-light tracking-wide">Executive Briefing</span></div>
+</div>
+<!-- Action / Conversion Area -->
+<div class="pt-5 border-t border-white/10 flex items-center justify-between">
+<a class="inline-flex items-center gap-2 text-sm font-medium tracking-wide text-white group-hover:text-[#C47FFF] transition duration-200" href="#minuta-overview">
+<span class="">Explore Minuta</span>
+<svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+
+</div>
+</article>
+</section>
+<!-- END: ProductShowcases -->
+<!-- BEGIN: BottomContinuum -->
+<!-- Continuum bar providing navigation to Frame 11 (Use Cases) -->
+<footer class="pt-6 border-t border-white/10 text-xs text-[#A0AFDC]/70 font-mono-tech flex flex-col sm:flex-row items-center justify-between gap-4" data-purpose="continuum-footer">
+<!-- Frame Sequence Metadata -->
+<div class="flex items-center gap-3">
+<span class="text-white font-medium">10 / 15</span>
+<span class="text-white/20">|</span>
+<span class="tracking-widest uppercase">WHAT WE'VE BUILT</span>
+</div>
+<!-- Center Next-Step Cue -->
+<a class="group flex items-center gap-2 text-[#D8DBE8] hover:text-white transition-colors uppercase tracking-[0.2em] text-[11px]" href="#frame-11-use-cases">
+<span class="">PROCEED TO 11 — USE CASES</span>
+<svg class="w-3.5 h-3.5 text-[#26C6FF] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M19 14l-7 7m0 0l-7-7m7 7V3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<!-- Right Interaction Indicator -->
+<div class="flex items-center gap-2 text-[10px] tracking-widest text-[#A0AFDC]/60 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#26C6FF]/60 animate-pulse"></span>
+<span class="">SCROLL TO EXPLORE</span>
+</div>
+</footer>
+<!-- END: BottomContinuum -->
+</main>
+<!-- END: MainContent -->
+
+
+</body></html>

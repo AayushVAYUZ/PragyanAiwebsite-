@@ -1,0 +1,237 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pragyan AI — 09 Proof / Case Studies</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#03040A',
+            deepNavy: '#070B18',
+            electricViolet: '#8B2DFF',
+            deepViolet: '#5418C8',
+            neonCyan: '#26C6FF',
+            primaryWhite: '#F5F7FF',
+            mutedText: '#727991',
+            glassBorder: 'rgba(160, 175, 220, 0.16)',
+            glassBorderHover: 'rgba(160, 175, 220, 0.35)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 35px -8px rgba(38, 198, 255, 0.25)',
+            'glow-violet': '0 0 35px -8px rgba(139, 45, 255, 0.25)',
+            'ambient-deck': '0 20px 60px -15px rgba(0, 0, 0, 0.7)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: StyleConfigurations -->
+<style data-purpose="custom-layout">
+    body {
+      background-color: #03040A;
+      color: #F5F7FF;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+    
+    /* Background atmospheric lighting */
+    .radial-bg {
+      background: radial-gradient(circle at 75% 40%, rgba(84, 24, 200, 0.15) 0%, rgba(38, 198, 255, 0.08) 25%, transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(139, 45, 255, 0.08) 0%, transparent 50%),
+                  #03040A;
+    }
+
+    /* Gradient overlay for showcase photography */
+    .card-photo-gradient {
+      background: linear-gradient(to top, 
+        rgba(3, 4, 10, 0.98) 0%, 
+        rgba(7, 11, 24, 0.85) 40%, 
+        rgba(3, 4, 10, 0.35) 75%, 
+        rgba(3, 4, 10, 0.1) 100%);
+    }
+
+    /* Subtle rim lighting effect on hover */
+    .card-glow-border {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-glow-border:hover {
+      border-color: rgba(38, 198, 255, 0.38);
+      box-shadow: 0 10px 40px -10px rgba(38, 198, 255, 0.18), 0 0 0 1px rgba(139, 45, 255, 0.15);
+      transform: translateY(-3px);
+    }
+
+    /* Text highlight gradient */
+    .headline-gradient {
+      background: linear-gradient(135deg, #F5F7FF 60%, rgba(38, 198, 255, 0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+<!-- END: StyleConfigurations -->
+</head>
+<body class="radial-bg min-h-screen flex flex-col justify-between selection:bg-neonCyan/20 selection:text-neonCyan">
+<!-- BEGIN: MainHeader -->
+<header class="w-full border-b border-glassBorder/60 backdrop-blur-md sticky top-0 z-50 bg-void/70">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+<!-- Brand Wordmark -->
+<a class="flex items-center gap-2 group tracking-tight" data-purpose="brand-identity" href="#">
+<span class="text-xl font-semibold tracking-wider text-primaryWhite transition-colors group-hover:text-neonCyan">PRAGYAN</span>
+<span class="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded bg-neonCyan/10 text-neonCyan border border-neonCyan/30">AI</span>
+</a>
+<!-- Central Navigation -->
+<nav class="hidden md:flex items-center gap-8 text-[13px] tracking-wider uppercase font-medium text-mutedText" data-purpose="site-navigation">
+<a class="hover:text-primaryWhite transition-colors" href="#">Who We Are</a>
+<a class="hover:text-primaryWhite transition-colors" href="#">What We Do</a>
+<a class="hover:text-primaryWhite transition-colors" href="#">Capabilities</a>
+<a class="hover:text-primaryWhite transition-colors" href="#">Products</a>
+<a class="hover:text-primaryWhite transition-colors" href="#">Use Cases</a>
+<a class="hover:text-primaryWhite transition-colors" href="#">Insights</a>
+</nav>
+<!-- Primary Action -->
+<div class="flex items-center">
+<a class="text-[11px] tracking-[0.2em] uppercase font-semibold text-primaryWhite px-5 py-2.5 rounded-full border border-glassBorder hover:border-neonCyan/50 hover:bg-neonCyan/5 transition-all duration-300" href="#">
+          [ Talk to Us ]
+        </a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="max-w-7xl mx-auto px-6 lg:px-12 py-12 lg:py-16 w-full flex-grow flex items-center">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center w-full">
+<!-- LEFT EDITORIAL SECTION (5 Cols) -->
+<section class="lg:col-span-5 flex flex-col justify-center pr-0 lg:pr-4" data-purpose="editorial-narrative">
+<!-- Frame & Micro Label -->
+<div class="flex items-center gap-3 mb-6" data-purpose="section-tag">
+<span class="w-2 h-2 rounded-full bg-neonCyan shadow-[0_0_8px_#26C6FF]"></span>
+<span class="text-[11px] font-semibold tracking-[0.25em] text-mutedText uppercase">
+            09 — Proof / Case Studies
+          </span>
+</div>
+<!-- Section Main Headline -->
+<h1 class="text-5xl sm:text-6xl lg:text-[68px] leading-[1.04] font-light text-primaryWhite tracking-tight mb-8">
+          AI that<br>
+          has left<br>
+<span class="headline-gradient font-normal">the lab.</span>
+</h1>
+<!-- Supporting Statements -->
+<div class="space-y-4 mb-10 max-w-lg">
+<p class="text-lg text-primaryWhite/90 font-normal tracking-wide">
+            Real outcomes. Real impact.
+          </p>
+<p class="text-[15px] leading-relaxed text-mutedText font-normal">
+            Production enterprise intelligence deployed inside high-stakes operational workflows—measurably accelerating turnaround times and driving high-conviction decision making.
+          </p>
+</div>
+<!-- Call to Action Link Button -->
+<div>
+<a class="inline-flex items-center gap-3 px-6 py-3 rounded-full text-[13px] font-medium tracking-wide text-primaryWhite bg-deepNavy/80 border border-glassBorder hover:border-glassBorderHover hover:bg-glassBorder/10 transition-all duration-300 group" href="#">
+<span class="">View All Case Studies</span>
+<span class="text-neonCyan transition-transform duration-300 group-hover:translate-x-1">→</span>
+</a>
+</div>
+</section>
+<!-- RIGHT CASE STUDY CARDS (7 Cols) -->
+<section class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6" data-purpose="case-studies-cards">
+<!-- CASE STUDY 01: Claims Processing -->
+<article class="card-glow-border relative rounded-2xl overflow-hidden border bg-deepNavy flex flex-col justify-end min-h-[510px] p-7 group cursor-pointer shadow-ambient-deck border-glassBorder/40">
+<!-- Background Imagery -->
+<img alt="P&amp;C insurance and financial headquarters workstation environment" class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHXbTFJkcbJ1VSrBg-MupyIkJHImC_ToyNiUyHeI_xzshN-P6L_lGUakK3LFwuupvPnIF5yH2Bj-55ZV18nXMBN-TBKbB36J6JK7QQJWJiUUfPjTXRRT4KPyZcXI2BhRrzTwukBts1MJBsShaBiuSia8GeuNFJkbha_PGmA-anIbDbR3meKbV9-3EkLzqs30wHVfaoOKVKOXIh-HLt78287dRLEhkAB9mf1Cr87yxWx9suJtyf9mX2tA">
+<!-- Gradient Tone Overlay -->
+<div class="absolute inset-0 card-photo-gradient pointer-events-none"></div>
+<!-- Subtle Border Flare -->
+<div class="absolute inset-0 border border-white/5 rounded-2xl pointer-events-none"></div>
+<!-- Card Content -->
+<div class="relative z-10 flex flex-col justify-end h-full"><!-- Micro Meta -->
+<div class="flex items-center gap-2 mb-4">
+<span class="w-1.5 h-1.5 rounded-full bg-neonCyan"></span>
+<span class="text-[10px] font-semibold tracking-[0.2em] text-neonCyan uppercase">CASE STUDY 01</span>
+</div>
+<!-- Quantitative Headline -->
+<div class="mb-3">
+<div class="text-3xl sm:text-[38px] font-light tracking-tight text-primaryWhite leading-tight">
+                5 Days
+              </div>
+<div class="text-3xl sm:text-[38px] font-medium tracking-tight text-neonCyan leading-tight flex items-center gap-2">
+<span class="">→</span> 3 Seconds
+              </div>
+</div>
+<!-- Context Description -->
+<p class="text-[14px] text-primaryWhite/80 mb-6 font-normal leading-snug">
+              Claims Processing for a Leading P&amp;C Firm
+            </p>
+<!-- Action Affordance (no top border divider) -->
+<div class="flex items-center justify-between text-[12px] font-medium text-primaryWhite group-hover:text-neonCyan transition-colors">
+<span class="tracking-wider uppercase text-[11px]">Read Story</span>
+<span class="transform transition-transform group-hover:translate-x-1">→</span>
+</div></div>
+</article>
+<!-- CASE STUDY 02: Global Manufacturer -->
+<article class="card-glow-border relative rounded-2xl overflow-hidden border bg-deepNavy flex flex-col justify-end min-h-[510px] p-7 group cursor-pointer shadow-ambient-deck border-glassBorder/40">
+<!-- Background Imagery -->
+<img alt="Advanced manufacturing facility with automation and telemetry" class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEexiQ-m8AhdUWCfN4lARInAiXphgmbMQyoIZOuiPW9Gy5XrRDc0KbF92JY8HuKcntPttZDHqdmF_PeZ5w0Nffap3tyfQ-fiKIKi3UEbqGVd0IBCAn7oXzj_qOL-okMWNtwwk_LL5oPAhgiPaiLuK2VL6fOW1NMyODT2-347IHTxLchnnN-ZDUITulJ-N3sjKk6dsoN4ByQr_wao0nCvoBENWd_8aZvE1vSq39cxZ2USK6f9JAEg8WnQ">
+<!-- Gradient Tone Overlay -->
+<div class="absolute inset-0 card-photo-gradient pointer-events-none"></div>
+<!-- Subtle Border Flare -->
+<div class="absolute inset-0 border border-white/5 rounded-2xl pointer-events-none"></div>
+<!-- Card Content -->
+<div class="relative z-10 flex flex-col justify-end h-full"><!-- Micro Meta -->
+<div class="flex items-center gap-2 mb-4">
+<span class="w-1.5 h-1.5 rounded-full bg-electricViolet"></span>
+<span class="text-[10px] font-semibold tracking-[0.2em] text-electricViolet uppercase">CASE STUDY 02</span>
+</div>
+<!-- Qualitative Headline -->
+<div class="mb-3">
+<div class="text-3xl sm:text-[38px] font-light tracking-tight text-primaryWhite leading-tight">
+                From Data
+              </div>
+<div class="text-3xl sm:text-[38px] font-medium tracking-tight text-primaryWhite leading-tight">
+                to <span class="text-electricViolet">Decisions</span>
+</div>
+</div>
+<!-- Context Description -->
+<p class="text-[14px] text-primaryWhite/80 mb-6 font-normal leading-snug">
+              AI-Powered Insights for a Global Manufacturer
+            </p>
+<!-- Action Affordance (no top border divider) -->
+<div class="flex items-center justify-between text-[12px] font-medium text-primaryWhite group-hover:text-neonCyan transition-colors">
+<span class="tracking-wider uppercase text-[11px]">Read Story</span>
+<span class="transform transition-transform group-hover:translate-x-1">→</span>
+</div></div>
+</article>
+</section>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomContinuumBar -->
+<footer class="w-full border-t border-glassBorder/40 bg-void/80 py-4 px-6 lg:px-12 backdrop-blur-sm" data-purpose="continuum-footer">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] tracking-[0.2em] uppercase font-medium text-mutedText">
+<!-- Frame Indicator -->
+<div class="flex items-center gap-2">
+<span class="text-primaryWhite font-semibold">09 / 15</span>
+<span class="text-glassBorder">·</span>
+<span class="">PROOF (CASE STUDIES)</span>
+</div>
+<!-- Navigation Pointer -->
+<div class="hover:text-neonCyan transition-colors cursor-pointer flex items-center gap-1.5">
+<a class="flex items-center gap-1.5" href="#frame-10">
+<span class="">PROCEED TO 10 — WHAT WE'VE BUILT</span>
+<span class="text-neonCyan text-xs">↓</span>
+</a>
+</div>
+<!-- Interaction Cue -->
+<div class="flex items-center gap-2 hidden sm:flex">
+<span class="">SCROLL TO EXPLORE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-neonCyan animate-pulse"></span>
+</div>
+</div>
+</footer>
+<!-- END: BottomContinuumBar -->
+
+
+</body></html>

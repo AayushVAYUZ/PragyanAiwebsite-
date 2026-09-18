@@ -8,14 +8,20 @@ const RAIL_SECTIONS = [
   { id: "journey", label: "Our Journey" },
   { id: "prism", label: "PRISM" },
   { id: "capabilities", label: "Capabilities" },
+  { id: "case-studies", label: "Proof" },
+  { id: "products", label: "What We've Built" },
+  { id: "use-cases", label: "Use Cases" },
+  { id: "client-proof", label: "Client Proof" },
 ];
 
 /**
  * Narrative progress rail for the content frames (05 onward). Hidden during the
- * cinematic opening. React state changes only when the active section changes.
+ * cinematic opening. React state changes only when the active section or the set
+ * of sections present on the page changes; entries without a section are not shown.
  */
 export default function SectionRail() {
   const [active, setActive] = useState<string | null>(null);
+  const [present, setPresent] = useState<string | null>(null);
 
   useEffect(() => {
     let frame = 0;
@@ -25,15 +31,18 @@ export default function SectionRail() {
 
     const measure = () => {
       starts = [];
+      let last: HTMLElement | null = null;
       for (const section of RAIL_SECTIONS) {
         const element = document.getElementById(section.id);
         if (!element) continue;
+        last = element;
         const top = sectionScrollTop(element);
         // The Belief becomes active as the arrival settles; later sections when they reach mid-screen.
         starts.push({ id: section.id, start: section.id === "belief" ? top - window.innerHeight * 0.1 : top - window.innerHeight * 0.5 });
       }
-      const last = document.getElementById(RAIL_SECTIONS[RAIL_SECTIONS.length - 1].id);
       end = last ? last.getBoundingClientRect().bottom + window.scrollY - window.innerHeight * 0.5 : Infinity;
+      const presentIds = starts.map((entry) => entry.id).join(" ");
+      setPresent((previous) => (previous === presentIds ? previous : presentIds));
     };
 
     const update = () => {
@@ -65,6 +74,7 @@ export default function SectionRail() {
   }, []);
 
   const activeLabel = RAIL_SECTIONS.find((section) => section.id === active)?.label;
+  const sections = present === null ? RAIL_SECTIONS : RAIL_SECTIONS.filter((section) => present.split(" ").includes(section.id));
 
   return (
     <nav
@@ -76,7 +86,7 @@ export default function SectionRail() {
     >
       <span aria-hidden="true" className="h-10 w-px bg-white/10" />
       <ul className="flex flex-col items-center gap-2.5">
-        {RAIL_SECTIONS.map((section) => {
+        {sections.map((section) => {
           const isActive = section.id === active;
           return (
             <li key={section.id}>
