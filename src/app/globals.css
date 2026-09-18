@@ -469,3 +469,64 @@ html[data-scene-intense] .header-intensity {
     animation: none;
   }
 }
+
+@layer components {
+  /* Frame 09 — Proof / Case Studies (Stitch atmosphere: violet/cyan behind the cards, violet low left). */
+  .cases-ambient {
+    background: radial-gradient(circle at 75% 40%, rgba(84, 24, 200, 0.15) 0%, rgba(38, 198, 255, 0.08) 25%, transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(139, 45, 255, 0.08) 0%, transparent 50%);
+  }
+
+  .cases-headline-gradient {
+    background: linear-gradient(135deg, #f5f7ff 60%, rgba(38, 198, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cases-card {
+    border: 1px solid rgba(160, 175, 220, 0.1);
+    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.7);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Readability at the foot of the card; lighter above than Stitch because the result headline is not shown. */
+  .cases-card-gradient {
+    background: linear-gradient(
+      to top,
+      rgba(3, 4, 10, 0.97) 0%,
+      rgba(7, 11, 24, 0.78) 26%,
+      rgba(3, 4, 10, 0.38) 58%,
+      rgba(3, 4, 10, 0.16) 100%
+    );
+  }
+
+  .cases-card-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (hover: hover) {
+    .cases-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(38, 198, 255, 0.38);
+      box-shadow: 0 10px 40px -10px rgba(38, 198, 255, 0.18), 0 0 0 1px rgba(139, 45, 255, 0.15);
+    }
+
+    .cases-card:hover .cases-card-image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cases-card,
+  .cases-card-image {
+    transition: none;
+  }
+
+  .cases-card:hover,
+  .cases-card:hover .cases-card-image {
+    transform: none;
+  }
+}

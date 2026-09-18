@@ -9,6 +9,7 @@ import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
 import PrismApproach from "@/components/sections/PrismApproach";
 import Capabilities from "@/components/sections/Capabilities";
+import CaseStudies from "@/components/sections/CaseStudies";
 
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
@@ -34,6 +35,9 @@ export default function Home() {
       <OurJourney />
       <PrismApproach />
       <Capabilities />
+
+      {/* Phase 2B content frames */}
+      <CaseStudies />
     </main>
   );
 }
