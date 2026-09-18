@@ -530,3 +530,91 @@ html[data-scene-intense] .header-intensity {
     transform: none;
   }
 }
+
+@layer components {
+  /* Frame 10 — What We've Built (Stitch light orbs: cyan top right, violet left, faint cyan low centre). */
+  .built-ambient {
+    background: radial-gradient(circle at 88% 6%, rgba(38, 198, 255, 0.1) 0%, transparent 32%),
+      radial-gradient(circle at 4% 55%, rgba(139, 45, 255, 0.12) 0%, transparent 30%),
+      radial-gradient(circle at 62% 104%, rgba(38, 198, 255, 0.05) 0%, transparent 34%),
+      radial-gradient(ellipse at top, rgba(23, 37, 84, 0.2) 0%, transparent 70%);
+  }
+
+  /* Solid translucent surface: over the plain dark ground a backdrop blur adds nothing visible,
+     and WebKit can fail to paint blurred panels' contents while their parent fades in. */
+  .built-panel {
+    background: rgba(8, 13, 31, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .built-media-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Light fade at the foot of the key art so it meets the panel; the image itself stays bright. */
+  .built-media-fade {
+    background: linear-gradient(to top, rgba(8, 13, 31, 0.85) 0%, rgba(8, 13, 31, 0) 30%);
+  }
+
+  /* A soft band of light that passes across the key art as the panel arrives (positioned by GSAP). */
+  .built-media-sheen {
+    background: linear-gradient(105deg, transparent 38%, rgba(190, 225, 255, 0.14) 50%, transparent 62%);
+    mix-blend-mode: screen;
+    transform: translateX(-120%);
+  }
+
+  /* Slow ambient drift of the product key art; the two panels run out of phase. */
+  .built-media-drift {
+    animation: built-drift 16s ease-in-out infinite alternate;
+  }
+
+  .built-media-drift-minuta {
+    animation-duration: 19s;
+    animation-delay: -7s;
+  }
+
+  /* Visual response only: the panels do not navigate anywhere. */
+  @media (hover: hover) {
+    .built-panel-rex:hover {
+      border-color: rgba(139, 45, 255, 0.4);
+      box-shadow: 0 0 40px -10px rgba(139, 45, 255, 0.25);
+      background-color: rgba(12, 20, 46, 0.8);
+    }
+
+    .built-panel-minuta:hover {
+      border-color: rgba(38, 198, 255, 0.4);
+      box-shadow: 0 0 40px -10px rgba(38, 198, 255, 0.25);
+      background-color: rgba(12, 20, 46, 0.8);
+    }
+
+    .built-panel:hover .built-media-image {
+      transform: scale(1.025);
+    }
+  }
+}
+
+@keyframes built-drift {
+  from { transform: scale(1.045) translate3d(-1.2%, 0.4%, 0); }
+  to { transform: scale(1.045) translate3d(1.2%, -0.6%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .built-panel,
+  .built-media-image {
+    transition: none;
+  }
+
+  .built-media-drift {
+    animation: none;
+  }
+
+  .built-media-sheen {
+    display: none;
+  }
+
+  .built-panel:hover .built-media-image {
+    transform: none;
+  }
+}

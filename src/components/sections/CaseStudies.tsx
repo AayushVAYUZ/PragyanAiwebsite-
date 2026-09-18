@@ -171,7 +171,7 @@ export default function CaseStudies() {
         </div>
       </div>
 
-      <SectionContinuum index="09" title="Proof (Case Studies)" />
+      <SectionContinuum index="09" title="Proof (Case Studies)" next={{ href: "#products", label: "Proceed to 10 — What We've Built" }} />
     </section>
   );
 }
