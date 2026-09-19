@@ -159,7 +159,7 @@ export default function ClientProof() {
         </div>
       </div>
 
-      <SectionContinuum index="12" title="Client Proof" />
+      <SectionContinuum index="12" title="Client Proof" next={{ href: "#insights", label: "Proceed to 13 — How We Think" }} />
     </section>
   );
 }

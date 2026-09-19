@@ -857,3 +857,140 @@ html[data-scene-intense] .header-intensity {
     transform: none;
   }
 }
+
+@layer components {
+  /* Frame 13 — How We Think (Stitch atmosphere: violet top-centre, cyan top-right, violet lower-left; scoped to the section). */
+  .insights-ambient {
+    background: radial-gradient(circle at 50% 20%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.04) 40%, transparent 75%),
+      radial-gradient(ellipse at top right, rgba(38, 198, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(139, 45, 255, 0.06) 0%, transparent 60%);
+  }
+
+  /* "Read Insights" is plain text in the Stitch pill until a destination exists: no pointer cursor. */
+  .insights-pill {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-primary);
+    cursor: default;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .insights-pill-arrow {
+    transition: transform 0.2s;
+  }
+
+  /* Editorial card. The accent alternates cyan / violet / cyan (Stitch). */
+  .insight-card {
+    --insight-accent: 38, 198, 255;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(7, 11, 24, 0.6);
+    cursor: default;
+    transition: border-color 0.5s, box-shadow 0.5s;
+  }
+
+  .insight-card[data-accent="violet"] {
+    --insight-accent: 139, 45, 255;
+  }
+
+  .insight-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Blend into the card body, lighter than Stitch's so the photograph stays clearly visible. */
+  .insight-fade {
+    background: linear-gradient(to top, #070b18 0%, rgba(7, 11, 24, 0.5) 20%, rgba(7, 11, 24, 0.1) 48%, transparent 70%);
+  }
+
+  .insight-title {
+    color: #fff;
+    transition: color 0.3s;
+  }
+
+  .insight-explore {
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .insight-arrow {
+    transition: transform 0.2s;
+  }
+
+  @media (hover: hover) {
+    .insights-pill:hover {
+      border-color: rgba(139, 45, 255, 0.4);
+      background: rgba(139, 45, 255, 0.1);
+      box-shadow: 0 0 20px rgba(139, 45, 255, 0.15);
+    }
+
+    .insights-pill:hover .insights-pill-arrow {
+      transform: translateX(2px);
+    }
+
+    .insight-card:hover {
+      border-color: rgba(var(--insight-accent), 0.45);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .insight-card:hover .insight-image {
+      transform: scale(1.03);
+    }
+
+    .insight-card:hover .insight-title {
+      color: rgb(var(--insight-accent));
+    }
+
+    .insight-card:hover .insight-explore {
+      color: #fff;
+    }
+
+    .insight-card:hover .insight-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  /* Keyboard focus mirrors hover, on top of the global focus-visible outline. */
+  .insight-card:focus-visible {
+    border-color: rgba(var(--insight-accent), 0.45);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .insight-card:focus-visible .insight-image {
+    transform: scale(1.03);
+  }
+
+  .insight-card:focus-visible .insight-title {
+    color: rgb(var(--insight-accent));
+  }
+
+  .insight-card:focus-visible .insight-explore {
+    color: #fff;
+  }
+
+  .insight-card:focus-visible .insight-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Tablet rows: the photograph sits left of the copy, so it also blends towards the card body on its right edge. */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    .insight-fade {
+      background: linear-gradient(to right, transparent 60%, rgba(7, 11, 24, 0.55) 100%),
+        linear-gradient(to top, rgba(7, 11, 24, 0.55) 0%, rgba(7, 11, 24, 0.1) 35%, transparent 60%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .insight-image,
+  .insight-arrow,
+  .insights-pill-arrow {
+    transition: none;
+  }
+
+  .insight-card:hover .insight-image,
+  .insight-card:focus-visible .insight-image,
+  .insight-card:hover .insight-arrow,
+  .insight-card:focus-visible .insight-arrow,
+  .insights-pill:hover .insights-pill-arrow {
+    transform: none;
+  }
+}

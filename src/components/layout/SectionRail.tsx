@@ -12,6 +12,7 @@ const RAIL_SECTIONS = [
   { id: "products", label: "What We've Built" },
   { id: "use-cases", label: "Use Cases" },
   { id: "client-proof", label: "Client Proof" },
+  { id: "insights", label: "How We Think" },
 ];
 
 /**
