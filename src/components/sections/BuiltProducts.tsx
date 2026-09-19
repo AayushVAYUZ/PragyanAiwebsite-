@@ -185,7 +185,7 @@ export default function BuiltProducts() {
         </div>
       </div>
 
-      <SectionContinuum index="10" title="What We've Built" />
+      <SectionContinuum index="10" title="What We've Built" next={{ href: "#use-cases", label: "Proceed to 11 — Use Cases" }} />
     </section>
   );
 }

@@ -11,6 +11,7 @@ import PrismApproach from "@/components/sections/PrismApproach";
 import Capabilities from "@/components/sections/Capabilities";
 import CaseStudies from "@/components/sections/CaseStudies";
 import BuiltProducts from "@/components/sections/BuiltProducts";
+import UseCases from "@/components/sections/UseCases";
 
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
@@ -40,6 +41,7 @@ export default function Home() {
       {/* Phase 2B content frames */}
       <CaseStudies />
       <BuiltProducts />
+      <UseCases />
     </main>
   );
 }

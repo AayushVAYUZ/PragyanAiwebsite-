@@ -618,3 +618,180 @@ html[data-scene-intense] .header-intensity {
     transform: none;
   }
 }
+
+@layer components {
+  /* Frame 11 — Use Cases (Stitch atmosphere: violet/cyan glow right of centre, pulsing violet orb low left). */
+  .usecases-ambient {
+    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.05) 35%, transparent 70%);
+  }
+
+  .usecases-orb {
+    background: radial-gradient(circle, rgba(139, 45, 255, 0.38) 0%, rgba(139, 45, 255, 0) 68%);
+    opacity: 0.2;
+    animation: usecases-orb 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .usecases-headline-accent {
+    filter: drop-shadow(0 0 14px rgba(38, 198, 255, 0.35));
+  }
+
+  .usecase-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    background: #03040a;
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .usecase-panel:focus {
+    outline: none;
+  }
+
+  .usecase-panel:focus-visible {
+    outline: 2px solid rgba(38, 198, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  .usecase-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Light atmospheric shade over the photograph (lifts when a panel opens); the photo stays clearly
+     visible at rest. A separate, fixed fade at the foot keeps the card text readable. */
+  .usecase-shade {
+    background: linear-gradient(to top, rgba(3, 4, 10, 0.7) 0%, rgba(3, 4, 10, 0.32) 42%, transparent 70%);
+    transition: opacity 0.4s ease;
+  }
+
+  .usecase-text-fade {
+    background: linear-gradient(to top, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.45) 26%, transparent 46%);
+  }
+
+  .usecase-accent {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .usecase-tag {
+    color: rgb(203 213 225);
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .usecase-title {
+    color: #fff;
+    font-size: 1.375rem;
+    line-height: 1.25;
+    transition: color 0.3s ease;
+  }
+
+  .usecase-explore {
+    opacity: 0.7;
+    transition: opacity 0.35s ease;
+  }
+
+  /* BFSI is the featured industry: its accent line and tag stay lit. */
+  .usecase-panel[data-default] .usecase-accent {
+    opacity: 0.6;
+  }
+
+  .usecase-panel[data-default] .usecase-tag {
+    color: rgba(38, 198, 255, 0.9);
+    border-color: rgba(38, 198, 255, 0.2);
+  }
+
+  .usecase-panel[data-default] .usecase-explore {
+    opacity: 0.8;
+  }
+
+  @media (min-width: 1280px) {
+    /* The strip itself switches to a row at xl via its utility classes (xl:flex xl:h-[520px]). */
+    .usecase-strip > .usecase-panel {
+      flex: 1 1 0;
+      min-width: 0;
+      transition: flex-grow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .usecase-title {
+      font-size: clamp(1.25rem, 1.55vw, 1.5rem);
+    }
+
+    /* The open panel: BFSI while the strip is idle, otherwise the hovered or keyboard-focused panel. */
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default],
+    .usecase-strip > .usecase-panel:hover,
+    .usecase-strip > .usecase-panel:focus {
+      flex-grow: 2.2;
+      border-color: rgba(38, 198, 255, 0.55);
+      box-shadow: inset 0 0 24px rgba(38, 198, 255, 0.12), 0 0 30px rgba(7, 11, 24, 0.8);
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-shade,
+    .usecase-strip > .usecase-panel:hover .usecase-shade,
+    .usecase-strip > .usecase-panel:focus .usecase-shade {
+      opacity: 0.15;
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-image,
+    .usecase-strip > .usecase-panel:hover .usecase-image,
+    .usecase-strip > .usecase-panel:focus .usecase-image {
+      transform: scale(1.05);
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-accent,
+    .usecase-strip > .usecase-panel:hover .usecase-accent,
+    .usecase-strip > .usecase-panel:focus .usecase-accent,
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-explore,
+    .usecase-strip > .usecase-panel:hover .usecase-explore,
+    .usecase-strip > .usecase-panel:focus .usecase-explore {
+      opacity: 1;
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-title,
+    .usecase-strip > .usecase-panel:hover .usecase-title,
+    .usecase-strip > .usecase-panel:focus .usecase-title,
+    .usecase-strip > .usecase-panel:hover .usecase-tag,
+    .usecase-strip > .usecase-panel:focus .usecase-tag {
+      color: var(--neon-cyan);
+    }
+
+    .usecase-strip > .usecase-panel:hover .usecase-tag,
+    .usecase-strip > .usecase-panel:focus .usecase-tag {
+      border-color: rgba(38, 198, 255, 0.3);
+    }
+  }
+}
+
+@keyframes usecases-orb {
+  0%,
+  100% { opacity: 0.2; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .usecases-orb {
+    animation: none;
+  }
+
+  .usecase-panel,
+  .usecase-image,
+  .usecase-shade,
+  .usecase-accent,
+  .usecase-tag,
+  .usecase-title,
+  .usecase-explore,
+  .usecase-strip > .usecase-panel {
+    transition: none;
+  }
+
+  /* Stable widths and no zoom: the open panel is shown by lighting alone. */
+  .usecase-strip > .usecase-panel {
+    flex-grow: 1 !important;
+  }
+
+  .usecase-image {
+    transform: none !important;
+  }
+}
