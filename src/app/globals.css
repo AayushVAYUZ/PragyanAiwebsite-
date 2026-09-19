@@ -795,3 +795,65 @@ html[data-scene-intense] .header-intensity {
     transform: none !important;
   }
 }
+
+@layer components {
+  /* Frame 12 — Client Proof (Stitch atmosphere: violet/cyan glow right of centre, faint violet lower left). */
+  .proof-ambient {
+    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.11) 0%, rgba(38, 198, 255, 0.06) 35%, transparent 70%),
+      radial-gradient(circle at 20% 70%, rgba(139, 45, 255, 0.05) 0%, transparent 60%);
+  }
+
+  /* Halo behind the framed image: built in CSS, not baked into the photograph. Breathes very slowly. */
+  .proof-halo {
+    background: linear-gradient(to top right, rgba(139, 45, 255, 0.15), transparent, rgba(38, 198, 255, 0.15));
+    filter: blur(40px);
+    animation: proof-halo 14s ease-in-out infinite alternate;
+  }
+
+  .proof-frame {
+    box-shadow: 0 0 60px -15px rgba(139, 45, 255, 0.25), 0 0 40px -10px rgba(38, 198, 255, 0.18);
+  }
+
+  /* Rests at a slight zoom and eases to 1 on hover (Stitch). */
+  .proof-image {
+    transform: scale(1.02);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (hover: hover) {
+    .proof-frame:hover .proof-image {
+      transform: scale(1);
+    }
+  }
+
+  /* Edge blend into the void, lighter than Stitch's so the portal on the right stays visible. */
+  .proof-vignette {
+    background: linear-gradient(90deg, rgba(3, 4, 10, 0.85) 0%, rgba(3, 4, 10, 0.35) 9%, transparent 20%, transparent 84%, rgba(3, 4, 10, 0.35) 94%, rgba(3, 4, 10, 0.8) 100%),
+      linear-gradient(180deg, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.25) 8%, transparent 20%, transparent 80%, rgba(3, 4, 10, 0.4) 92%, rgba(3, 4, 10, 0.85) 100%);
+  }
+
+  /* Testimonial rule (used once approved copy is present). */
+  .proof-quote {
+    border-left: 1px solid rgba(139, 45, 255, 0.35);
+  }
+}
+
+@keyframes proof-halo {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-halo {
+    animation: none;
+  }
+
+  .proof-image {
+    transform: none;
+    transition: none;
+  }
+
+  .proof-frame:hover .proof-image {
+    transform: none;
+  }
+}

@@ -266,7 +266,7 @@ export default function UseCases() {
         </div>
       </div>
 
-      <SectionContinuum index="11" title="Use Cases" />
+      <SectionContinuum index="11" title="Use Cases" next={{ href: "#client-proof", label: "Proceed to 12 — Client Proof" }} />
     </section>
   );
 }
