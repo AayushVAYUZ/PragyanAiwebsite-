@@ -14,6 +14,7 @@ const RAIL_SECTIONS = [
   { id: "client-proof", label: "Client Proof" },
   { id: "insights", label: "How We Think" },
   { id: "contact", label: "Ready to Explore" },
+  { id: "footer", label: "Journey Complete" },
 ];
 
 /**

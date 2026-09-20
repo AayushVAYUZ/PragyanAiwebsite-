@@ -1048,3 +1048,92 @@ html[data-scene-intense] .header-intensity {
     transform: none;
   }
 }
+
+@layer components {
+  /* Frame 15 — Footer. Restrained scrims: the gateway on the right stays visible, the left keeps
+     enough contrast for the wordmark and the newsletter block. */
+  /* Below lg the content stacks full width and the gateway runs the full height behind it, so the
+     shade is vertical: darkest where the copy is dense, lifting across the middle so the portal reads. */
+  .footer-scrims {
+    background: linear-gradient(to bottom, rgba(3, 4, 10, 0.9) 0%, rgba(3, 4, 10, 0.78) 34%, rgba(3, 4, 10, 0.56) 62%, rgba(3, 4, 10, 0.66) 86%, rgba(3, 4, 10, 0.86) 100%);
+  }
+
+  /* Small screens keep the copy over the brighter stretch of the gateway: a soft shade holds contrast. */
+  .footer-content {
+    text-shadow: 0 0 14px rgba(3, 4, 10, 0.9), 0 0 4px rgba(3, 4, 10, 0.7);
+  }
+
+  @media (min-width: 1024px) {
+    .footer-scrims {
+      background: linear-gradient(to right, #03040a 0%, rgba(3, 4, 10, 0.82) 30%, rgba(3, 4, 10, 0.45) 58%, rgba(3, 4, 10, 0.2) 100%),
+        linear-gradient(to top, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.2) 22%, transparent 45%, rgba(3, 4, 10, 0.55) 100%);
+    }
+
+    .footer-content {
+      text-shadow: none;
+    }
+  }
+
+  /* The newsletter field is a visual echo of the Stitch control: no form, nothing focusable. */
+  .footer-field {
+    background: rgba(13, 18, 36, 0.55);
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    cursor: default;
+  }
+
+  .footer-field-button {
+    background: rgba(139, 45, 255, 0.2);
+    border: 1px solid rgba(139, 45, 255, 0.4);
+  }
+
+  .footer-link {
+    color: #cbd5e1;
+    transition: color 0.2s;
+  }
+
+  @media (hover: hover) {
+    .footer-link:hover {
+      color: #fff;
+    }
+  }
+
+  /* The pillar column sits over the brightest part of the gateway: a soft shade keeps it legible. */
+  .footer-pillars {
+    text-shadow: 0 0 16px rgba(3, 4, 10, 0.9), 0 0 4px rgba(3, 4, 10, 0.75);
+  }
+
+  .footer-pillar-glow {
+    text-shadow: 0 0 12px rgba(38, 198, 255, 0.35), 0 0 16px rgba(3, 4, 10, 0.9);
+  }
+
+  .footer-pillar-beyond {
+    background: linear-gradient(90deg, #c4b5fd, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .footer-legal {
+    border-top: 1px solid rgba(160, 175, 220, 0.14);
+    background: rgba(3, 4, 10, 0.72);
+  }
+
+  .footer-status-dot {
+    animation: footer-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes footer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-status-dot {
+    animation: none;
+  }
+
+  .footer-link {
+    transition: none;
+  }
+}

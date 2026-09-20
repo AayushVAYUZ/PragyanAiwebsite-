@@ -15,6 +15,7 @@ import UseCases from "@/components/sections/UseCases";
 import ClientProof from "@/components/sections/ClientProof";
 import HowWeThink from "@/components/sections/HowWeThink";
 import ReadyToExplore from "@/components/sections/ReadyToExplore";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
@@ -50,6 +51,7 @@ export default function Home() {
       {/* Phase 3 content frames */}
       <HowWeThink />
       <ReadyToExplore />
+      <Footer />
     </main>
   );
 }

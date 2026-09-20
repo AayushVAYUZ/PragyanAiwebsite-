@@ -114,7 +114,7 @@ export default function ReadyToExplore() {
         </div>
       </div>
 
-      <SectionContinuum index="14" title="Ready to Explore" />
+      <SectionContinuum index="14" title="Ready to Explore" next={{ href: "#footer", label: "Proceed to 15 — Footer" }} />
     </section>
   );
 }
