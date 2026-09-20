@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# rejected/superseded source artwork, kept locally but never served or shipped
+/assets/rejected/
