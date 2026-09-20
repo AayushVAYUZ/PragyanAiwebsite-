@@ -188,7 +188,7 @@ export default function HowWeThink() {
         </div>
       </div>
 
-      <SectionContinuum index="13" title="How We Think" />
+      <SectionContinuum index="13" title="How We Think" next={{ href: "#contact", label: "Proceed to 14 — Ready to Explore" }} />
     </section>
   );
 }
