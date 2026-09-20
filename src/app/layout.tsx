@@ -39,11 +39,24 @@ export const viewport: Viewport = {
 const scrollRestorationScript =
   "try{if('scrollRestoration' in history){history.scrollRestoration='manual'}}catch(e){}";
 
+// Applied only inside <noscript>: drops the eye preloader and reveals the header, which the
+// cinematic timeline would otherwise do from JavaScript.
+const noScriptFallback = `
+[data-testid="eye-preloader"]{display:none!important}
+[data-testid="site-header"]{visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scrollRestorationScript }} />
+        {/* Without JavaScript the preloader never finishes and the header is never revealed,
+            so the page would read as solid black. The content is already in the HTML: this
+            uncovers it. It has no effect whenever scripting is available. */}
+        <noscript>
+          <style>{noScriptFallback}</style>
+        </noscript>
       </head>
       <body className="bg-[var(--void-black)] text-[var(--text-primary)] antialiased">
         {children}
