@@ -49,16 +49,20 @@ export default function Footer() {
       (context) => {
         if (context.conditions?.reduceMotion) return;
 
-        // The footer ends the page, so the scrub range is clamped: it always completes at max scroll.
+        // The footer ends the page, so the trigger start is clamped: since the page can't
+        // scroll past its own end, this guarantees the trigger still fires (at the closest
+        // achievable position) even when the footer is short enough that "top 88%" is never
+        // literally reachable.
         gsap.fromTo(
           "[data-footer-copy]",
           { autoAlpha: 0, y: 18 },
           {
             autoAlpha: 1,
             y: 0,
+            duration: 0.8,
             stagger: 0.1,
             ease: "power2.out",
-            scrollTrigger: { trigger: footer, start: "clamp(top 88%)", end: "clamp(top 45%)", scrub: 0.6 },
+            scrollTrigger: { trigger: footer, start: "clamp(top 88%)", toggleActions: "play none none none" },
           },
         );
       },

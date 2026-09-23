@@ -12,8 +12,10 @@ import type { ParticleState } from "@/lib/cinematic/scene";
  *   progress (`travel`), so scrolling backwards reproduces the exact state.
  * - Depth: particles live in a 3D volume and are projected toward the camera;
  *   during the portal passage their motion is drawn as streaks.
- * - No animation loop: the canvas is only redrawn when the master timeline
- *   renders a frame, and it is skipped while the scene is off screen.
+ * - Idle drift: a small time-based jitter rides on top of that deterministic
+ *   position (added, never replacing it), so the field keeps a gentle random
+ *   motion while the user isn't scrolling. This runs on its own rAF loop,
+ *   gated by the same on-screen check as the scroll-driven redraw.
  */
 
 export interface ParticleFieldHandle {
@@ -117,10 +119,16 @@ export default function ParticleField({ ref }: { ref: Ref<ParticleFieldHandle> }
     let activeCount = POOL_SIZE;
     let onScreen = true;
     let lastState: ParticleState | null = null;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const draw = (state: ParticleState) => {
       lastState = state;
       if (!onScreen || width === 0) return;
+      // Small time-based drift on top of the deterministic scroll position, so the
+      // field keeps a gentle random motion while the user isn't scrolling. Each
+      // particle's own phase staggers its frequency/offset so the drift reads as
+      // organic rather than a single wave moving the whole field.
+      const now = reducedMotion ? 0 : performance.now();
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
@@ -139,8 +147,12 @@ export default function ParticleField({ ref }: { ref: Ref<ParticleFieldHandle> }
 
         const depth = NEAR + fract(particle.phase - state.travel) * (FAR - NEAR);
         const projection = FOCAL / depth;
-        const sx = state.vpX + particle.x * spread * projection;
-        const sy = state.vpY + particle.y * spread * projection;
+        let sx = state.vpX + particle.x * spread * projection;
+        let sy = state.vpY + particle.y * spread * projection;
+        if (now) {
+          sx += Math.sin(now * 0.00035 * (0.6 + particle.phase) + particle.phase * 17) * 2.2;
+          sy += Math.cos(now * 0.00028 * (0.6 + particle.phase) + particle.phase * 11) * 2.2;
+        }
         if (sx < -40 || sx > width + 40 || sy < -40 || sy > height + 40) continue;
 
         const alpha =
@@ -197,9 +209,22 @@ export default function ParticleField({ ref }: { ref: Ref<ParticleFieldHandle> }
     intersectionObserver.observe(canvas);
     resize();
 
+    // Idle loop: keeps redrawing at rest so the time-based jitter above is visible
+    // even when the scroll-driven `render` above isn't being called. Skipped
+    // entirely under reduced motion, matching the rest of the cinematic scene.
+    let rafId = 0;
+    if (!reducedMotion) {
+      const tick = () => {
+        if (onScreen && lastState) draw(lastState);
+        rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(tick);
+    }
+
     engineRef.current = { render: draw };
     return () => {
       engineRef.current = null;
+      if (rafId) cancelAnimationFrame(rafId);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
     };

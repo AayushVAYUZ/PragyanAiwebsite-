@@ -10,6 +10,9 @@ export interface ArrivalLayerBindings {
   deceleration: (element: HTMLImageElement | null) => void;
   constellation: (element: HTMLImageElement | null) => void;
   nodeGlow: (element: HTMLDivElement | null) => void;
+  /** Same position/scale/opacity as nodeGlow (written from the same frame value); its own
+   * ::after spins independently so the JS-driven transform on this element is never touched. */
+  nodeRays: (element: HTMLDivElement | null) => void;
   beliefBackground: (element: HTMLImageElement | null) => void;
   beliefGrade: (element: HTMLDivElement | null) => void;
 }
@@ -86,6 +89,15 @@ export default function TransitionToArrival({ bind }: { bind: ArrivalLayerBindin
         aria-hidden="true"
         data-layer="node-glow"
         className="scene-layer scene-node-glow"
+        style={GLOW_SIZES.nodeGlow}
+      />
+      {/* Rotating ray pattern, kept in lockstep with nodeGlow's own position/scale (same
+          frame value writes both) so the rays always sit exactly on the node. */}
+      <div
+        ref={(element) => bind.nodeRays(element)}
+        aria-hidden="true"
+        data-layer="node-rays"
+        className="scene-layer scene-node-rays"
         style={GLOW_SIZES.nodeGlow}
       />
     </>

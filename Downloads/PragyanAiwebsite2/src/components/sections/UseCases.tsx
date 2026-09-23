@@ -139,9 +139,10 @@ export default function UseCases() {
           {
             autoAlpha: 1,
             y: 0,
+            duration: 0.8,
             stagger: 0.1,
             ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 78%", end: "top 30%", scrub: 0.6 },
+            scrollTrigger: { trigger: section, start: "top 78%", toggleActions: "play none none none" },
           },
         );
 
@@ -154,8 +155,9 @@ export default function UseCases() {
             {
               autoAlpha: 1,
               y: 0,
+              duration: 0.7,
               ease: "power2.out",
-              scrollTrigger: { trigger: panel, start: `top ${97 - offset}%`, end: `top ${75 - offset}%`, scrub: 0.6 },
+              scrollTrigger: { trigger: panel, start: `top ${97 - offset}%`, toggleActions: "play none none none" },
             },
           );
         });

@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import Header from "@/components/layout/Header";
 import EyeBlinkPreloader, { type IntroPhase } from "@/components/cinematic/EyeBlinkPreloader";
 import CinematicOpening from "@/components/cinematic/CinematicOpening";
-import SectionRail from "@/components/layout/SectionRail";
 import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
 import PrismApproach from "@/components/sections/PrismApproach";
@@ -30,7 +29,6 @@ export default function Home() {
       <EyeBlinkPreloader onPhase={setIntroPhase} onGateReady={handleGateReady} onComplete={handleIntroComplete} />
 
       <Header phase={introPhase} />
-      <SectionRail />
 
       {/* Frames 01 → 04 → 04.5 → 05: one continuous scene on one scroll timeline; Frame 05 is its resting state */}
       <section id="hero" aria-label="Cinematic opening: from the eye, through the Gate of PAI, to The Belief">

@@ -127,6 +127,29 @@
     animation: gate-period-pulse 5s ease-in-out infinite;
   }
 
+  /* Idle life for the Gate: a soft violet/cyan glow breathing behind it, on a ::after
+     so it never touches the opacity/transform/filter the scroll timeline writes inline
+     on the Gate image itself. `.scene-layer` already sets `position: absolute`, which
+     is a valid containing block for this, so `position` isn't redeclared here (doing
+     so would fight `.scene-layer`'s value at equal specificity). */
+  .scene-gate-energy::after {
+    content: "";
+    position: absolute;
+    inset: -6%;
+    background:
+      radial-gradient(ellipse 42% 48% at 32% 50%, rgba(139, 45, 255, 0.32) 0%, rgba(139, 45, 255, 0) 70%),
+      radial-gradient(ellipse 42% 48% at 68% 50%, rgba(38, 198, 255, 0.28) 0%, rgba(38, 198, 255, 0) 70%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: gate-energy-pulse 4.4s ease-in-out infinite;
+  }
+
+  /* The equation underline (Gate → Pragyan ai definition): a bright segment sweeps
+     across the dim track like a progress bar, to hold attention on the line. */
+  .definition-underline-sweep {
+    animation: underline-sweep 2.4s ease-in-out infinite;
+  }
+
   .glass-pill {
     background: var(--glass-surface);
     border: 1px solid var(--border-subtle);
@@ -301,6 +324,41 @@
       rgba(3, 4, 10, 0) 100%
     );
   }
+
+  /* Idle life for the Belief node: a small independent orbit on a ::after, layered on
+     top of the glow above without ever touching the JS-driven transform on the element
+     itself (that transform is what keeps the glow registered on the node). */
+  .scene-node-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(236, 232, 255, 0.55) 0%,
+      rgba(150, 120, 255, 0.28) 30%,
+      rgba(38, 198, 255, 0.1) 55%,
+      transparent 100%
+    );
+    animation: node-glow-orbit 9s ease-in-out infinite;
+  }
+
+  /* Rotating ray pattern for the Belief node (same technique as .scene-rays), kept on
+     its own layer in lockstep with nodeGlow's position so the rays sit exactly on it. */
+  .scene-node-rays::after {
+    content: "";
+    position: absolute;
+    inset: -35%;
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(214, 222, 255, 0.22) 0deg 1.4deg,
+      transparent 1.4deg 8deg
+    );
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(circle, transparent 8%, #000 20%, #000 46%, transparent 78%);
+    mask-image: radial-gradient(circle, transparent 8%, #000 20%, #000 46%, transparent 78%);
+    animation: node-rays-spin 34s linear infinite;
+  }
 }
 
 /* Navigation steps back while the cinematic moment is at its most intense (DESIGN.md §9). */
@@ -337,6 +395,50 @@ html[data-scene-intense] .header-intensity {
   }
 }
 
+@keyframes gate-energy-pulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes underline-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+@keyframes node-glow-orbit {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(3px, -2.5px);
+  }
+  50% {
+    transform: translate(0, -4px);
+  }
+  75% {
+    transform: translate(-3px, -2.5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes node-rays-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ============================================================
    REDUCED MOTION
    ============================================================ */
@@ -364,6 +466,25 @@ html[data-scene-intense] .header-intensity {
   .gate-period {
     animation: none;
     text-shadow: 0 0 6px rgba(38, 198, 255, 0.5);
+  }
+
+  .scene-gate-energy::after {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .definition-underline-sweep {
+    animation: none;
+    width: 100%;
+  }
+
+  .scene-node-glow::after {
+    animation: none;
+    transform: none;
+  }
+
+  .scene-node-rays::after {
+    animation: none;
   }
 }
 
@@ -436,6 +557,60 @@ html[data-scene-intense] .header-intensity {
   .journey-vignette {
     background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(3, 4, 10, 0.75) 100%);
   }
+
+  .journey-star {
+    animation: journey-star-twinkle 5s ease-in-out infinite;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+
+  .journey-gate-pulse {
+    animation: journey-gate-pulse 4.5s ease-in-out infinite;
+    transform-box: fill-box;
+  }
+
+  .journey-connector {
+    transform-origin: top;
+  }
+
+  /* Constant ambient glow (Pragyan ai's "ai", and the 2026+ year) — text-shadow rather than
+     filter, so it never fights the per-frame filter/transform writes JS applies to these same
+     elements for their scroll-driven states. */
+  .journey-text-glow {
+    animation: journey-text-glow 3.2s ease-in-out infinite;
+  }
+}
+
+@keyframes journey-star-twinkle {
+  0%, 100% { opacity: var(--star-base, 0.3); }
+  50% { opacity: calc(var(--star-base, 0.3) * 0.25); }
+}
+
+@keyframes journey-gate-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.12); }
+}
+
+@keyframes journey-text-glow {
+  0%, 100% { text-shadow: 0 0 6px rgba(139, 45, 255, 0.35), 0 0 3px rgba(38, 198, 255, 0.25); }
+  50% { text-shadow: 0 0 14px rgba(139, 45, 255, 0.6), 0 0 8px rgba(38, 198, 255, 0.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-star {
+    animation: none;
+    opacity: var(--star-base, 0.3);
+  }
+
+  .journey-gate-pulse {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  .journey-text-glow {
+    animation: none;
+    text-shadow: 0 0 10px rgba(139, 45, 255, 0.45), 0 0 5px rgba(38, 198, 255, 0.35);
+  }
 }
 
 @layer components {
@@ -462,15 +637,46 @@ html[data-scene-intense] .header-intensity {
   .prism-ring {
     animation: prism-spin 60s linear infinite;
   }
+
+  /* PRISM wordmark: the same luminous language as the "ai" treatment, as a very slow light
+     sweep across the letters rather than a pulse — every stop stays bright, so it reads. */
+  .prism-title-sweep {
+    background-image: linear-gradient(
+      100deg,
+      #8b2dff 0%,
+      #a855f7 16%,
+      #5b7bff 34%,
+      #26c6ff 50%,
+      #5b7bff 66%,
+      #a855f7 84%,
+      #8b2dff 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: prism-title-sweep 16s linear infinite;
+  }
 }
 
 @keyframes prism-spin {
   to { transform: rotate(360deg); }
 }
 
+@keyframes prism-title-sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 220% 50%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .prism-ring {
     animation: none;
+  }
+
+  .prism-title-sweep {
+    animation: none;
+    background-position: 40% 50%;
   }
 }
 
@@ -510,6 +716,107 @@ html[data-scene-intense] .header-intensity {
   .capability-pulse {
     animation: capability-pulse 3s ease-in-out infinite;
   }
+
+  /* --- Services: a slow intelligence network behind the catalogue ------------------ */
+
+  /* "enterprise." — the accent word only, in the same language as the ai wordmark. */
+  .service-accent {
+    background-image: linear-gradient(
+      100deg,
+      #8b2dff 0%,
+      #a855f7 18%,
+      #5b7bff 38%,
+      #26c6ff 55%,
+      #a855f7 80%,
+      #8b2dff 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: service-accent-sweep 18s linear infinite;
+  }
+
+  .service-star {
+    animation: service-star-twinkle 8s ease-in-out infinite;
+  }
+
+  .service-nebula {
+    background: radial-gradient(circle at 62% 46%, rgba(108, 62, 214, 0.5) 0%, rgba(38, 198, 255, 0.22) 34%, transparent 66%);
+    animation: service-nebula-breathe 17s ease-in-out infinite;
+  }
+
+  .service-core-glow {
+    background: radial-gradient(circle, rgba(226, 240, 255, 0.5) 0%, rgba(139, 45, 255, 0.22) 38%, transparent 70%);
+    animation: service-core-breathe 15s ease-in-out infinite;
+  }
+
+  .service-core-ring {
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(139, 45, 255, 0.16) 70deg,
+      transparent 140deg,
+      rgba(38, 198, 255, 0.14) 240deg,
+      transparent 320deg
+    );
+    animation: service-core-drift 52s linear infinite;
+  }
+
+  /* Only one service is lit at a time; the rest sit at their normal, fully readable state. */
+  .service-card {
+    background: linear-gradient(180deg, rgba(14, 20, 42, 0.62) 0%, rgba(7, 11, 24, 0.48) 100%);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.14);
+    transition: border-color 0.55s cubic-bezier(0.16, 1, 0.3, 1), background 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .service-card:hover {
+    border-color: rgba(38, 198, 255, 0.4);
+    box-shadow: 0 12px 30px -10px rgba(38, 198, 255, 0.2);
+  }
+
+  .service-card.is-active {
+    border-color: rgba(150, 90, 255, 0.5);
+    background: linear-gradient(180deg, rgba(24, 30, 62, 0.72) 0%, rgba(10, 15, 32, 0.55) 100%);
+    box-shadow: 0 0 26px -6px rgba(139, 45, 255, 0.4), inset 0 0 18px rgba(38, 198, 255, 0.08);
+  }
+
+  .service-number {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+  }
+
+  .service-card.is-active .service-number {
+    color: #cbb2ff;
+    text-shadow: 0 0 10px rgba(139, 45, 255, 0.65), 0 0 6px rgba(38, 198, 255, 0.45);
+  }
+
+  .service-title {
+    transition: color 0.5s ease;
+  }
+
+  .service-card.is-active .service-title {
+    color: #ffffff;
+  }
+
+  .service-sweep {
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(150, 195, 255, 0.09) 42%,
+      rgba(196, 150, 255, 0.13) 52%,
+      transparent 100%
+    );
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+
+  .service-card.is-active .service-sweep {
+    animation: service-sweep-pass 1.15s cubic-bezier(0.32, 0, 0.2, 1);
+  }
 }
 
 @keyframes capability-pulse {
@@ -517,9 +824,70 @@ html[data-scene-intense] .header-intensity {
   50% { opacity: 1; }
 }
 
+@keyframes service-accent-sweep {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 220% 50%; }
+}
+
+@keyframes service-star-twinkle {
+  0%, 100% { opacity: var(--star-base, 0.3); }
+  50% { opacity: calc(var(--star-base, 0.3) * 0.35); }
+}
+
+@keyframes service-nebula-breathe {
+  0%, 100% { opacity: 0.05; transform: scale(1); }
+  50% { opacity: 0.09; transform: scale(1.04); }
+}
+
+@keyframes service-core-breathe {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.44; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+@keyframes service-core-drift {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes service-sweep-pass {
+  0% { opacity: 0; transform: translateX(-120%); }
+  18% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(120%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .capability-pulse {
     animation: none;
+  }
+
+  .service-accent,
+  .service-star,
+  .service-nebula,
+  .service-core-glow,
+  .service-core-ring,
+  .service-card.is-active .service-sweep {
+    animation: none;
+  }
+
+  .service-accent {
+    background-position: 40% 50%;
+  }
+
+  .service-core-glow {
+    opacity: 0.32;
+    transform: translate(-50%, -50%);
+  }
+
+  .service-core-ring {
+    transform: translate(-50%, -50%);
+  }
+
+  .service-nebula {
+    opacity: 0.07;
+  }
+
+  .service-star {
+    opacity: var(--star-base, 0.3);
   }
 }
 

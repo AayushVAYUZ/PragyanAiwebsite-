@@ -49,9 +49,10 @@ export default function CaseStudies() {
           {
             autoAlpha: 1,
             y: 0,
+            duration: 0.8,
             stagger: 0.1,
             ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 78%", end: "top 30%", scrub: 0.6 },
+            scrollTrigger: { trigger: section, start: "top 78%", toggleActions: "play none none none" },
           },
         );
 
@@ -62,7 +63,13 @@ export default function CaseStudies() {
             gsap.fromTo(
               card,
               { autoAlpha: 0, y: 28 },
-              { autoAlpha: 1, y: 0, ease: "power2.out", scrollTrigger: { trigger: card, start: "top 92%", end: "top 62%", scrub: 0.6 } },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "power2.out",
+                scrollTrigger: { trigger: card, start: "top 92%", toggleActions: "play none none none" },
+              },
             ),
           );
         } else {
@@ -72,9 +79,10 @@ export default function CaseStudies() {
             {
               autoAlpha: 1,
               y: 0,
+              duration: 0.7,
               stagger: 0.15,
               ease: "power2.out",
-              scrollTrigger: { trigger: section, start: "top 70%", end: "top 15%", scrub: 0.7 },
+              scrollTrigger: { trigger: section, start: "top 70%", toggleActions: "play none none none" },
             },
           );
         }

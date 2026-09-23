@@ -36,9 +36,10 @@ export default function ReadyToExplore() {
           {
             autoAlpha: 1,
             y: 0,
+            duration: 0.8,
             stagger: 0.12,
             ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 78%", end: "top 30%", scrub: 0.6 },
+            scrollTrigger: { trigger: section, start: "top 78%", toggleActions: "play none none none" },
           },
         );
       },

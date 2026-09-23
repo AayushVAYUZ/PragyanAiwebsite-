@@ -66,15 +66,16 @@ export default function HowWeThink() {
           {
             autoAlpha: 1,
             y: 0,
+            duration: 0.8,
             stagger: 0.12,
             ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 78%", end: "top 30%", scrub: 0.6 },
+            scrollTrigger: { trigger: section, start: "top 78%", toggleActions: "play none none none" },
           },
         );
 
         // Each card rises in on its own trigger, so stacked cards reveal as they arrive; the
         // offset start staggers the three when they share a row. clamp() keeps the last card's
-        // range inside the page's scroll limit, so it always completes at the end of the page.
+        // trigger inside the page's scroll limit, so it always fires before the end of the page.
         gsap.utils.toArray<HTMLElement>("[data-insight-card]").forEach((card, index) => {
           gsap.fromTo(
             card,
@@ -82,8 +83,9 @@ export default function HowWeThink() {
             {
               autoAlpha: 1,
               y: 0,
+              duration: 0.7,
               ease: "power2.out",
-              scrollTrigger: { trigger: card, start: `clamp(top ${96 - index * 4}%)`, end: `clamp(top ${72 - index * 4}%)`, scrub: 0.6 },
+              scrollTrigger: { trigger: card, start: `clamp(top ${96 - index * 4}%)`, toggleActions: "play none none none" },
             },
           );
         });

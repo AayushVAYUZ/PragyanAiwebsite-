@@ -29,7 +29,7 @@ export function GatewayPortal({ layerRef }: { layerRef: LayerRef }) {
       fetchPriority="high"
       draggable={false}
       data-layer="gate"
-      className="scene-layer"
+      className="scene-layer scene-gate-energy"
       style={{ width: gate.width, height: gate.height }}
     />
   );

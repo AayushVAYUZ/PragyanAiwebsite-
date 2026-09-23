@@ -476,8 +476,9 @@ const HIDDEN: LayerState = { x: 0, y: 0, s: 1, o: 0 };
 export const TEXT_WINDOWS: [number, number, number, number][] = [
   [-1, -1, 0.1, 0.16], // 01 — The Eye (visible at rest)
   [0.24, 0.29, 0.37, 0.42], // 02 — The Gate of P.ai (title + scroll cue; the Gate stays alone after this fades)
-  [0.64, 0.68, 0.75, 0.79], // 03 — Pass through the gate
-  [0.86, 0.93, 2, 3], // 04 — The Belief
+  [0.46, 0.52, 0.6, 0.635], // 03 — Pragyan ai definition (Gate alone before and after this, then the entry)
+  [0.64, 0.68, 0.75, 0.79], // 04 — Pass through the gate
+  [0.86, 0.93, 2, 3], // 05 — The Belief
 ];
 
 function anchored(anchorX: number, anchorY: number, screenX: number, screenY: number, s: number, o: number): LayerState {

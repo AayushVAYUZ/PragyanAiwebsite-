@@ -46,6 +46,7 @@ type LayerKey =
   | "deceleration"
   | "constellation"
   | "nodeGlow"
+  | "nodeRays"
   | "beliefBackground"
   | "bloom";
 
@@ -61,6 +62,10 @@ interface FrameCopy {
   custom?: ReactNode;
   headingLevel: "h1" | "h2";
   sub?: string[];
+  /** A smaller, self-contained block (its own heading/tagline/copy) instead of a single big headline. */
+  card?: ReactNode;
+  /** Mirrors `card`/`heading` on the right side of the viewport, independent of the left column. */
+  rightContent?: ReactNode;
   /** Centred near the bottom of the viewport, independent of the (left-aligned) heading column. */
   scrollCue?: string;
 }
@@ -88,6 +93,44 @@ const FRAMES: FrameCopy[] = [
       </>
     ),
     scrollCue: "Scroll to Enter",
+  },
+  {
+    label: "pragyan-ai-definition",
+    headingLevel: "h2",
+    card: (
+      <div className="max-w-[30rem]">
+        <h3 className="cinematic-headline text-[clamp(1.5rem,2.6vw,2.15rem)] text-[var(--text-primary)]">
+          Pragyan{" "}
+          <span className="inline-block rounded-[0.15em] bg-[var(--electric-violet)] px-[0.22em] py-[0.02em] text-[var(--void-black)]">
+            ai
+          </span>{" "}
+          INNOVATIONS
+        </h3>
+        <p className="mt-2 text-base font-medium tracking-wide text-[#F2C744] sm:text-lg">
+          Intelligence for Efficient Results
+        </p>
+        <p className="mt-5 text-sm leading-relaxed text-[var(--text-secondary)] sm:text-base">
+          Pragyan ai INNOVATIONS is the dedicated artificial intelligence company of VAYUZ Technologies,
+          focused on helping enterprises adopt ai with confidence. We combine research, engineering and
+          innovation to create intelligent products, modernize enterprise platforms, integrate ai across
+          digital ecosystems and build the foundation for a trusted Sovereign ai ecosystem.
+        </p>
+      </div>
+    ),
+    rightContent: (
+      <p className="max-w-[24rem] text-lg leading-snug font-light text-[var(--text-primary)] sm:text-xl">
+        Human Intelligence + Artificial Intelligence ={" "}
+        <span className="relative inline-block pb-1.5">
+          Infinite Possibilities
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-[2px] overflow-hidden rounded-full bg-[#F2C744]/20"
+          >
+            <span className="definition-underline-sweep absolute inset-y-0 left-0 w-1/3 rounded-full bg-[#F2C744]" />
+          </span>
+        </span>
+      </p>
+    ),
   },
   {
     label: "pass-through-the-gate",
@@ -264,6 +307,7 @@ export default function CinematicOpening({
       writeLayer(layers.constellation, frame.constellation);
       writeLayer(layers.beliefBackground, frame.beliefBackground);
       writeLayer(layers.nodeGlow, frame.nodeGlow);
+      writeLayer(layers.nodeRays, frame.nodeGlow);
       writeLayer(layers.bloom, frame.bloom);
 
       particlesRef.current?.render(frame.particles);
@@ -398,6 +442,7 @@ export default function CinematicOpening({
             deceleration: bindLayer("deceleration"),
             constellation: bindLayer("constellation"),
             nodeGlow: bindLayer("nodeGlow"),
+            nodeRays: bindLayer("nodeRays"),
             beliefBackground: bindLayer("beliefBackground"),
             beliefGrade: (element) => void (beliefGradeRef.current = element),
           }}
@@ -519,7 +564,15 @@ function FrameCopyBlock({
             ))}
           </div>
         )}
+
+        {frame.card}
       </div>
+
+      {frame.rightContent && (
+        <div className="absolute top-1/2 right-[var(--gutter-x)] hidden -translate-y-1/2 md:block">
+          {frame.rightContent}
+        </div>
+      )}
 
       {frame.scrollCue && (
         <div className="pointer-events-none absolute inset-x-0 bottom-10 flex items-center justify-center gap-3">
