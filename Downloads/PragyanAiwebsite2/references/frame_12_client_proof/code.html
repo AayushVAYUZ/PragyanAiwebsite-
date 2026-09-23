@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pragyan AI — Client Proof</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              violet: '#8B2DFF',
+              cyan: '#26C6FF',
+              void: '#03040A',
+              surface: '#070B18',
+              muted: '#A2A8BC',
+              border: 'rgba(160, 175, 220, 0.16)',
+              borderHover: 'rgba(160, 175, 220, 0.38)',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+          },
+          boxShadow: {
+            'portal-glow': '0 0 60px -15px rgba(139, 45, 255, 0.25), 0 0 40px -10px rgba(38, 198, 255, 0.18)',
+            'pill-hover': '0 0 25px -4px rgba(38, 198, 255, 0.3)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography Styles -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #03040A;
+      color: #F5F7FF;
+      overflow-x: hidden;
+    }
+
+    .quote-mark {
+      font-feature-settings: "ss01" on;
+      line-height: 0.9;
+    }
+  </style>
+<!-- Background Ambience & Lighting -->
+<style data-purpose="lighting-effects">
+    .ambient-radial-glow {
+      background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.11) 0%, rgba(38, 198, 255, 0.06) 35%, transparent 70%),
+                  radial-gradient(circle at 20% 70%, rgba(139, 45, 255, 0.05) 0%, transparent 60%);
+    }
+
+    .vignette-overlay {
+      background: linear-gradient(90deg, #03040A 0%, rgba(3, 4, 10, 0.6) 12%, rgba(3, 4, 10, 0) 30%, rgba(3, 4, 10, 0) 70%, rgba(3, 4, 10, 0.7) 90%, #03040A 100%),
+                  linear-gradient(180deg, #03040A 0%, rgba(3, 4, 10, 0.4) 10%, rgba(3, 4, 10, 0) 25%, rgba(3, 4, 10, 0) 75%, rgba(3, 4, 10, 0.7) 92%, #03040A 100%);
+    }
+  </style>
+</head>
+<body class="bg-[#03040A] text-white min-h-screen flex flex-col justify-between selection:bg-[#8B2DFF]/30 selection:text-white relative antialiased">
+<!-- Ambient Light Atmosphere -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none ambient-radial-glow z-0"></div>
+<!-- BEGIN: MainHeader -->
+<header class="relative z-30 w-full px-8 md:px-16 py-6 flex items-center justify-between border-b border-[rgba(160,175,220,0.08)] backdrop-blur-md bg-[#03040A]/60" data-purpose="global-navigation">
+<!-- Brand Logo -->
+<a aria-label="Pragyan AI Homepage" class="flex items-center gap-2 group tracking-tight" href="#">
+<span class="text-xl md:text-2xl font-semibold tracking-[-0.03em] text-white">Pragyan</span>
+<span class="text-xs px-2 py-0.5 rounded-full border border-[rgba(38,198,255,0.4)] text-[#26C6FF] bg-[#26C6FF]/10 font-medium tracking-normal transition-colors group-hover:border-[#8B2DFF] group-hover:text-[#C78BFF]">ai</span>
+</a>
+<!-- Center Navigation Links -->
+<nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-8 text-[13px] tracking-wide text-neutral-400">
+<a class="hover:text-white transition-colors duration-200" href="#">Who We Are</a>
+<a class="hover:text-white transition-colors duration-200" href="#">What We Do</a>
+<a class="hover:text-white transition-colors duration-200" href="#">Capabilities</a>
+<a class="hover:text-white transition-colors duration-200" href="#">Products</a>
+<a class="hover:text-white transition-colors duration-200" href="#">Use Cases</a>
+<a class="hover:text-white transition-colors duration-200" href="#">Insights</a>
+</nav>
+<!-- Right Action Button -->
+<div class="flex items-center gap-4">
+<a class="px-5 py-2 rounded-full border border-[rgba(160,175,220,0.22)] hover:border-[rgba(38,198,255,0.5)] hover:shadow-pill-hover bg-white/[0.02] hover:bg-white/[0.06] text-xs font-medium tracking-wider text-neutral-200 transition-all duration-300" href="#talk">
+        TALK TO US
+      </a>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: ClientProofSection -->
+<main class="relative z-10 flex-1 flex items-center px-8 md:px-16 lg:px-20 py-8 lg:py-12" data-purpose="client-proof-hero">
+<div class="w-full max-w-[1720px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+<!-- Left Editorial Column (55% width on large screens) -->
+<section class="lg:col-span-7 flex flex-col justify-center space-y-10" data-purpose="editorial-narrative">
+<!-- Frame Identifier & Kicker -->
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#26C6FF] shadow-[0_0_8px_#26C6FF]"></span>
+<span class="text-xs font-mono tracking-[0.22em] text-[#A2A8BC] uppercase">12 — CLIENT PROOF</span>
+</div>
+<!-- Primary Headline -->
+<h1 class="text-4xl md:text-5xl lg:text-[62px] font-normal tracking-[-0.03em] leading-[1.08] text-white">
+            What changes<br/>
+<span class="text-neutral-300 font-light">when intelligence works.</span>
+</h1>
+<!-- Secondary Subheading -->
+<p class="text-base md:text-lg text-neutral-400 font-light tracking-wide pt-1">
+            Trusted by forward-thinking organizations.
+          </p>
+</div>
+<!-- The Central Testimonial Quote -->
+<div class="relative pl-6 md:pl-8 border-l border-[rgba(139,45,255,0.35)] py-2 space-y-5" data-purpose="executive-testimonial">
+<blockquote class="text-2xl md:text-3xl lg:text-[36px] font-normal leading-[1.32] text-[#F5F7FF] tracking-[-0.015em]">
+            “VAYUZ brought clarity,<br class="hidden sm:inline"/>
+            speed and real business value<br class="hidden sm:inline"/>
+            with their AI approach.”
+          </blockquote>
+<!-- Attribution -->
+<div class="text-xs md:text-sm font-medium tracking-[0.14em] text-[#A2A8BC] uppercase">
+            — CXO, Leading Manufacturing Company
+          </div>
+</div>
+<!-- Call to Action -->
+<div class="pt-2">
+<a class="group inline-flex items-center gap-3 px-7 py-3 rounded-full border border-[rgba(160,175,220,0.22)] bg-[#070B18]/50 hover:bg-[#070B18] hover:border-[rgba(38,198,255,0.45)] hover:shadow-pill-hover text-sm font-medium text-white transition-all duration-300" href="#stories">
+<span>See Client Stories</span>
+<span aria-hidden="true" class="text-base text-[#26C6FF] transition-transform duration-300 group-hover:translate-x-1">→</span>
+</a>
+</div>
+</section>
+<!-- Right Visual Column (45% width on large screens) -->
+<section class="lg:col-span-5 relative flex justify-center items-center" data-purpose="cinematic-portal-container">
+<!-- Architectural Glow Backdrop -->
+<div class="absolute -inset-4 bg-gradient-to-tr from-[#8B2DFF]/15 via-transparent to-[#26C6FF]/15 rounded-3xl blur-2xl pointer-events-none"></div>
+<!-- Framed Architectural Visual -->
+<div class="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-2xl overflow-hidden border border-[rgba(160,175,220,0.16)] shadow-portal-glow bg-[#070B18]" data-purpose="cinematic-frame">
+<!-- Cinematic Still: Dark Architectural Enterprise Intelligence Environment -->
+<img alt="Atmospheric dark architectural enterprise intelligence environment at night with vertical monolithic structures and distant luminous arch portal" class="w-full h-full object-cover object-center scale-[1.02] transform hover:scale-100 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVGIXBK_yHL8AmP6RmUYHFr8s90fbJ3snVy8T4Humv_bsKDCujoYbAY14AwcB3qYzFoP3HgjtCtGGdMHhWkkR73AxBywhdVuU35obeCxKzNrEZeYJEmNdTMNKPDLiPSOOap6LKcd5YfYHoaLzua82teCseIHJcoID5XEOD6vVA2IM7d1S5XzdOG9iEL8TBh4vdubMJ8FvznFUSJ8ROJpTFXZNKa32aJF4HVxgH3aYwm0vfI_usb0Dd-A"/>
+<!-- Edge Vignette and Gradient Blend into Void -->
+<div aria-hidden="true" class="absolute inset-0 vignette-overlay pointer-events-none"></div>
+<!-- Subtle Floating Gate Indicator / Context Tag -->
+<div class="absolute bottom-4 right-4 z-10 px-3 py-1 rounded-full border border-white/10 bg-[#03040A]/60 backdrop-blur-md text-[10px] font-mono tracking-widest text-[#A2A8BC] uppercase flex items-center gap-1.5 pointer-events-none">
+<span class="w-1 h-1 rounded-full bg-[#8B2DFF]"></span>
+<span>ENTERPRISE ARCH</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- END: ClientProofSection -->
+<!-- BEGIN: BottomContinuumBar -->
+<footer class="relative z-20 w-full px-8 md:px-16 py-4 border-t border-[rgba(160,175,220,0.12)] bg-[#03040A]/80 backdrop-blur-sm" data-purpose="continuum-footer">
+<div class="max-w-[1720px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono tracking-widest text-[#A2A8BC]">
+<!-- Frame Location -->
+<div class="flex items-center gap-2">
+<span class="text-white font-medium">12 / 15</span>
+<span class="text-neutral-600">|</span>
+<span class="uppercase">CLIENT PROOF</span>
+</div>
+<!-- Continuum Navigation -->
+<a class="flex items-center gap-2 text-neutral-300 hover:text-white transition-colors duration-200 group" href="#frame-13">
+<span>PROCEED TO 13 — HOW WE THINK</span>
+<span aria-hidden="true" class="text-[#26C6FF] group-hover:translate-y-0.5 transition-transform duration-200">↓</span>
+</a>
+<!-- State Indicator -->
+<div class="flex items-center gap-2 text-neutral-400">
+<span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-[#26C6FF] animate-pulse"></span>
+<span class="uppercase">SCROLL TO EXPLORE</span>
+</div>
+</div>
+</footer>
+<!-- END: BottomContinuumBar -->
+</body></html>

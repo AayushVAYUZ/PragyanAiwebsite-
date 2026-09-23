@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-[#03040a]" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pragyan AI — Frame 05: The Belief</title>
+<!-- Google Fonts for Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040A',
+            midnight: '#070B18',
+            coreViolet: '#8B2DFF',
+            coreCyan: '#26C6FF',
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-subtle': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 7s ease-in-out 1.5s infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-5px)' },
+            }
+          }
+        },
+      },
+    };
+  </script>
+<!-- CSS: System Styles & Fine Aesthetics -->
+<style data-purpose="custom-surfaces">
+    .glass-surface {
+      background: rgba(8, 13, 31, 0.68);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(160, 175, 220, 0.16);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .glass-surface:hover {
+      border-color: rgba(139, 45, 255, 0.38);
+      box-shadow: 0 8px 30px -4px rgba(38, 198, 255, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .text-glow {
+      text-shadow: 0 0 16px rgba(38, 198, 255, 0.35);
+    }
+    .filament-glow {
+      filter: drop-shadow(0 0 4px rgba(139, 45, 255, 0.45));
+    }
+  </style>
+</head>
+<body class="h-full w-full overflow-hidden bg-[#03040A] text-slate-300 font-sans antialiased select-none flex flex-col justify-between relative">
+<!-- BEGIN: Cinematic Visual Canvas Background -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" data-purpose="background-layer">
+<!-- Base Constellation Core Visual (1376x768 render from DataStore) -->
+<img alt="Cinematic 4K UHD architectural data constellation of interconnected decisions and intelligence core node" class="w-full h-full object-cover object-center opacity-85 scale-105 transition-transform duration-1000 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7vY2ME1P4F1DhkZ6dOBGmIKAUYFdbK1OvwPdkcklO0n1Ks6VcpM2QFc0f9XjIVMxfna9aI_cbEq8yNB5DAg9DAXca6tgAk4_sPG-dmameleLxqPX7ASpGukAcUoopZhx1YOkvE8BxqX9_gSOAxNfHVgJWRcz0DC3SumCdAGRoMwmXUI9Eth0b3WmnHcr1LwUivWgCB5UehxSg5eMxADbXsL1PQJ8YWvWruffVBhoA53m1SWB_74CMDw"/>
+<!-- Deep Atmospheric Vignette and Editorial Left-Side Shadow -->
+<div class="absolute inset-0 bg-gradient-to-r from-[#03040A] via-[#03040A]/80 to-transparent w-full md:w-3/5 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#03040A] via-transparent to-[#03040A]/70 pointer-events-none"></div>
+</div>
+<!-- END: Cinematic Visual Canvas Background -->
+<!-- BEGIN: Primary Navigation & Chrome Header -->
+<header class="relative z-30 w-full px-8 pt-6 pb-4 flex items-center justify-between border-b border-white/[0.04]" data-purpose="header-navigation">
+<!-- Left Logo & Telemetry Identity -->
+<div class="flex items-center space-x-4">
+<div class="flex items-baseline space-x-2">
+<span class="text-white font-semibold text-lg tracking-[0.2em] text-glow">PRAGYAN</span>
+<span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-violet-950/80 text-violet-300 border border-violet-500/40 tracking-widest font-medium">[AI]</span>
+</div>
+<div class="h-4 w-[1px] bg-slate-800"></div>
+<div class="font-mono text-[11px] tracking-wider text-slate-400">
+<span class="text-slate-500">INTEL_CORE //</span> 2.6 <span class="text-slate-600">/</span> <span class="text-cyan-400/90 font-medium">THE BELIEF</span>
+</div>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden lg:flex items-center space-x-8 font-mono text-[11px] tracking-widest text-slate-400">
+<a class="hover:text-white transition-colors duration-200" href="#">WHO WE ARE</a>
+<a class="hover:text-white transition-colors duration-200" href="#">WHAT WE DO</a>
+<a class="text-cyan-300 flex items-center gap-1.5" href="#">
+<span class="w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_6px_#26C6FF]"></span>
+        THE BELIEF
+      </a>
+<a class="hover:text-white transition-colors duration-200" href="#">CAPABILITIES</a>
+<a class="hover:text-white transition-colors duration-200" href="#">PRODUCTS</a>
+<a class="hover:text-white transition-colors duration-200" href="#">USE CASES</a>
+<a class="hover:text-white transition-colors duration-200" href="#">INSIGHTS</a>
+</nav>
+<!-- Right Controls: Status & Talk to Us CTA -->
+<div class="flex items-center space-x-5">
+<div class="hidden sm:flex items-center space-x-2 px-3 py-1 rounded-full bg-[#070B18]/70 border border-slate-800 font-mono text-[10px] text-slate-400 tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+<span>VELOCITY: STABLE // ARCHITECTURE: ACTIVE</span>
+</div>
+<a class="font-mono text-[11px] tracking-widest uppercase px-5 py-2 rounded-full border border-[rgba(160,175,220,0.22)] bg-[#080D1F]/60 text-slate-200 hover:text-white hover:border-violet-500/60 hover:bg-violet-950/30 hover:shadow-[0_0_18px_rgba(139,45,255,0.25)] transition-all duration-300" href="#contact">
+        [ Talk to Us ]
+      </a>
+</div>
+</header>
+<!-- END: Primary Navigation & Chrome Header -->
+<!-- BEGIN: Main Content Area -->
+<main class="relative z-20 flex-1 grid grid-cols-12 px-8 lg:px-14 items-center h-full w-full max-w-[1720px] mx-auto" data-purpose="editorial-cognitive-space">
+<!-- Left Column: Editorial Headline & Thesis -->
+<section class="col-span-12 lg:col-span-5 xl:col-span-5 flex flex-col justify-center pr-4" data-purpose="editorial-narrative">
+<!-- Section Indicator Tag -->
+<div class="inline-flex items-center space-x-3 mb-6">
+<div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#080D1F]/90 border border-violet-500/30 backdrop-blur-md">
+<span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#26C6FF]"></span>
+<span class="font-mono text-[10px] tracking-widest text-slate-300 uppercase">05 — THE BELIEF</span>
+</div>
+<span class="font-mono text-[10px] tracking-widest text-slate-500 uppercase">// COGNITIVE FOUNDATION</span>
+</div>
+<!-- Main Headline: Editorial Inter Sans -->
+<h1 class="text-4xl sm:text-5xl xl:text-6xl text-slate-100 font-light tracking-tight leading-[1.08] mb-6">
+        AI doesn't<br/>
+        start with a model.<br/>
+        It starts with<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-cyan-400 font-normal">
+          the right questions.
+        </span>
+</h1>
+<!-- Supporting Understated Editorial Copy -->
+<p class="text-slate-400 text-sm sm:text-base font-normal leading-relaxed max-w-lg mb-9">
+        Effective enterprise AI begins with understanding the business, the underlying friction, and the high-value questions that matter—not simply deploying an off-the-shelf model into existing complexity.
+      </p>
+<!-- Compact Glass Interactive CTA Button -->
+<div class="flex items-center space-x-4">
+<a class="inline-flex items-center space-x-3 px-6 py-3 rounded-full bg-[#0A0F23]/70 hover:bg-[#121A3B]/80 text-white font-sans text-xs tracking-wider border border-[rgba(160,175,220,0.22)] hover:border-cyan-400/50 hover:shadow-[0_0_24px_rgba(38,198,255,0.25)] transition-all duration-300 group" href="#explore-belief">
+<span class="font-medium">Explore Our Belief</span>
+<span class="text-cyan-400 group-hover:translate-x-1 transition-transform duration-200">→</span>
+</a>
+<div class="font-mono text-[10px] text-slate-500 tracking-wider hidden sm:block">
+          PRISM_METHODOLOGY // ORIENT
+        </div>
+</div>
+</section>
+<!-- Center-Right: Distributed Cognitive Network & Filament Modules -->
+<section class="col-span-12 lg:col-span-7 xl:col-span-7 relative h-[560px] flex items-center justify-center" data-purpose="distributed-inquiry-network">
+<!-- Coordinate System Center (Luminous Origin Core Alignment Point) -->
+<!-- The absolute center coordinate in this relative frame approximates the background node (approx 58% x, 50% y) -->
+<div class="absolute left-[58%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none">
+<div class="w-full h-full rounded-full bg-cyan-300/80 blur-xs animate-ping"></div>
+<div class="absolute -inset-4 rounded-full border border-cyan-400/20 animate-pulse-slow"></div>
+<div class="absolute -inset-10 rounded-full border border-violet-500/15"></div>
+</div>
+<!-- SVG Radiating Filaments Connecting Central Origin to Each Question Card -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10" data-purpose="network-filaments" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="cyanVioletGlow" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#26C6FF" stop-opacity="0.65"></stop>
+<stop offset="50%" stop-color="#8B2DFF" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#26C6FF" stop-opacity="0.1"></stop>
+</lineargradient>
+<lineargradient id="violetCyanGlow" x1="100%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#8B2DFF" stop-opacity="0.75"></stop>
+<stop offset="60%" stop-color="#26C6FF" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#8B2DFF" stop-opacity="0.05"></stop>
+</lineargradient>
+</defs>
+<!-- Dynamic Filaments (Connected from node 58%, 50% to card anchor spots) -->
+<!-- Filament to Card 01 (Top Left) -->
+<line class="filament-glow" stroke="url(#cyanVioletGlow)" stroke-dasharray="3,3" stroke-width="1" x1="58%" x2="28%" y1="50%" y2="18%"></line>
+<!-- Filament to Card 02 (Top Right) -->
+<line class="filament-glow" stroke="url(#violetCyanGlow)" stroke-dasharray="4,2" stroke-width="1" x1="58%" x2="84%" y1="50%" y2="20%"></line>
+<!-- Filament to Card 03 (Mid Left) -->
+<line class="filament-glow" stroke="url(#cyanVioletGlow)" stroke-dasharray="2,3" stroke-width="1" x1="58%" x2="22%" y1="50%" y2="48%"></line>
+<!-- Filament to Card 04 (Mid Right) -->
+<line class="filament-glow" stroke="url(#violetCyanGlow)" stroke-dasharray="3,3" stroke-width="1" x1="58%" x2="88%" y1="50%" y2="52%"></line>
+<!-- Filament to Card 05 (Bottom Left) -->
+<line class="filament-glow" stroke="url(#cyanVioletGlow)" stroke-dasharray="4,3" stroke-width="1" x1="58%" x2="34%" y1="50%" y2="82%"></line>
+<!-- Filament to Card 06 (Bottom Right) -->
+<line class="filament-glow" stroke="url(#violetCyanGlow)" stroke-dasharray="2,4" stroke-width="1" x1="58%" x2="80%" y1="50%" y2="84%"></line>
+</svg>
+<!-- Question Modules Container (Absolute positioning matching enterprise diagram layout) -->
+<div class="relative w-full h-full z-20">
+<!-- Card 1: Top-Left of Node -->
+<div class="absolute left-[8%] top-[12%] animate-float-subtle">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[220px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-cyan-400/80 tracking-wider">
+<span>Q.01 // OBJECTIVE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#26C6FF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              What are we trying to improve?
+            </p>
+</div>
+</div>
+<!-- Card 2: Top-Right of Node -->
+<div class="absolute right-[4%] top-[14%] animate-float-delayed">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[240px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-purple-400/80 tracking-wider">
+<span>Q.02 // VELOCITY</span>
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_6px_#8B2DFF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              Where are decisions taking too long?
+            </p>
+</div>
+</div>
+<!-- Card 3: Mid-Left of Node -->
+<div class="absolute left-[3%] top-[42%] animate-float-delayed">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[230px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-cyan-400/80 tracking-wider">
+<span>Q.03 // SYNTHESIS</span>
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#26C6FF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              What information is hard to access?
+            </p>
+</div>
+</div>
+<!-- Card 4: Mid-Right of Node -->
+<div class="absolute right-[1%] top-[46%] animate-float-subtle">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[250px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-violet-400/90 tracking-wider">
+<span>Q.04 // VALUE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_6px_#8B2DFF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              Where can AI create real business value?
+            </p>
+</div>
+</div>
+<!-- Card 5: Bottom-Left of Node -->
+<div class="absolute left-[16%] bottom-[12%] animate-float-subtle">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[220px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-cyan-400/80 tracking-wider">
+<span>Q.05 // ASSETS</span>
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#26C6FF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              What data do we already have?
+            </p>
+</div>
+</div>
+<!-- Card 6: Bottom-Right of Node -->
+<div class="absolute right-[8%] bottom-[10%] animate-float-delayed">
+<div class="glass-surface px-4 py-3 rounded-xl max-w-[220px] transition-all duration-300 group cursor-default">
+<div class="flex items-center justify-between mb-1.5 font-mono text-[9px] text-purple-400/80 tracking-wider">
+<span>Q.06 // ARCHITECTURE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_6px_#8B2DFF]"></span>
+</div>
+<p class="text-xs font-medium text-slate-100 leading-snug group-hover:text-white transition-colors">
+              What should not be rebuilt?
+            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- END: Main Content Area -->
+<!-- BEGIN: Right Progression Narrative Rail -->
+<aside class="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 flex-col items-center space-y-6 z-30 font-mono text-[10px] tracking-[0.2em] text-slate-500" data-purpose="narrative-tracker">
+<div class="flex items-center space-x-2 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="w-1 h-1 rounded-full bg-slate-400"></span>
+<span class="writing-vertical-lr uppercase">PASSAGE</span>
+</div>
+<div class="flex items-center space-x-2 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="w-1 h-1 rounded-full bg-slate-400"></span>
+<span class="writing-vertical-lr uppercase">ARRIVAL</span>
+</div>
+<div class="flex items-center space-x-2 text-cyan-300 font-semibold cursor-default">
+<span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#26C6FF] animate-ping"></span>
+<span class="writing-vertical-lr tracking-widest text-white uppercase text-glow">THE BELIEF</span>
+</div>
+<div class="flex items-center space-x-2 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="w-1 h-1 rounded-full bg-slate-400"></span>
+<span class="writing-vertical-lr uppercase">CAPABILITIES</span>
+</div>
+<div class="flex items-center space-x-2 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="w-1 h-1 rounded-full bg-slate-400"></span>
+<span class="writing-vertical-lr uppercase">IMPACT</span>
+</div>
+</aside>
+<!-- END: Right Progression Narrative Rail -->
+<!-- BEGIN: Bottom Telemetry & Continuum Bar -->
+<footer class="relative z-30 w-full px-8 py-3.5 border-t border-white/[0.05] bg-[#03040A]/85 backdrop-blur-md flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400" data-purpose="telemetry-bar">
+<!-- Telemetry Status Left -->
+<div class="flex items-center space-x-3">
+<span class="inline-block w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#26C6FF]"></span>
+<span>COGNITIVE SYNCHRONIZATION: <strong class="font-medium text-slate-200">OPTIMAL</strong></span>
+<span class="text-slate-600 hidden md:inline">|</span>
+<span class="hidden md:inline text-slate-400">NETWORK TOPOLOGY: DISTRIBUTED INQUIRY</span>
+</div>
+<!-- Section Continuum Center -->
+<div class="flex items-center space-x-2 text-slate-300 my-1 md:my-0">
+<span class="text-slate-500">CONTINUUM:</span>
+<span class="text-white font-medium">SECTION 05</span>
+<span class="text-slate-600">/</span>
+<span class="text-slate-500">15</span>
+<span class="text-slate-600">·</span>
+<a class="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 transition-colors" href="#section-06">
+        PROCEED TO 06 — OUR JOURNEY
+        <span>↓</span>
+</a>
+</div>
+<!-- System Telemetry Right -->
+<div class="hidden sm:flex items-center space-x-4 text-slate-500">
+<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">[ VELOCITY: 0.00 C ]</span>
+<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-emerald-400">[ COGNITION: ACTIVE ]</span>
+</div>
+</footer>
+<!-- END: Bottom Telemetry & Continuum Bar -->
+</body></html>

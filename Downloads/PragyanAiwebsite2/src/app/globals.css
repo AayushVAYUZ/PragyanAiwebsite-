@@ -1,0 +1,1192 @@
+@import "tailwindcss";
+
+/* ============================================================
+   PRAGYAN ai — Design Token System
+   Source: DESIGN.md (project root)
+   ============================================================ */
+
+:root {
+  /* Background Depths */
+  --void-black: #03040A;
+  --near-black: #050711;
+  --deep-navy: #070B18;
+  --midnight-blue: #0A1024;
+
+  /* Energy Colors */
+  --electric-violet: #8B2DFF;
+  --deep-violet: #5418C8;
+  --neon-purple: #B339FF;
+  --electric-blue: #176BFF;
+  --neon-cyan: #26C6FF;
+  --deep-blue: #0D2F78;
+
+  /* Text */
+  --text-primary: #F5F7FF;
+  --text-soft: #D8DBE8;
+  --text-secondary: #A2A8BC;
+  --text-muted: #727991;
+
+  /* Structural */
+  --border-active: rgba(160, 175, 220, 0.22);
+  --border-subtle: rgba(160, 175, 220, 0.12);
+  --glass-surface: rgba(10, 15, 35, 0.52);
+
+  /* Typography (font variables are provided by next/font on <html>) */
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "SF Mono", "Fira Code", ui-monospace, monospace;
+
+  /* Layout */
+  --gutter-x: clamp(1.25rem, 4vw, 4rem);
+  --header-h: 4.5rem;
+
+  /* Viewport units: prefer small/large viewport units where supported */
+  --svh: 1vh;
+  --lvh: 1vh;
+}
+
+@supports (height: 1svh) {
+  :root {
+    --svh: 1svh;
+    --lvh: 1lvh;
+  }
+}
+
+/* ============================================================
+   BASE — lives in the base layer so Tailwind utilities win
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: auto; /* scroll is driven by the cinematic timeline */
+    scrollbar-gutter: stable; /* no layout shift when the preloader locks scroll */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--void-black);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--void-black);
+    color: var(--text-primary);
+    overflow-x: clip;
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: rgba(139, 45, 255, 0.3);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+@layer components {
+  .cinematic-headline {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
+  }
+
+  .tech-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* The Thought (Frame 01): each fragment reveals in sequence rather than all at once. */
+  .thought-fragment {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  [data-intro="true"] .thought-fragment {
+    animation: thought-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .thought-accent {
+    background: linear-gradient(90deg, var(--electric-violet), var(--neon-cyan));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* The Gate of P.ai. — the trailing period reads as a small energy node. */
+  .gate-period {
+    display: inline-block;
+    color: var(--neon-cyan);
+    animation: gate-period-pulse 5s ease-in-out infinite;
+  }
+
+  .glass-pill {
+    background: var(--glass-surface);
+    border: 1px solid var(--border-subtle);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .glass-pill:hover {
+    border-color: rgba(139, 45, 255, 0.45);
+    box-shadow: 0 0 20px rgba(139, 45, 255, 0.2);
+  }
+
+  .vignette-layer {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(3, 4, 10, 0) 38%,
+      rgba(3, 4, 10, 0.55) 72%,
+      #03040A 100%
+    );
+  }
+
+  .film-grain {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  .scroll-indicator-dot {
+    animation: scroll-pulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  /* ---------- Cinematic scene layers ----------
+     Every layer is positioned at the top-left of the scene viewport and moved
+     only through transform / opacity (written by the master timeline). */
+  .scene-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: none;
+    transform-origin: 0 0;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* The eye plate is feathered into darkness so it can be framed on any aspect ratio. */
+  .scene-eye {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* ---------- Gateway embedded in the eye (Frame 01) ----------
+     Pupil layers use a soft organic matte of the real pupil (derived from
+     eye-plate.png), so nothing reads as a geometric disc. Light layers use
+     screen blending: they only add light to the existing iris texture. */
+  .scene-pupil-matte {
+    -webkit-mask-image: url("/images/eye-pupil-matte.png");
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: url("/images/eye-pupil-matte.png");
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+  }
+
+  /* Strongest around the distant gateway, gone before the pupil rim, so the
+     natural edge of the pupil is untouched. */
+  .scene-pupil-haze {
+    background: radial-gradient(
+      closest-side,
+      rgba(4, 6, 16, 0.95) 0%,
+      rgba(4, 6, 16, 0.6) 40%,
+      rgba(4, 6, 16, 0) 78%
+    );
+  }
+
+  /* Light scattering only in the depth around the gateway: no uniform lift of the pupil. */
+  .scene-pupil-glow {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 19% 25% at 46% 52%, rgba(139, 45, 255, 0.26) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 19% 25% at 55% 52%, rgba(38, 198, 255, 0.2) 0%, rgba(38, 198, 255, 0) 100%),
+      radial-gradient(closest-side, rgba(90, 80, 200, 0.1) 0%, rgba(0, 0, 0, 0) 42%);
+  }
+
+  .scene-iris-spill {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 46% 62% at 30% 50%, rgba(139, 45, 255, 0.2) 0%, rgba(139, 45, 255, 0) 72%),
+      radial-gradient(ellipse 46% 62% at 70% 50%, rgba(38, 198, 255, 0.17) 0%, rgba(38, 198, 255, 0) 72%);
+    /* A ring starting at the pupil rim and fading through the inner iris. */
+    -webkit-mask-image: radial-gradient(closest-side, transparent 24%, #000 32%, #000 44%, transparent 72%);
+    mask-image: radial-gradient(closest-side, transparent 24%, #000 32%, #000 44%, transparent 72%);
+  }
+
+  .scene-corneal-glint {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      ellipse 50% 50% at 50% 55%,
+      rgba(175, 140, 255, 0.34) 0%,
+      rgba(90, 160, 255, 0.13) 45%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .scene-arrival-plate {
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 58%, transparent 100%);
+  }
+
+  .scene-gate-glow {
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(ellipse 34% 40% at 36% 50%, rgba(139, 45, 255, 0.34) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 34% 40% at 64% 50%, rgba(38, 198, 255, 0.26) 0%, rgba(38, 198, 255, 0) 100%),
+      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(23, 107, 255, 0.14) 0%, rgba(23, 107, 255, 0) 100%);
+  }
+
+  .scene-floor-glow {
+    background:
+      radial-gradient(ellipse 30% 50% at 30% 50%, rgba(139, 45, 255, 0.45) 0%, rgba(139, 45, 255, 0) 100%),
+      radial-gradient(ellipse 30% 50% at 70% 50%, rgba(38, 198, 255, 0.4) 0%, rgba(38, 198, 255, 0) 100%);
+  }
+
+  .scene-threshold-fog {
+    background: linear-gradient(
+      to bottom,
+      rgba(3, 4, 10, 0) 0%,
+      rgba(3, 4, 10, 0.94) 48%,
+      rgba(3, 4, 10, 0.94) 58%,
+      rgba(3, 4, 10, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 28%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 28%, #000 72%, transparent 100%);
+  }
+
+  .scene-rays {
+    background: repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(140, 150, 255, 0) 0deg,
+      rgba(140, 150, 255, 0.16) 1.2deg,
+      rgba(140, 150, 255, 0) 3.4deg,
+      rgba(140, 150, 255, 0) 7deg
+    );
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 6%, #000 22%, #000 38%, transparent 70%);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 6%, #000 22%, #000 38%, transparent 70%);
+  }
+
+  /* Screen blending adds light instead of laying a grey haze over the scene. */
+  .scene-bloom {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(214, 224, 255, 0.96) 12%,
+      rgba(130, 150, 255, 0.78) 30%,
+      rgba(139, 45, 255, 0.5) 52%,
+      rgba(23, 107, 255, 0.2) 76%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .scene-node-glow {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle closest-side,
+      rgba(236, 232, 255, 0.9) 0%,
+      rgba(150, 120, 255, 0.45) 18%,
+      rgba(38, 198, 255, 0.12) 50%,
+      rgba(3, 4, 10, 0) 100%
+    );
+  }
+}
+
+/* Navigation steps back while the cinematic moment is at its most intense (DESIGN.md §9). */
+html[data-scene-intense] .header-intensity {
+  opacity: 0.45;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes thought-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gate-period-pulse {
+  0%, 100% {
+    text-shadow: 0 0 6px rgba(38, 198, 255, 0.5), 0 0 2px rgba(139, 45, 255, 0.35);
+    color: var(--neon-cyan);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(139, 45, 255, 0.6), 0 0 6px rgba(38, 198, 255, 0.5);
+    color: #c9a6ff;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scroll-indicator-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .thought-fragment {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .gate-period {
+    animation: none;
+    text-shadow: 0 0 6px rgba(38, 198, 255, 0.5);
+  }
+}
+
+/* ============================================================
+   PHASE 2A — CONTENT FRAMES (05–08)
+   ============================================================ */
+
+@layer components {
+  /* Frame 05 atmosphere over the constellation (the approved asset is brighter than Stitch). */
+  .scene-belief-grade {
+    background:
+      linear-gradient(to top, rgba(3, 4, 10, 0.9) 0%, rgba(3, 4, 10, 0.35) 38%, rgba(3, 4, 10, 0) 62%),
+      linear-gradient(to bottom, rgba(3, 4, 10, 0.55) 0%, rgba(3, 4, 10, 0) 22%),
+      rgba(3, 4, 10, 0.28);
+  }
+
+  @media (min-width: 1024px) {
+    .scene-belief-grade {
+      background:
+        linear-gradient(to right, rgba(3, 4, 10, 0.94) 0%, rgba(3, 4, 10, 0.72) 30%, rgba(3, 4, 10, 0) 58%),
+        linear-gradient(to top, rgba(3, 4, 10, 0.92) 0%, rgba(3, 4, 10, 0) 26%, rgba(3, 4, 10, 0) 74%, rgba(3, 4, 10, 0.6) 100%),
+        rgba(3, 4, 10, 0.4);
+    }
+  }
+
+  .belief-card {
+    background: rgba(8, 13, 31, 0.68);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .belief-filament {
+    filter: drop-shadow(0 0 4px rgba(139, 45, 255, 0.45));
+  }
+
+  .belief-node-ring {
+    animation: belief-ring 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .belief-float {
+    animation: belief-float 6s ease-in-out infinite;
+  }
+
+  .belief-float-delayed {
+    animation: belief-float 7s ease-in-out 1.5s infinite;
+  }
+}
+
+@keyframes belief-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes belief-ring {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .belief-float,
+  .belief-float-delayed,
+  .belief-node-ring {
+    animation: none;
+  }
+}
+
+@layer components {
+  .journey-vignette {
+    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(3, 4, 10, 0.75) 100%);
+  }
+}
+
+@layer components {
+  .prism-core-glow {
+    background: radial-gradient(
+      closest-side,
+      rgba(139, 45, 255, 0.1) 0%,
+      rgba(38, 198, 255, 0.05) 45%,
+      rgba(3, 4, 10, 0) 100%
+    );
+  }
+
+  .prism-stage {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .prism-stage:hover {
+    border-color: rgba(139, 45, 255, 0.45);
+    background-color: rgba(14, 20, 42, 0.75);
+  }
+
+  .prism-ring {
+    animation: prism-spin 60s linear infinite;
+  }
+}
+
+@keyframes prism-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prism-ring {
+    animation: none;
+  }
+}
+
+@layer components {
+  .capability-gradient {
+    background: linear-gradient(135deg, #e2e8f0 25%, #c47fff 65%, #26c6ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .capability-cyan-tint {
+    background: radial-gradient(circle at 25% 50%, rgba(38, 198, 255, 0.06), transparent 55%);
+  }
+
+  .capability-node {
+    background: linear-gradient(180deg, rgba(14, 20, 42, 0.65) 0%, rgba(7, 11, 24, 0.5) 100%);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.14);
+    transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .capability-node:hover {
+    border-color: rgba(38, 198, 255, 0.45);
+    background: linear-gradient(180deg, rgba(20, 28, 58, 0.75) 0%, rgba(10, 15, 32, 0.6) 100%);
+    box-shadow: 0 12px 30px -8px rgba(38, 198, 255, 0.2);
+  }
+
+  .capability-node-focus {
+    background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(7, 11, 24, 0.7) 100%);
+    border-color: rgba(196, 127, 255, 0.5);
+    box-shadow: 0 0 30px -5px rgba(139, 45, 255, 0.3), inset 0 0 16px rgba(38, 198, 255, 0.12);
+  }
+
+  .capability-pulse {
+    animation: capability-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes capability-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capability-pulse {
+    animation: none;
+  }
+}
+
+@layer components {
+  /* Frame 09 — Proof / Case Studies (Stitch atmosphere: violet/cyan behind the cards, violet low left). */
+  .cases-ambient {
+    background: radial-gradient(circle at 75% 40%, rgba(84, 24, 200, 0.15) 0%, rgba(38, 198, 255, 0.08) 25%, transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(139, 45, 255, 0.08) 0%, transparent 50%);
+  }
+
+  .cases-headline-gradient {
+    background: linear-gradient(135deg, #f5f7ff 60%, rgba(38, 198, 255, 0.9) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cases-card {
+    border: 1px solid rgba(160, 175, 220, 0.1);
+    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.7);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Readability at the foot of the card; lighter above than Stitch because the result headline is not shown. */
+  .cases-card-gradient {
+    background: linear-gradient(
+      to top,
+      rgba(3, 4, 10, 0.97) 0%,
+      rgba(7, 11, 24, 0.78) 26%,
+      rgba(3, 4, 10, 0.38) 58%,
+      rgba(3, 4, 10, 0.16) 100%
+    );
+  }
+
+  .cases-card-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (hover: hover) {
+    .cases-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(38, 198, 255, 0.38);
+      box-shadow: 0 10px 40px -10px rgba(38, 198, 255, 0.18), 0 0 0 1px rgba(139, 45, 255, 0.15);
+    }
+
+    .cases-card:hover .cases-card-image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cases-card,
+  .cases-card-image {
+    transition: none;
+  }
+
+  .cases-card:hover,
+  .cases-card:hover .cases-card-image {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Frame 10 — What We've Built (Stitch light orbs: cyan top right, violet left, faint cyan low centre). */
+  .built-ambient {
+    background: radial-gradient(circle at 88% 6%, rgba(38, 198, 255, 0.1) 0%, transparent 32%),
+      radial-gradient(circle at 4% 55%, rgba(139, 45, 255, 0.12) 0%, transparent 30%),
+      radial-gradient(circle at 62% 104%, rgba(38, 198, 255, 0.05) 0%, transparent 34%),
+      radial-gradient(ellipse at top, rgba(23, 37, 84, 0.2) 0%, transparent 70%);
+  }
+
+  /* Solid translucent surface: over the plain dark ground a backdrop blur adds nothing visible,
+     and WebKit can fail to paint blurred panels' contents while their parent fades in. */
+  .built-panel {
+    background: rgba(8, 13, 31, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .built-media-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Light fade at the foot of the key art so it meets the panel; the image itself stays bright. */
+  .built-media-fade {
+    background: linear-gradient(to top, rgba(8, 13, 31, 0.85) 0%, rgba(8, 13, 31, 0) 30%);
+  }
+
+  /* A soft band of light that passes across the key art as the panel arrives (positioned by GSAP). */
+  .built-media-sheen {
+    background: linear-gradient(105deg, transparent 38%, rgba(190, 225, 255, 0.14) 50%, transparent 62%);
+    mix-blend-mode: screen;
+    transform: translateX(-120%);
+  }
+
+  /* Slow ambient drift of the product key art; the two panels run out of phase. */
+  .built-media-drift {
+    animation: built-drift 16s ease-in-out infinite alternate;
+  }
+
+  .built-media-drift-minuta {
+    animation-duration: 19s;
+    animation-delay: -7s;
+  }
+
+  /* Visual response only: the panels do not navigate anywhere. */
+  @media (hover: hover) {
+    .built-panel-rex:hover {
+      border-color: rgba(139, 45, 255, 0.4);
+      box-shadow: 0 0 40px -10px rgba(139, 45, 255, 0.25);
+      background-color: rgba(12, 20, 46, 0.8);
+    }
+
+    .built-panel-minuta:hover {
+      border-color: rgba(38, 198, 255, 0.4);
+      box-shadow: 0 0 40px -10px rgba(38, 198, 255, 0.25);
+      background-color: rgba(12, 20, 46, 0.8);
+    }
+
+    .built-panel:hover .built-media-image {
+      transform: scale(1.025);
+    }
+  }
+}
+
+@keyframes built-drift {
+  from { transform: scale(1.045) translate3d(-1.2%, 0.4%, 0); }
+  to { transform: scale(1.045) translate3d(1.2%, -0.6%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .built-panel,
+  .built-media-image {
+    transition: none;
+  }
+
+  .built-media-drift {
+    animation: none;
+  }
+
+  .built-media-sheen {
+    display: none;
+  }
+
+  .built-panel:hover .built-media-image {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Frame 11 — Use Cases (Stitch atmosphere: violet/cyan glow right of centre, pulsing violet orb low left). */
+  .usecases-ambient {
+    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.05) 35%, transparent 70%);
+  }
+
+  .usecases-orb {
+    background: radial-gradient(circle, rgba(139, 45, 255, 0.38) 0%, rgba(139, 45, 255, 0) 68%);
+    opacity: 0.2;
+    animation: usecases-orb 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .usecases-headline-accent {
+    filter: drop-shadow(0 0 14px rgba(38, 198, 255, 0.35));
+  }
+
+  .usecase-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    background: #03040a;
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .usecase-panel:focus {
+    outline: none;
+  }
+
+  .usecase-panel:focus-visible {
+    outline: 2px solid rgba(38, 198, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  .usecase-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Light atmospheric shade over the photograph (lifts when a panel opens); the photo stays clearly
+     visible at rest. A separate, fixed fade at the foot keeps the card text readable. */
+  .usecase-shade {
+    background: linear-gradient(to top, rgba(3, 4, 10, 0.7) 0%, rgba(3, 4, 10, 0.32) 42%, transparent 70%);
+    transition: opacity 0.4s ease;
+  }
+
+  .usecase-text-fade {
+    background: linear-gradient(to top, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.45) 26%, transparent 46%);
+  }
+
+  .usecase-accent {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .usecase-tag {
+    color: rgb(203 213 225);
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .usecase-title {
+    color: #fff;
+    font-size: 1.375rem;
+    line-height: 1.25;
+    transition: color 0.3s ease;
+  }
+
+  .usecase-explore {
+    opacity: 0.7;
+    transition: opacity 0.35s ease;
+  }
+
+  /* BFSI is the featured industry: its accent line and tag stay lit. */
+  .usecase-panel[data-default] .usecase-accent {
+    opacity: 0.6;
+  }
+
+  .usecase-panel[data-default] .usecase-tag {
+    color: rgba(38, 198, 255, 0.9);
+    border-color: rgba(38, 198, 255, 0.2);
+  }
+
+  .usecase-panel[data-default] .usecase-explore {
+    opacity: 0.8;
+  }
+
+  @media (min-width: 1280px) {
+    /* The strip itself switches to a row at xl via its utility classes (xl:flex xl:h-[520px]). */
+    .usecase-strip > .usecase-panel {
+      flex: 1 1 0;
+      min-width: 0;
+      transition: flex-grow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .usecase-title {
+      font-size: clamp(1.25rem, 1.55vw, 1.5rem);
+    }
+
+    /* The open panel: BFSI while the strip is idle, otherwise the hovered or keyboard-focused panel. */
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default],
+    .usecase-strip > .usecase-panel:hover,
+    .usecase-strip > .usecase-panel:focus {
+      flex-grow: 2.2;
+      border-color: rgba(38, 198, 255, 0.55);
+      box-shadow: inset 0 0 24px rgba(38, 198, 255, 0.12), 0 0 30px rgba(7, 11, 24, 0.8);
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-shade,
+    .usecase-strip > .usecase-panel:hover .usecase-shade,
+    .usecase-strip > .usecase-panel:focus .usecase-shade {
+      opacity: 0.15;
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-image,
+    .usecase-strip > .usecase-panel:hover .usecase-image,
+    .usecase-strip > .usecase-panel:focus .usecase-image {
+      transform: scale(1.05);
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-accent,
+    .usecase-strip > .usecase-panel:hover .usecase-accent,
+    .usecase-strip > .usecase-panel:focus .usecase-accent,
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-explore,
+    .usecase-strip > .usecase-panel:hover .usecase-explore,
+    .usecase-strip > .usecase-panel:focus .usecase-explore {
+      opacity: 1;
+    }
+
+    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-title,
+    .usecase-strip > .usecase-panel:hover .usecase-title,
+    .usecase-strip > .usecase-panel:focus .usecase-title,
+    .usecase-strip > .usecase-panel:hover .usecase-tag,
+    .usecase-strip > .usecase-panel:focus .usecase-tag {
+      color: var(--neon-cyan);
+    }
+
+    .usecase-strip > .usecase-panel:hover .usecase-tag,
+    .usecase-strip > .usecase-panel:focus .usecase-tag {
+      border-color: rgba(38, 198, 255, 0.3);
+    }
+  }
+}
+
+@keyframes usecases-orb {
+  0%,
+  100% { opacity: 0.2; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .usecases-orb {
+    animation: none;
+  }
+
+  .usecase-panel,
+  .usecase-image,
+  .usecase-shade,
+  .usecase-accent,
+  .usecase-tag,
+  .usecase-title,
+  .usecase-explore,
+  .usecase-strip > .usecase-panel {
+    transition: none;
+  }
+
+  /* Stable widths and no zoom: the open panel is shown by lighting alone. */
+  .usecase-strip > .usecase-panel {
+    flex-grow: 1 !important;
+  }
+
+  .usecase-image {
+    transform: none !important;
+  }
+}
+
+@layer components {
+  /* Frame 12 — Client Proof (Stitch atmosphere: violet/cyan glow right of centre, faint violet lower left). */
+  .proof-ambient {
+    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.11) 0%, rgba(38, 198, 255, 0.06) 35%, transparent 70%),
+      radial-gradient(circle at 20% 70%, rgba(139, 45, 255, 0.05) 0%, transparent 60%);
+  }
+
+  /* Halo behind the framed image: built in CSS, not baked into the photograph. Breathes very slowly. */
+  .proof-halo {
+    background: linear-gradient(to top right, rgba(139, 45, 255, 0.15), transparent, rgba(38, 198, 255, 0.15));
+    filter: blur(40px);
+    animation: proof-halo 14s ease-in-out infinite alternate;
+  }
+
+  .proof-frame {
+    box-shadow: 0 0 60px -15px rgba(139, 45, 255, 0.25), 0 0 40px -10px rgba(38, 198, 255, 0.18);
+  }
+
+  /* Rests at a slight zoom and eases to 1 on hover (Stitch). */
+  .proof-image {
+    transform: scale(1.02);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (hover: hover) {
+    .proof-frame:hover .proof-image {
+      transform: scale(1);
+    }
+  }
+
+  /* Edge blend into the void, lighter than Stitch's so the portal on the right stays visible. */
+  .proof-vignette {
+    background: linear-gradient(90deg, rgba(3, 4, 10, 0.85) 0%, rgba(3, 4, 10, 0.35) 9%, transparent 20%, transparent 84%, rgba(3, 4, 10, 0.35) 94%, rgba(3, 4, 10, 0.8) 100%),
+      linear-gradient(180deg, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.25) 8%, transparent 20%, transparent 80%, rgba(3, 4, 10, 0.4) 92%, rgba(3, 4, 10, 0.85) 100%);
+  }
+
+  /* Testimonial rule (used once approved copy is present). */
+  .proof-quote {
+    border-left: 1px solid rgba(139, 45, 255, 0.35);
+  }
+}
+
+@keyframes proof-halo {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-halo {
+    animation: none;
+  }
+
+  .proof-image {
+    transform: none;
+    transition: none;
+  }
+
+  .proof-frame:hover .proof-image {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Frame 13 — How We Think (Stitch atmosphere: violet top-centre, cyan top-right, violet lower-left; scoped to the section). */
+  .insights-ambient {
+    background: radial-gradient(circle at 50% 20%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.04) 40%, transparent 75%),
+      radial-gradient(ellipse at top right, rgba(38, 198, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(139, 45, 255, 0.06) 0%, transparent 60%);
+  }
+
+  /* "Read Insights" is plain text in the Stitch pill until a destination exists: no pointer cursor. */
+  .insights-pill {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-primary);
+    cursor: default;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .insights-pill-arrow {
+    transition: transform 0.2s;
+  }
+
+  /* Editorial card. The accent alternates cyan / violet / cyan (Stitch). */
+  .insight-card {
+    --insight-accent: 38, 198, 255;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(7, 11, 24, 0.6);
+    cursor: default;
+    transition: border-color 0.5s, box-shadow 0.5s;
+  }
+
+  .insight-card[data-accent="violet"] {
+    --insight-accent: 139, 45, 255;
+  }
+
+  .insight-image {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Blend into the card body, lighter than Stitch's so the photograph stays clearly visible. */
+  .insight-fade {
+    background: linear-gradient(to top, #070b18 0%, rgba(7, 11, 24, 0.5) 20%, rgba(7, 11, 24, 0.1) 48%, transparent 70%);
+  }
+
+  .insight-title {
+    color: #fff;
+    transition: color 0.3s;
+  }
+
+  .insight-explore {
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .insight-arrow {
+    transition: transform 0.2s;
+  }
+
+  @media (hover: hover) {
+    .insights-pill:hover {
+      border-color: rgba(139, 45, 255, 0.4);
+      background: rgba(139, 45, 255, 0.1);
+      box-shadow: 0 0 20px rgba(139, 45, 255, 0.15);
+    }
+
+    .insights-pill:hover .insights-pill-arrow {
+      transform: translateX(2px);
+    }
+
+    .insight-card:hover {
+      border-color: rgba(var(--insight-accent), 0.45);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .insight-card:hover .insight-image {
+      transform: scale(1.03);
+    }
+
+    .insight-card:hover .insight-title {
+      color: rgb(var(--insight-accent));
+    }
+
+    .insight-card:hover .insight-explore {
+      color: #fff;
+    }
+
+    .insight-card:hover .insight-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  /* Keyboard focus mirrors hover, on top of the global focus-visible outline. */
+  .insight-card:focus-visible {
+    border-color: rgba(var(--insight-accent), 0.45);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .insight-card:focus-visible .insight-image {
+    transform: scale(1.03);
+  }
+
+  .insight-card:focus-visible .insight-title {
+    color: rgb(var(--insight-accent));
+  }
+
+  .insight-card:focus-visible .insight-explore {
+    color: #fff;
+  }
+
+  .insight-card:focus-visible .insight-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Tablet rows: the photograph sits left of the copy, so it also blends towards the card body on its right edge. */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    .insight-fade {
+      background: linear-gradient(to right, transparent 60%, rgba(7, 11, 24, 0.55) 100%),
+        linear-gradient(to top, rgba(7, 11, 24, 0.55) 0%, rgba(7, 11, 24, 0.1) 35%, transparent 60%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .insight-image,
+  .insight-arrow,
+  .insights-pill-arrow {
+    transition: none;
+  }
+
+  .insight-card:hover .insight-image,
+  .insight-card:focus-visible .insight-image,
+  .insight-card:hover .insight-arrow,
+  .insight-card:focus-visible .insight-arrow,
+  .insights-pill:hover .insights-pill-arrow {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Frame 14 — Ready to Explore. The horizon is essentially static (Stitch): a slight overscan, toned down a touch. */
+  .explore-image {
+    transform: scale(1.02);
+    filter: brightness(0.9) contrast(1.05);
+  }
+
+  /* Radial vignette, top/bottom fade and a restrained left-to-right scrim. Lighter than Stitch's so the arc
+     stays clearly visible; the bottom fades to the void so the page end and the continuum row blend in. */
+  .explore-scrims {
+    background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(3, 4, 10, 0.3) 75%, rgba(3, 4, 10, 0.65) 100%),
+      linear-gradient(to top, #03040a 0%, rgba(3, 4, 10, 0.35) 14%, transparent 30%, transparent 72%, rgba(3, 4, 10, 0.6) 100%),
+      linear-gradient(to right, rgba(3, 4, 10, 0.6) 0%, rgba(3, 4, 10, 0.2) 45%, transparent 70%);
+  }
+
+  /* "Talk to Us" is plain text in the Stitch pill until a destination exists: no pointer cursor, no tab stop. */
+  .explore-pill {
+    border: 1px solid rgba(160, 175, 220, 0.22);
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    cursor: default;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+  }
+
+  @media (hover: hover) {
+    .explore-pill:hover {
+      transform: translateY(-1px);
+      border-color: rgba(38, 198, 255, 0.45);
+      box-shadow: 0 0 24px -2px rgba(139, 45, 255, 0.35), 0 0 12px -2px rgba(38, 198, 255, 0.25);
+    }
+  }
+
+  /* The tagline sits over the brightest stretch of the arc: a soft shadow keeps it legible. */
+  .explore-tagline {
+    text-shadow: 0 0 18px rgba(3, 4, 10, 0.85), 0 0 4px rgba(3, 4, 10, 0.6);
+  }
+
+  .explore-underline {
+    height: 1.5px;
+    background: linear-gradient(90deg, #26c6ff 0%, #8b2dff 60%, transparent 100%);
+    box-shadow: 0 0 12px rgba(38, 198, 255, 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explore-pill {
+    transition: none;
+  }
+
+  .explore-pill:hover {
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Frame 15 — Footer. Restrained scrims: the gateway on the right stays visible, the left keeps
+     enough contrast for the wordmark and the newsletter block. */
+  /* Below lg the content stacks full width and the gateway runs the full height behind it, so the
+     shade is vertical: darkest where the copy is dense, lifting across the middle so the portal reads. */
+  .footer-scrims {
+    background: linear-gradient(to bottom, rgba(3, 4, 10, 0.9) 0%, rgba(3, 4, 10, 0.78) 34%, rgba(3, 4, 10, 0.56) 62%, rgba(3, 4, 10, 0.66) 86%, rgba(3, 4, 10, 0.86) 100%);
+  }
+
+  /* Small screens keep the copy over the brighter stretch of the gateway: a soft shade holds contrast. */
+  .footer-content {
+    text-shadow: 0 0 14px rgba(3, 4, 10, 0.9), 0 0 4px rgba(3, 4, 10, 0.7);
+  }
+
+  @media (min-width: 1024px) {
+    .footer-scrims {
+      background: linear-gradient(to right, #03040a 0%, rgba(3, 4, 10, 0.82) 30%, rgba(3, 4, 10, 0.45) 58%, rgba(3, 4, 10, 0.2) 100%),
+        linear-gradient(to top, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.2) 22%, transparent 45%, rgba(3, 4, 10, 0.55) 100%);
+    }
+
+    .footer-content {
+      text-shadow: none;
+    }
+  }
+
+  /* The newsletter field is a visual echo of the Stitch control: no form, nothing focusable. */
+  .footer-field {
+    background: rgba(13, 18, 36, 0.55);
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    cursor: default;
+  }
+
+  .footer-field-button {
+    background: rgba(139, 45, 255, 0.2);
+    border: 1px solid rgba(139, 45, 255, 0.4);
+  }
+
+  .footer-link {
+    color: #cbd5e1;
+    transition: color 0.2s;
+  }
+
+  @media (hover: hover) {
+    .footer-link:hover {
+      color: #fff;
+    }
+  }
+
+  /* The pillar column sits over the brightest part of the gateway: a soft shade keeps it legible. */
+  .footer-pillars {
+    text-shadow: 0 0 16px rgba(3, 4, 10, 0.9), 0 0 4px rgba(3, 4, 10, 0.75);
+  }
+
+  .footer-pillar-glow {
+    text-shadow: 0 0 12px rgba(38, 198, 255, 0.35), 0 0 16px rgba(3, 4, 10, 0.9);
+  }
+
+  .footer-pillar-beyond {
+    background: linear-gradient(90deg, #c4b5fd, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .footer-legal {
+    border-top: 1px solid rgba(160, 175, 220, 0.14);
+    background: rgba(3, 4, 10, 0.72);
+  }
+
+  .footer-status-dot {
+    animation: footer-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes footer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-status-dot {
+    animation: none;
+  }
+
+  .footer-link {
+    transition: none;
+  }
+}
