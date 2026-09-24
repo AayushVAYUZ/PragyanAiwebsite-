@@ -8,34 +8,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Frame 10 — What We've Built. Cinematic scroll scene.
+ * Frame 10 — What We've Built.
  *
- * Composition follows the approved Stitch screen: an editorial header over an
- * atmospheric backdrop, then the two product showcases. Every word is the approved
- * .docx content — the Stitch screen's own product descriptions and capability badges
- * were written for the mockup, so the document's names, taglines, copy and feature
- * lists are used instead.
+ * These are products built inside the business for its own problems, not client work, so
+ * the copy stays on what each one is and why it was built. Detailed functionality belongs
+ * on the product pages; listing it here only crowds the cards.
  *
- * The camera is a pure function of scroll progress written straight to the DOM.
- * Reveals are cumulative: once a showcase has arrived it stays for the rest of the scene.
+ * The scene assembles itself once the section is on screen; nothing is tied to scroll.
  */
+
 
 const PRODUCTS = [
   {
     id: "rex",
     name: "RAPYD Exchange (ReX)",
     short: "ReX",
-    tagline: "Intelligence for effortless recruitment",
-    text: "An end-to-end intelligent hiring suite that accelerates decisions and surfaces the right people, faster than ever.",
-    features: [
-      "JD Generation",
-      "Candidate Scoring & Benchmarking",
-      "AI-powered Assessment Creation",
-      "AI-suggested Interview Questions",
-      "Individual & Comparative Candidate Reports",
-      "Customizable Interview Workflows",
-      "Dashboard for JD & Candidate Pipeline",
-    ],
+    tagline: "ai for Recruitment",
+    text: "Built internally to make hiring faster, more consistent and more intelligence-driven.",
+    features: ["JD Generation", "Candidate Scoring & Benchmarking", "ai-powered Interview Assessment"],
     cta: "Explore ReX",
     image: "/images/rex-product-approved.png",
     alt: "Dark-mode recruitment intelligence interface with candidate matching visuals",
@@ -44,19 +34,10 @@ const PRODUCTS = [
   {
     id: "minuta",
     name: "BITOVN Minuta",
-    short: "Minuta",
-    tagline: "Intelligence for effortless discussions",
-    text: "Meeting Insights Engine that tracks decisions and actionables and drafts ready-to-send MoM.",
-    features: [
-      "Ready-to-send draft MoM",
-      "Live Captions and Auto-transcription",
-      "Google Calendar Integration",
-      "Minuta Mobile Application",
-      "Key Decisions, Topics and Action Items tagged",
-      "Speaker Tagging",
-      "Multilingual Transcription and Translation",
-      "AskPai Chatbot Integration",
-    ],
+    short: "BITOVN Minuta",
+    tagline: "ai for Meetings & Collaboration",
+    text: "Built internally to capture conversations, decisions and actions without adding work to the team.",
+    features: ["Live Captions & Auto-transcription", "Decision & Action Item Tracking", "Ready-to-send MoM"],
     cta: "Explore Minuta",
     image: "/images/minuta-product-approved.png",
     alt: "Dark-mode meeting intelligence interface with waveform and transcript panels",
@@ -64,35 +45,18 @@ const PRODUCTS = [
   },
 ] as const;
 
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-function smoothstep(edge0: number, edge1: number, v: number) {
-  const t = clamp01((v - edge0) / (edge1 - edge0 || 1));
-  return t * t * (3 - 2 * t);
-}
-
-interface Place {
-  x?: number;
-  y?: number;
-  s?: number;
-  o: number;
-  blur?: number;
-}
-
-/** Writes a placement onto an element, skipping properties that have not changed. */
-function write(el: HTMLElement | null, p: Place) {
-  if (!el) return;
-  const visible = p.o > 0.002;
-  const visibility = visible ? "visible" : "hidden";
-  if (el.style.visibility !== visibility) el.style.visibility = visibility;
-  if (!visible) return;
-  const o = p.o >= 0.999 ? "1" : p.o.toFixed(3);
-  if (el.style.opacity !== o) el.style.opacity = o;
-  const t = `translate3d(${(p.x ?? 0).toFixed(2)}px, ${(p.y ?? 0).toFixed(2)}px, 0) scale(${(p.s ?? 1).toFixed(4)})`;
-  if (el.style.transform !== t) el.style.transform = t;
-  const blur = p.blur ?? 0;
-  const f = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "none";
-  if (el.style.filter !== f) el.style.filter = f;
+/** The tagline is set in uppercase by the design, so "ai" is opted out of the transform —
+ * the same treatment the header gives "Ask P.ai". */
+function renderTagline(text: string) {
+  return text.split(/\b(ai)\b/g).map((part, i) =>
+    part === "ai" ? (
+      <span key={i} className="normal-case">
+        ai
+      </span>
+    ) : (
+      part
+    ),
+  );
 }
 
 function clear(el: HTMLElement | null) {
@@ -109,11 +73,11 @@ export default function BuiltProducts() {
     backdrop: HTMLElement | null;
     atmos: HTMLElement | null;
     head: HTMLElement | null;
-    intro: HTMLElement | null;
     cards: (HTMLElement | null)[];
     media: (HTMLElement | null)[];
     bodies: (HTMLElement | null)[];
-  }>({ backdrop: null, atmos: null, head: null, intro: null, cards: [], media: [], bodies: [] });
+    sheens: (HTMLElement | null)[];
+  }>({ backdrop: null, atmos: null, head: null, cards: [], media: [], bodies: [], sheens: [] });
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -133,54 +97,66 @@ export default function BuiltProducts() {
 
         if (!context.conditions?.camera) {
           section.dataset.motion = "off";
-          [e.backdrop, e.atmos, e.head, e.intro, ...e.cards, ...e.media, ...e.bodies].forEach(clear);
+          [e.backdrop, e.atmos, e.head, ...e.cards, ...e.media, ...e.bodies, ...e.sheens].forEach(clear);
           return;
         }
 
         section.dataset.motion = "on";
 
-        const frame = (p: number) => {
-          // The backdrop pushes slowly the whole way, so the scene never sits still.
-          write(e.backdrop, { y: (p - 0.5) * -80, s: lerp(1.06, 1.2, p), o: 1 });
-          write(e.atmos, { x: (p - 0.5) * 64, s: lerp(1, 1.14, p), o: lerp(0.55, 1, p) });
+        const cards = e.cards.filter(Boolean) as HTMLElement[];
+        const bodies = e.bodies.filter(Boolean) as HTMLElement[];
+        const arriving = [e.head, ...cards, ...bodies].filter(Boolean) as HTMLElement[];
 
-          // Header arrives first and holds for the whole scene.
-          const headIn = smoothstep(0, 0.1, p);
-          write(e.head, { y: lerp(48, 0, headIn) - p * 22, o: headIn, blur: lerp(8, 0, headIn) });
-          const introIn = smoothstep(0.06, 0.18, p);
-          write(e.intro, { y: lerp(38, 0, introIn) - p * 16, o: introIn, blur: lerp(6, 0, introIn) });
+        // The renders sit slightly oversized so the drift never exposes their edges.
+        gsap.set(e.media.filter(Boolean), { scale: 1.06 });
+        gsap.set(arriving, { autoAlpha: 0, y: 26 });
 
-          // Each showcase arrives in turn and REMAINS. The second landing never takes
-          // the first away — the pair accumulates.
-          PRODUCTS.forEach((_, i) => {
-            const start = 0.2 + i * 0.24;
-            const arrived = smoothstep(start, start + 0.26, p);
-            write(e.cards[i], {
-              x: lerp(i === 0 ? -64 : 64, 0, arrived),
-              y: lerp(64, 0, arrived),
-              s: lerp(0.94, 1, arrived),
-              o: arrived,
-              blur: lerp(9, 0, arrived),
-            });
-            // The product render settles inside its frame a beat after the card lands.
-            write(e.media[i], { y: lerp(26, 0, arrived) + (p - 0.5) * -18, s: lerp(1.12, 1.04, arrived), o: 1 });
-            // Then the written detail fills in under it.
-            const bodyIn = smoothstep(start + 0.16, start + 0.4, p);
-            write(e.bodies[i], { y: lerp(26, 0, bodyIn), o: bodyIn, blur: lerp(5, 0, bodyIn) });
-          });
-        };
+        // The showcases assemble once the section is on screen. Nothing is tied to scroll
+        // position: scrubbing across four screens left an empty frame ahead of the content.
+        const intro = gsap.timeline({ paused: true });
+        if (e.head) intro.to(e.head, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0);
+        if (cards.length) intro.to(cards, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.75, stagger: 0.12, ease: "power2.out" }, 0.28);
+        if (bodies.length) intro.to(bodies, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, 0.48);
 
-        frame(0);
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-          onUpdate: (self) => frame(self.progress),
-          onRefresh: (self) => frame(self.progress),
+        // A single pass of light across each product image as its card lands, then done.
+        const sheens = e.sheens.filter(Boolean) as HTMLElement[];
+        sheens.forEach((sheen, i) => {
+          intro.fromTo(
+            sheen,
+            { xPercent: -130, opacity: 0 },
+            { xPercent: 130, duration: 1.2, ease: "power1.inOut", keyframes: { opacity: [0, 1, 1, 0] } },
+            0.55 + i * 0.12,
+          );
         });
 
-        return () => trigger.kill();
+        // Scroll keeps only a restrained depth drift on the environment.
+        const drift = [e.backdrop, e.atmos].filter(Boolean) as HTMLElement[];
+        if (drift.length) {
+          gsap.fromTo(
+            drift,
+            { yPercent: -1.8 },
+            { yPercent: 1.8, ease: "none", scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true } },
+          );
+        }
+
+        let started = false;
+        const visibility = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !started) {
+                started = true;
+                intro.play();
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        visibility.observe(section);
+
+        return () => {
+          visibility.disconnect();
+          intro.kill();
+        };
       },
       section,
     );
@@ -216,20 +192,11 @@ export default function BuiltProducts() {
         <div className="built-inner">
           <header className="built-head-row">
             <div ref={(el) => void (els.current.head = el)} className="built-head">
-              <p className="built-eyebrow">
-                <span aria-hidden="true" className="built-dot" />
-                10 — What We&rsquo;ve Built
-              </p>
               <h2 id="products-heading" className="built-title">
-                <span>We build with AI.</span>
-                <span className="built-title-accent">We build AI too.</span>
+                <span>We build ai internally,</span>
+                <span className="built-title-accent">put it into real workflows, and use it ourselves.</span>
               </h2>
             </div>
-
-            <p ref={(el) => void (els.current.intro = el)} className="built-intro">
-              Our products are another expression of how we work — applying intelligence to real workflows, real users
-              and real enterprise problems.
-            </p>
           </header>
 
           <ul className="built-grid" aria-label="Products">
@@ -251,12 +218,13 @@ export default function BuiltProducts() {
                     />
                   </div>
                   <div aria-hidden="true" className="built-card-fade" />
+                  <span ref={(el) => void (els.current.sheens[i] = el)} aria-hidden="true" className="built-card-sheen" />
                 </div>
 
                 <div ref={(el) => void (els.current.bodies[i] = el)} className="built-card-body">
                   <h3 className="built-card-name">{product.short}</h3>
-                  <p className="built-card-full">{product.name}</p>
-                  <p className="built-card-tagline">{product.tagline}</p>
+                  {product.name !== product.short && <p className="built-card-full">{product.name}</p>}
+                  <p className="built-card-tagline">{renderTagline(product.tagline)}</p>
                   <p className="built-card-text">{product.text}</p>
 
                   <ul className="built-features" aria-label={`${product.short} capabilities`}>

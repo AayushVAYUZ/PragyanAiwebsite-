@@ -71,9 +71,10 @@ const BEAM_SPECTRUM = [
   { tint: "#C6F6EE", hue: "#2FE6D0" },
 ];
 
-/** Pacing of the reveal, in seconds: the lead-in as light enters the glass, how long the light
- * takes to run out to a stage, and the beat before the next beam leaves. */
-const PRISM_SEQUENCE = { lead: 0.6, travel: 0.95, gap: 0.45 };
+/** Pacing of the reveal, in seconds: the lead-in as light enters the glass, and how long the
+ * split takes to run out to the stages. The five beams leave together, so there is no beat
+ * between them — the prism disperses once, not five times. */
+const PRISM_SEQUENCE = { lead: 0.6, travel: 1.1 };
 
 const smooth = (edge0: number, edge1: number, v: number) => {
   const t = Math.min(1, Math.max(0, (v - edge0) / (edge1 - edge0)));
@@ -264,51 +265,53 @@ export default function PrismApproach() {
           },
         );
 
-        // The reveal: light enters the glass, then runs out to each stage in turn and lights it.
-        // One timeline, played once — nothing here is tied to scroll position.
-        const { lead, travel, gap } = PRISM_SEQUENCE;
+        // The reveal: light enters the glass, then splits — all five beams travel outward at
+        // once and the five stages light together. One timeline, played once; nothing here is
+        // tied to scroll position.
+        const { lead, travel } = PRISM_SEQUENCE;
         // Absolute positions throughout: relative ones ("<", ">") would be measured against
         // whatever was inserted last, and the long scrim tween would drag them out of place.
-        const beamStart = (index: number) => lead + index * (travel + gap);
+        const arrival = lead + travel * 0.9;
         const sequence = gsap.timeline({ paused: true });
         sequence.to(entryProgress, { v: 1, duration: lead, ease: "power2.out", onUpdate: renderEntry }, 0);
 
-        STAGES.forEach((_, index) => {
-          const beam = { p: 0, flash: 0 };
-          const at = beamStart(index);
-          const arrival = at + travel * 0.9;
-          sequence.to(
-            beam,
-            {
-              p: 1,
-              duration: travel,
-              ease: "power2.inOut",
-              onUpdate: () => {
-                beamProgress[index] = beam.p;
+        // One value drives every beam, so they cannot drift apart.
+        const split = { p: 0, flash: 0 };
+        sequence.to(
+          split,
+          {
+            p: 1,
+            duration: travel,
+            ease: "power2.inOut",
+            onUpdate: () => {
+              STAGES.forEach((_, index) => {
+                beamProgress[index] = split.p;
                 renderBeam(index);
-              },
+              });
             },
-            at,
-          );
-          sequence.add(() => revealStage(index), arrival);
-          sequence.to(
-            beam,
-            {
-              flash: 1,
-              duration: 0.18,
-              yoyo: true,
-              repeat: 1,
-              ease: "power2.out",
-              onUpdate: () => {
-                beamFlash[index] = beam.flash;
+          },
+          lead,
+        );
+        sequence.add(() => STAGES.forEach((_, index) => revealStage(index)), arrival);
+        sequence.to(
+          split,
+          {
+            flash: 1,
+            duration: 0.18,
+            yoyo: true,
+            repeat: 1,
+            ease: "power2.out",
+            onUpdate: () => {
+              STAGES.forEach((_, index) => {
+                beamFlash[index] = split.flash;
                 renderBeam(index);
-              },
+              });
             },
-            arrival,
-          );
-        });
+          },
+          arrival,
+        );
 
-        if (scrim) sequence.to(scrim, { opacity: 0, duration: beamStart(STAGES.length - 1) + travel, ease: "none" }, 0);
+        if (scrim) sequence.to(scrim, { opacity: 0, duration: lead + travel, ease: "none" }, 0);
 
         // Afterwards the prism keeps pushing light outward — a slow crest along the lit beams,
         // so the light stays the section's primary movement without ever flashing.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,25 +8,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Frame 09 — Sovereign AI. A scroll-driven enclave blueprint.
+ * Frame 09 — Sovereign AI.
  *
- * The scene is a pure function of scroll progress written straight to the DOM, so
- * React never re-renders while the camera moves. Reveals are CUMULATIVE: each layer
- * arrives, settles on its own anchor and stays for the rest of the scene — nothing
- * is removed because the next layer appeared.
+ * The gate holds the centre of the frame for as long as the section is on screen, and the
+ * four capabilities assemble around it on their own clock once the section arrives. Nothing
+ * is tied to scroll position.
  *
- * Copy is transcribed from the approved Stitch screen. Three strings from that screen
- * are deliberately left out because they assert operational state that is not real:
- * a live latency/drift readout, a physical coordinate, and a security attestation.
+ * The scene deliberately carries no operational readouts. Residency lists, chip models,
+ * cipher names, bearing labels and status chips read as a live monitoring dashboard, which
+ * this is not — the four capabilities carry the offer on their own.
  */
 
 const LAYERS = [
   {
-    tag: "Layer 01 / Ingestion",
+    number: "01",
     title: "Data Ingestion & Knowledge Core",
-    text: "Strict jurisdictional data residency with private vectorized enterprise memory, immutable audit logs and zero telemetry loops.",
-    meta: "Residency: EU / US / SG / IN",
-    stat: "100% Air-Isolated",
+    text: "Strict jurisdictional data residency with private enterprise memory and controlled data pipelines.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
         <ellipse cx="12" cy="5.5" rx="7.5" ry="3" />
@@ -36,11 +33,9 @@ const LAYERS = [
     ),
   },
   {
-    tag: "Layer 02 / Models",
+    number: "02",
     title: "Proprietary Model Training",
-    text: "Isolated parameter weights and sovereign fine-tuning. Model weights remain exclusive corporate intellectual property.",
-    meta: "Weight encryption: AES-256",
-    stat: "100% Client IP",
+    text: "Isolated model training and sovereign fine-tuning. Model weights remain your intellectual property.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
         <rect x="7.5" y="7.5" width="9" height="9" rx="1.5" />
@@ -49,11 +44,9 @@ const LAYERS = [
     ),
   },
   {
-    tag: "Layer 03 / Silicon",
+    number: "03",
     title: "Dedicated Compute Fabric",
-    text: "Single-tenant accelerated clusters and dedicated private silicon. Hardware partitions isolated from multitenant fabrics.",
-    meta: "Chips: H100 / H200 / B200",
-    stat: "Single Tenant",
+    text: "Single-tenant compute and dedicated infrastructure isolated from shared environments.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
         <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -63,11 +56,9 @@ const LAYERS = [
     ),
   },
   {
-    tag: "Layer 04 / Runtime",
+    number: "04",
     title: "Secure Model Serving & Apps",
-    text: "Localized inference gateways with zero token exposure, confidential enclave tokenization and air-tight APIs.",
-    meta: "API: enclave guest mTLS",
-    stat: "Isolated Runtime",
+    text: "Localized inference and secure APIs with controlled model and data access.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
         <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -77,47 +68,21 @@ const LAYERS = [
   },
 ] as const;
 
-/** Four stations that ride the orbit, each holding its own bearing around the gate. */
-const ORBIT = [
-  { label: "000° Prime Vector / Zero Leak", angle: 0 },
-  { label: "090° Zenith / Topology ISO", angle: 90 },
-  { label: "180° Azimuth / Boundary Lock", angle: 180 },
-  { label: "270° Nadir / Encryption Valid", angle: 270 },
+/**
+ * The focus scan, in seconds: how long one capability stays lit, and how often the whole
+ * 01 → 04 pass repeats. The pass is deliberately far shorter than the gap between passes —
+ * these are four capabilities being pointed at, not a sequence being stepped through.
+ */
+const FOCUS = { lit: 0.85, cycle: 10.5 };
+
+/** Motes leaving the gate's edge: start offset, drift, and how often each one goes. */
+const MOTES = [
+  { sx: "-46%", sy: "-18%", ex: "-135%", ey: "-72%", delay: 0 },
+  { sx: "44%", sy: "-30%", ex: "128%", ey: "-96%", delay: 4.2 },
+  { sx: "-40%", sy: "26%", ex: "-120%", ey: "84%", delay: 7.6 },
+  { sx: "46%", sy: "14%", ex: "132%", ey: "58%", delay: 10.9 },
+  { sx: "-8%", sy: "-40%", ex: "-26%", ey: "-128%", delay: 13.4 },
 ] as const;
-
-const TOPOLOGY = ["On-Premises", "Region-Locked Cloud", "Hybrid Orchestration", "Air-Gapped"] as const;
-const ASSURANCES = ["Zero-Trust Attribution", "Confidential Compute", "Model Weight Lock"] as const;
-
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-function smoothstep(edge0: number, edge1: number, v: number) {
-  const t = clamp01((v - edge0) / (edge1 - edge0 || 1));
-  return t * t * (3 - 2 * t);
-}
-
-interface Place {
-  x?: number;
-  y?: number;
-  s?: number;
-  o: number;
-  blur?: number;
-}
-
-/** Writes a placement onto an element, skipping properties that have not changed. */
-function write(el: HTMLElement | null, p: Place) {
-  if (!el) return;
-  const visible = p.o > 0.002;
-  const visibility = visible ? "visible" : "hidden";
-  if (el.style.visibility !== visibility) el.style.visibility = visibility;
-  if (!visible) return;
-  const o = p.o >= 0.999 ? "1" : p.o.toFixed(3);
-  if (el.style.opacity !== o) el.style.opacity = o;
-  const t = `translate3d(${(p.x ?? 0).toFixed(2)}px, ${(p.y ?? 0).toFixed(2)}px, 0) scale(${(p.s ?? 1).toFixed(4)})`;
-  if (el.style.transform !== t) el.style.transform = t;
-  const blur = p.blur ?? 0;
-  const f = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "none";
-  if (el.style.filter !== f) el.style.filter = f;
-}
 
 function clear(el: HTMLElement | null) {
   if (!el) return;
@@ -133,24 +98,28 @@ export default function SovereignAI() {
     plate: HTMLElement | null;
     atmos: HTMLElement | null;
     portal: HTMLElement | null;
-    orbit: HTMLElement | null;
-    spin: HTMLElement | null;
-    nodes: (HTMLElement | null)[];
     head: HTMLElement | null;
     intro: HTMLElement | null;
+    introTitle: HTMLElement | null;
+    introText: HTMLElement | null;
+    assure: HTMLElement | null;
+    stage: HTMLElement | null;
+    links: HTMLElement | null;
+    pulse: HTMLElement | null;
     cards: (HTMLElement | null)[];
-    bar: HTMLElement | null;
   }>({
     plate: null,
     atmos: null,
     portal: null,
-    orbit: null,
-    spin: null,
-    nodes: [],
     head: null,
     intro: null,
+    introTitle: null,
+    introText: null,
+    assure: null,
+    stage: null,
+    links: null,
+    pulse: null,
     cards: [],
-    bar: null,
   });
 
   useEffect(() => {
@@ -161,94 +130,138 @@ export default function SovereignAI() {
 
     media.add(
       {
-        // The camera needs the room the three-column blueprint asks for. Anywhere else —
-        // narrow screens, reduced motion — the scene collapses to ordinary document flow,
-        // so nothing can be left stranded invisible.
+        // Reduced motion gets the section outright: no entrance, no scan, no pulses.
+        // Below lg the three-column stage has no room, so the scene falls back to ordinary
+        // document flow — but the capability focus scan is layout-independent and still runs.
+        reduceMotion: "(prefers-reduced-motion: reduce)",
         camera: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
-        flow: "(max-width: 1023.98px), (prefers-reduced-motion: reduce)",
+        flow: "(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)",
       },
       (context) => {
         const e = els.current;
+        const camera = Boolean(context.conditions?.camera);
+        const titleLines = e.head ? Array.from(e.head.querySelectorAll<HTMLElement>(".sov-title span")) : [];
+        const cards = e.cards.filter(Boolean) as HTMLElement[];
 
-        if (!context.conditions?.camera) {
-          section.dataset.motion = "off";
-          [e.plate, e.atmos, e.portal, e.orbit, e.head, e.intro, e.bar, ...e.cards].forEach(clear);
-          e.spin?.style.removeProperty("transform");
-          e.nodes.forEach((n) => n?.style.removeProperty("transform"));
+        section.dataset.motion = camera ? "on" : "off";
+
+        if (context.conditions?.reduceMotion) {
+          [e.plate, e.atmos, e.portal, e.head, e.intro, ...titleLines, e.introTitle, e.introText, e.assure, ...cards].forEach(clear);
           return;
         }
 
-        section.dataset.motion = "on";
+        // The focus scan only ever points at a capability — it never hides or moves one, and
+        // it rests far longer than it runs, so it reads as ambient rather than sequential.
+        const setFocus = (index: number) => cards.forEach((card, i) => card.classList.toggle("is-focus", i === index));
+        const clearFocus = () => cards.forEach((card) => card.classList.remove("is-focus"));
 
-        const frame = (p: number) => {
-          // Environment: a slow push so the enclave is never static.
-          write(e.plate, { y: (p - 0.5) * -70, s: lerp(1.06, 1.2, p), o: 1 });
-          write(e.atmos, { x: (p - 0.5) * 70, s: lerp(1, 1.18, p), o: lerp(0.45, 0.95, p) });
-
-          // Headline and intro arrive first and stay for the whole scene.
-          const headIn = smoothstep(0, 0.09, p);
-          write(e.head, { y: lerp(44, 0, headIn) - p * 22, o: headIn, blur: lerp(7, 0, headIn) });
-          const introIn = smoothstep(0.05, 0.16, p);
-          write(e.intro, { y: lerp(38, 0, introIn) - p * 16, o: introIn, blur: lerp(6, 0, introIn) });
-
-          // The gate rises out of depth, then holds station at the centre.
-          const portalIn = smoothstep(0.08, 0.26, p);
-          write(e.portal, {
-            y: lerp(80, 0, portalIn),
-            s: lerp(0.8, 1, portalIn) * lerp(1, 1.05, p),
-            o: portalIn,
-            blur: lerp(10, 0, portalIn),
-          });
-
-          // The orbit revolves continuously as the frame is scrolled, carrying its four
-          // stations around the gate. Each node is counter-rotated so its label stays level.
-          const spin = p * 300;
-          write(e.orbit, { s: lerp(0.82, 1.03, portalIn), o: portalIn * 0.95 });
-          if (e.spin) e.spin.style.transform = `rotate(${spin.toFixed(2)}deg)`;
-          e.nodes.forEach((node, i) => {
-            if (!node) return;
-            node.style.transform = `rotate(${(-spin - ORBIT[i].angle).toFixed(2)}deg)`;
-            // The label always sits on the far side of its dot, so it reads outside the
-            // ring instead of crossing the gate as the station swings past the bottom.
-            const bearing = (((spin + ORBIT[i].angle) % 360) + 360) % 360;
-            const side = bearing > 90 && bearing < 270 ? "down" : "up";
-            if (node.dataset.side !== side) node.dataset.side = side;
-          });
-
-          // The four layers arrive one per scroll beat and REMAIN. Once a layer has settled
-          // on its anchor nothing takes it away — the blueprint accumulates.
-          const FROM = 0.28;
-          const SPAN = 0.14;
-          LAYERS.forEach((_, i) => {
-            const start = FROM + i * SPAN;
-            const arrived = smoothstep(start, start + SPAN * 0.78, p);
-            // Older layers settle back a little as newer ones land, but never leave.
-            const settled = smoothstep(start + SPAN, start + SPAN * 3.2, p);
-            write(e.cards[i], {
-              x: lerp(i < 2 ? -56 : 56, 0, arrived),
-              y: lerp(46, 0, arrived),
-              s: lerp(0.94, 1, arrived) * lerp(1, 0.975, settled),
-              o: arrived * lerp(1, 0.7, settled),
-              blur: lerp(7, 0, arrived),
-            });
-          });
-
-          // The deployment bar closes the blueprint.
-          const barIn = smoothstep(0.84, 0.95, p);
-          write(e.bar, { y: lerp(40, 0, barIn), o: barIn, blur: lerp(5, 0, barIn) });
+        // A mote from the gate toward whichever capability is lit, gone by the time it lands.
+        const sendPulse = (index: number) => {
+          const pulse = e.pulse;
+          const links = e.links;
+          const stage = e.stage;
+          const card = cards[index];
+          if (!pulse || !links || !stage || !card) return;
+          const frame = links.getBoundingClientRect();
+          const from = stage.getBoundingClientRect();
+          const to = card.getBoundingClientRect();
+          const x0 = from.left + from.width / 2 - frame.left;
+          const y0 = from.top + from.height / 2 - frame.top;
+          // Aim at the card's inner edge rather than its middle, so nothing crosses the text.
+          const x1 = (index < 2 ? to.right : to.left) - frame.left;
+          const y1 = to.top + to.height / 2 - frame.top;
+          gsap.killTweensOf(pulse);
+          gsap.fromTo(
+            pulse,
+            { x: x0, y: y0, opacity: 0, scale: 0.6 },
+            {
+              x: x1,
+              y: y1,
+              scale: 1,
+              duration: 1.1,
+              ease: "power2.inOut",
+              keyframes: { opacity: [0, 0.75, 0.75, 0] },
+              onComplete: () => gsap.set(pulse, { opacity: 0 }),
+            },
+          );
         };
 
-        frame(0);
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-          onUpdate: (self) => frame(self.progress),
-          onRefresh: (self) => frame(self.progress),
+        const scan = gsap.timeline({ repeat: -1, repeatDelay: Math.max(0, FOCUS.cycle - LAYERS.length * FOCUS.lit), paused: true });
+        LAYERS.forEach((_, index) => {
+          scan.call(
+            () => {
+              setFocus(index);
+              if (camera) sendPulse(index);
+            },
+            undefined,
+            index * FOCUS.lit,
+          );
         });
+        scan.call(clearFocus, undefined, LAYERS.length * FOCUS.lit);
+        scan.to({}, { duration: 0.01 }, LAYERS.length * FOCUS.lit);
 
-        return () => trigger.kill();
+        let intro: gsap.core.Timeline | null = null;
+
+        if (camera) {
+          // The gate is simply there for as long as the section is — it holds the centre of
+          // the frame the whole way through and never fades in or out.
+          gsap.set(e.portal, { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "none" });
+
+          const arriving = [...titleLines, e.introTitle, e.introText, e.assure, ...cards].filter(Boolean) as HTMLElement[];
+          gsap.set(arriving, { autoAlpha: 0, y: 22 });
+          gsap.set([e.head, e.intro].filter(Boolean), { autoAlpha: 1, y: 0 });
+
+          // One line at a time down the headline, then the proposition, then the capabilities.
+          intro = gsap.timeline({ paused: true });
+          titleLines.forEach((line, i) => {
+            intro!.to(line, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, i * 0.16);
+          });
+          if (e.introTitle) intro.to(e.introTitle, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 0.3);
+          if (e.introText) intro.to(e.introText, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 0.46);
+          if (e.assure) {
+            intro.to(e.assure, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 0.62);
+            intro.call(() => e.assure?.classList.add("is-lit"), undefined, 0.95);
+          }
+          if (cards.length) intro.to(cards, { autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.09, ease: "power2.out" }, 0.5);
+
+          // Scroll keeps only a restrained depth drift on the environment.
+          const env = [e.plate, e.atmos].filter(Boolean) as HTMLElement[];
+          if (env.length) {
+            gsap.fromTo(
+              env,
+              { yPercent: -1.6 },
+              { yPercent: 1.6, ease: "none", scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true } },
+            );
+          }
+        }
+
+        let started = false;
+        const visibility = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                if (!started) {
+                  started = true;
+                  intro?.play();
+                }
+                scan.play();
+              } else {
+                scan.pause();
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        visibility.observe(section);
+
+        return () => {
+          visibility.disconnect();
+          scan.kill();
+          intro?.kill();
+          if (e.pulse) gsap.killTweensOf(e.pulse);
+          clearFocus();
+          e.assure?.classList.remove("is-lit");
+        };
       },
       section,
     );
@@ -257,42 +270,39 @@ export default function SovereignAI() {
   }, []);
 
   return (
-    <section
-      id="sovereign-ai"
-      ref={sectionRef}
-      aria-labelledby="sovereign-heading"
-      data-motion="off"
-      className="sov-scene"
-    >
+    <section id="sovereign-ai" ref={sectionRef} aria-labelledby="sovereign-heading" data-motion="off" className="sov-scene">
       <div className="sov-viewport">
+        {/* A single mote sent toward whichever capability is lit. */}
+        <div ref={(el) => void (els.current.links = el)} aria-hidden="true" className="sov-links">
+          <span ref={(el) => void (els.current.pulse = el)} className="sov-link-pulse" />
+        </div>
+
         {/* Environment */}
         <div aria-hidden="true" className="sov-env">
           <div ref={(el) => void (els.current.plate = el)} className="sov-grid" />
           <div ref={(el) => void (els.current.atmos = el)} className="sov-atmos" />
+          <span className="sov-scan" />
         </div>
 
         <div className="sov-inner">
           {/* Headline */}
           <div ref={(el) => void (els.current.head = el)} className="sov-head">
-            <p className="sov-eyebrow">
-              <span aria-hidden="true" className="sov-dot" />
-              System stage: active
-              <span className="sov-eyebrow-sep">Air-gap isolation</span>
-            </p>
             <h2 id="sovereign-heading" className="sov-title">
               <span>Your Data. Your</span>
               <span>Infrastructure.</span>
-              <span className="sov-title-accent">Your AI.</span>
+              <span className="sov-title-accent">Your ai.</span>
             </h2>
           </div>
 
-          {/* Intro */}
+          {/* The offer */}
           <div ref={(el) => void (els.current.intro = el)} className="sov-intro">
-            <p className="sov-intro-text">
-              Sovereign AI as a Service — controlled AI environments engineered precisely around your jurisdiction,
-              private data corpus, isolated hardware topology and legal governance mandates.
+            <h3 ref={(el) => void (els.current.introTitle = el)} className="sov-intro-title">
+              Sovereign ai as a Service
+            </h3>
+            <p ref={(el) => void (els.current.introText = el)} className="sov-intro-text">
+              Controlled ai environments engineered around your jurisdiction, private data and governance requirements.
             </p>
-            <p className="sov-assure">
+            <p ref={(el) => void (els.current.assure = el)} className="sov-assure">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.3} aria-hidden="true">
                 <path d="M12 3 4.5 6v6c0 4.5 3.2 7.8 7.5 9 4.3-1.2 7.5-4.5 7.5-9V6L12 3Z" />
               </svg>
@@ -300,53 +310,44 @@ export default function SovereignAI() {
             </p>
           </div>
 
-          {/* The gate and its revolving orbit */}
-          <div className="sov-stage">
-            <div ref={(el) => void (els.current.orbit = el)} aria-hidden="true" className="sov-orbit">
-              <span className="sov-ring sov-ring-outer" />
-              <span className="sov-ring sov-ring-inner" />
-              <div ref={(el) => void (els.current.spin = el)} className="sov-spin">
-                {ORBIT.map((o, i) => (
-                  <span key={o.label} className="sov-station" style={{ transform: `rotate(${o.angle}deg)` }}>
-                    <span ref={(el) => void (els.current.nodes[i] = el)} className="sov-node">
-                      <span className="sov-node-dot" />
-                      <span className="sov-node-label">{o.label}</span>
-                    </span>
-                  </span>
-                ))}
-              </div>
-            </div>
-
+          {/* The gate, given room to breathe */}
+          <div ref={(el) => void (els.current.stage = el)} className="sov-stage">
+            <span aria-hidden="true" className="sov-aura" />
+            <span aria-hidden="true" className="sov-ripple" />
+            <span aria-hidden="true" className="sov-ripple sov-ripple-b" />
+            <span aria-hidden="true" className="sov-inner-light" />
+            {MOTES.map((mote, i) => (
+              <span
+                key={i}
+                aria-hidden="true"
+                className="sov-mote"
+                style={{ "--sx": mote.sx, "--sy": mote.sy, "--ex": mote.ex, "--ey": mote.ey, animationDelay: `${mote.delay}s` } as CSSProperties}
+              />
+            ))}
+            <span aria-hidden="true" className="sov-sheen">
+              <span className="sov-sheen-turn" />
+            </span>
             <div ref={(el) => void (els.current.portal = el)} className="sov-portal">
               <Image
                 src="/images/sovereign-portal.png"
-                alt="The Pragyan enclave gateway, sealed"
+                alt="The Pragyan enclave gateway"
                 width={1117}
                 height={1408}
                 quality={90}
                 sizes="(min-width: 1024px) 28vw, 62vw"
                 className="sov-portal-img"
               />
-              <span className="sov-portal-chip">Portal active</span>
-              <span className="sov-portal-seal">Enclave sealed</span>
             </div>
           </div>
 
-          {/* Flow-mode readout of the orbit bearings, so their text survives without the camera */}
-          <ul className="sov-stations-flow" aria-label="Isolation bearings">
-            {ORBIT.map((o) => (
-              <li key={o.label}>{o.label}</li>
-            ))}
-          </ul>
-
-          {/* The four enclave layers — each settles and stays */}
-          <ul className="sov-layers" aria-label="Enclave layers">
+          {/* Data → Models → Compute → Applications */}
+          <ul className="sov-layers" aria-label="Sovereign ai capabilities">
             {LAYERS.map((layer, i) => (
-              <li key={layer.tag} ref={(el) => void (els.current.cards[i] = el)} className="sov-card" data-slot={i}>
+              <li key={layer.number} ref={(el) => void (els.current.cards[i] = el)} className="sov-card" data-slot={i}>
                 <div className="sov-card-top">
                   <p className="sov-card-tag">
                     <span aria-hidden="true" className="sov-card-dot" />
-                    {layer.tag}
+                    {layer.number}
                   </p>
                   <span aria-hidden="true" className="sov-card-icon">
                     {layer.icon}
@@ -354,38 +355,9 @@ export default function SovereignAI() {
                 </div>
                 <h3 className="sov-card-title">{layer.title}</h3>
                 <p className="sov-card-text">{layer.text}</p>
-                <p className="sov-card-meta">
-                  <span>{layer.meta}</span>
-                  <span className="sov-card-stat">{layer.stat}</span>
-                </p>
               </li>
             ))}
           </ul>
-
-          {/* Deployment topology */}
-          <div ref={(el) => void (els.current.bar = el)} className="sov-bar">
-            <div className="sov-bar-group">
-              <p className="sov-bar-label">Deployment topology</p>
-              <ul className="sov-chips">
-                {TOPOLOGY.map((t) => (
-                  <li key={t} className="sov-chip">
-                    <span aria-hidden="true" className="sov-chip-dot" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <ul className="sov-assurances">
-              {ASSURANCES.map((a) => (
-                <li key={a}>{a}</li>
-              ))}
-            </ul>
-            {/* No destination exists for this yet, so it is text, not a link. */}
-            <p className="sov-cta">
-              <span>Explore Sovereign AI</span>
-              <span aria-hidden="true">→</span>
-            </p>
-          </div>
         </div>
       </div>
     </section>

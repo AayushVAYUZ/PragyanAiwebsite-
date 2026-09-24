@@ -902,7 +902,9 @@ html[data-scene-intense] .header-intensity {
     position: relative;
     isolation: isolate;
     background: var(--void-black);
-    height: calc(400 * var(--svh));
+    /* One screen plus a short sticky hold. The scene assembles on arrival rather than over
+       four screens of scrolling, which left an empty frame ahead of the content. */
+    height: calc(118 * var(--svh));
   }
 
   .proof-viewport {
@@ -946,25 +948,6 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
-  .proof-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-  }
-
-  .proof-dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(38, 198, 255, 0.8);
-  }
-
   .proof-title {
     margin-top: 0.55rem;
     font-size: clamp(1.75rem, 3.2vw, 3rem);
@@ -980,14 +963,6 @@ html[data-scene-intense] .header-intensity {
     background-clip: text;
     color: transparent;
     font-weight: 400;
-  }
-
-  .proof-intro {
-    margin-top: 0.6rem;
-    max-width: 52ch;
-    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
-    line-height: 1.7;
-    color: var(--text-secondary);
   }
 
   /* --- Split stage ------------------------------------------------ */
@@ -1254,13 +1229,10 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
-  .proof-deck-cue {
-    color: var(--neon-cyan);
-  }
-
   /* Two approved cases, so the cards share the column's full height rather than
      leaving a dead band under the deck. */
   .proof-deck-list {
+    list-style: none;
     flex: 1;
     min-height: 0;
     display: flex;
@@ -1287,7 +1259,6 @@ html[data-scene-intense] .header-intensity {
     border: 1px solid var(--border-subtle);
     border-radius: 0.75rem;
     background: rgba(7, 11, 24, 0.78);
-    cursor: pointer;
     transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s, transform 0.3s;
   }
 
@@ -1298,6 +1269,23 @@ html[data-scene-intense] .header-intensity {
     border-color: color-mix(in srgb, var(--tone) 50%, transparent);
     background: rgba(10, 16, 36, 0.92);
     box-shadow: 0 0 26px color-mix(in srgb, var(--tone) 16%, transparent);
+  }
+
+  /* The neon border carries the active state; the thumbnail and title only lift with it. */
+  .proof-card-img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+  }
+
+  .proof-card[data-active] .proof-card-img {
+    filter: brightness(1);
+  }
+
+  .proof-card-title {
+    transition: color 0.45s ease;
+  }
+
+  .proof-card[data-active] .proof-card-title {
+    color: #ffffff;
   }
 
   @media (hover: hover) {
@@ -1358,14 +1346,6 @@ html[data-scene-intense] .header-intensity {
     height: 0.3rem;
     border-radius: 50%;
     background: currentColor;
-  }
-
-  .proof-card-flag {
-    padding: 0.05rem 0.35rem;
-    border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent);
-    border-radius: 0.25rem;
-    background: color-mix(in srgb, var(--tone) 12%, transparent);
-    letter-spacing: 0.16em;
   }
 
   .proof-card-title {
@@ -1486,7 +1466,7 @@ html[data-scene-intense] .header-intensity {
     position: relative;
     isolation: isolate;
     background: var(--void-black);
-    height: calc(380 * var(--svh));
+    height: calc(118 * var(--svh));
   }
 
   .built-viewport {
@@ -1549,7 +1529,7 @@ html[data-scene-intense] .header-intensity {
 
   .built-head-row {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: end;
     gap: clamp(1rem, 3vw, 2.5rem);
   }
@@ -1558,27 +1538,8 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
-  .built-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-
-  .built-dot {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(38, 198, 255, 0.85);
-  }
-
   .built-title {
-    margin-top: 0.7rem;
+    margin-top: 0;
     font-size: clamp(1.9rem, 3.4vw, 3.25rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
@@ -1595,16 +1556,6 @@ html[data-scene-intense] .header-intensity {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-  }
-
-  .built-intro {
-    justify-self: end;
-    max-width: 34ch;
-    text-align: right;
-    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
-    line-height: 1.7;
-    color: var(--text-secondary);
-    will-change: transform, opacity;
   }
 
   /* --- Product showcases ------------------------------------------ */
@@ -1628,6 +1579,23 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
+  @media (hover: hover) {
+    .built-card:hover {
+      border-color: color-mix(in srgb, var(--tone) 45%, transparent);
+      background: rgba(11, 17, 38, 0.8);
+      box-shadow: 0 18px 44px -16px color-mix(in srgb, var(--tone) 34%, transparent);
+    }
+
+    .built-card:hover .built-card-img {
+      transform: scale(1.04);
+      filter: brightness(1.1);
+    }
+
+    .built-card:hover .built-card-name {
+      color: #ffffff;
+    }
+  }
+
   .built-card[data-tone="cyan"] { --tone: var(--neon-cyan); }
   .built-card[data-tone="violet"] { --tone: #c47fff; }
 
@@ -1648,8 +1616,27 @@ html[data-scene-intense] .header-intensity {
   }
 
   .built-card-img {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
     object-fit: cover;
     object-position: center;
+  }
+
+  /* One pass of light across the product image on entrance; it does not repeat. */
+  .built-card-sheen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 55%;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(198, 226, 255, 0.07) 42%,
+      rgba(226, 240, 255, 0.13) 52%,
+      transparent 100%
+    );
   }
 
   .built-card-fade {
@@ -1670,6 +1657,7 @@ html[data-scene-intense] .header-intensity {
   }
 
   .built-card-name {
+    transition: color 0.4s ease;
     font-size: clamp(1.25rem, 1.9vw, 1.85rem);
     font-weight: 300;
     letter-spacing: -0.015em;
@@ -1782,12 +1770,6 @@ html[data-scene-intense] .header-intensity {
     gap: clamp(0.85rem, 3vh, 1.5rem);
   }
 
-  .built-scene[data-motion="off"] .built-intro {
-    justify-self: start;
-    text-align: left;
-    max-width: 52ch;
-  }
-
   .built-scene[data-motion="off"] .built-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1809,7 +1791,6 @@ html[data-scene-intense] .header-intensity {
   .built-scene[data-motion="off"] .built-backdrop,
   .built-scene[data-motion="off"] .built-atmos,
   .built-scene[data-motion="off"] .built-head,
-  .built-scene[data-motion="off"] .built-intro,
   .built-scene[data-motion="off"] .built-card,
   .built-scene[data-motion="off"] .built-card-plate,
   .built-scene[data-motion="off"] .built-card-body {
@@ -1879,25 +1860,6 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
-  .uc-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-
-  .uc-dot {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(38, 198, 255, 0.85);
-  }
-
   .uc-title {
     margin-top: 0.65rem;
     font-size: clamp(1.8rem, 3.2vw, 3rem);
@@ -1925,12 +1887,6 @@ html[data-scene-intense] .header-intensity {
     align-items: flex-end;
     gap: 0.6rem;
     will-change: transform, opacity;
-  }
-
-  .uc-count-figure {
-    display: flex;
-    align-items: baseline;
-    gap: 0.55rem;
   }
 
   .uc-controls {
@@ -1969,21 +1925,6 @@ html[data-scene-intense] .header-intensity {
   .uc-arrow:disabled {
     opacity: 0.3;
     cursor: default;
-  }
-
-  .uc-count-value {
-    font-size: clamp(1.5rem, 2.4vw, 2.25rem);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    color: var(--neon-cyan);
-  }
-
-  .uc-count-text {
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-muted);
   }
 
   /* --- The panoramic strip ----------------------------------------- */
@@ -2063,28 +2004,6 @@ html[data-scene-intense] .header-intensity {
     padding: clamp(0.85rem, 1.6vh, 1.2rem);
   }
 
-  .uc-card-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid rgba(38, 198, 255, 0.28);
-    border-radius: 0.3rem;
-    background: rgba(3, 4, 10, 0.6);
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-  }
-
-  .uc-card-dot {
-    width: 0.28rem;
-    height: 0.28rem;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
   .uc-card-name {
     margin-top: 0.5rem;
     display: flex;
@@ -2157,38 +2076,45 @@ html[data-scene-intense] .header-intensity {
     color: var(--text-secondary);
   }
 
-  .uc-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .uc-hint-mark {
-    width: 0.3rem;
-    height: 0.3rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-  }
-
-  /* Non-clickable by design: this has no destination yet. */
   .uc-cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 45%, transparent);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(38, 198, 255, 0.12), rgba(139, 45, 255, 0.1));
     font-family: var(--font-mono);
-    font-size: 0.5625rem;
+    font-size: 0.625rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--text-primary);
-    cursor: default;
+    cursor: pointer;
+    box-shadow: 0 0 22px -6px color-mix(in srgb, var(--neon-cyan) 55%, transparent),
+      inset 0 0 14px -8px color-mix(in srgb, var(--neon-cyan) 60%, transparent);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease;
+  }
+
+  @media (hover: hover) {
+    .uc-cta:hover {
+      border-color: color-mix(in srgb, var(--neon-cyan) 75%, transparent);
+      background: linear-gradient(180deg, rgba(38, 198, 255, 0.2), rgba(139, 45, 255, 0.16));
+      box-shadow: 0 0 34px -4px color-mix(in srgb, var(--neon-cyan) 70%, transparent),
+        inset 0 0 18px -8px color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+    }
+
+    .uc-cta:hover span:last-child {
+      transform: translateX(3px);
+    }
+  }
+
+  .uc-cta:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
   }
 
   .uc-cta span:last-child {
+    transition: transform 0.35s ease;
     color: var(--neon-cyan);
   }
 }
@@ -2229,8 +2155,7 @@ html[data-scene-intense] .header-intensity {
     min-height: 20rem;
   }
 
-  .uc-scene[data-motion="off"] .uc-controls,
-  .uc-scene[data-motion="off"] .uc-hint {
+  .uc-scene[data-motion="off"] .uc-controls {
     display: none;
   }
 
@@ -2551,10 +2476,11 @@ html[data-scene-intense] .header-intensity {
     position: relative;
     isolation: isolate;
     background: var(--void-black);
-    height: calc(440 * var(--svh));
+    /* One screen plus a short sticky hold. The blueprint no longer needs scroll runway to
+       assemble itself, and the long scene left a dead, empty frame ahead of the content. */
+    height: calc(118 * var(--svh));
     --sov-mid: clamp(20rem, 30vw, 30rem);
     --sov-gap: clamp(1rem, 2.2vw, 2.25rem);
-    --sov-orbit: clamp(17rem, 23vw, 23rem);
   }
 
   .sov-viewport {
@@ -2606,7 +2532,7 @@ html[data-scene-intense] .header-intensity {
     padding: calc(var(--header-h) + clamp(0.75rem, 2.5vh, 1.75rem)) var(--gutter-x) clamp(1.5rem, 4vh, 2.75rem);
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--sov-mid) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
     column-gap: var(--sov-gap);
     row-gap: clamp(0.75rem, 2vh, 1.75rem);
     align-items: start;
@@ -2616,32 +2542,6 @@ html[data-scene-intense] .header-intensity {
     grid-column: 1;
     grid-row: 1;
     will-change: transform, opacity;
-  }
-
-  .sov-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-  }
-
-  .sov-dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(38, 198, 255, 0.8);
-    animation: sov-pulse 2.4s ease-in-out infinite;
-  }
-
-  .sov-eyebrow-sep {
-    padding-left: 0.7rem;
-    border-left: 1px solid var(--border-subtle);
-    color: var(--text-muted);
   }
 
   .sov-title {
@@ -2658,11 +2558,34 @@ html[data-scene-intense] .header-intensity {
   }
 
   .sov-title-accent {
-    background: linear-gradient(90deg, var(--electric-violet), var(--neon-cyan));
+    background-image: linear-gradient(
+      100deg,
+      #8b2dff 0%,
+      #a855f7 18%,
+      #5b7bff 38%,
+      #26c6ff 55%,
+      #a855f7 80%,
+      #8b2dff 100%
+    );
+    background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     color: transparent;
     font-weight: 400;
+    animation: service-accent-sweep 20s linear infinite;
+  }
+
+  .sov-title span {
+    will-change: transform, opacity;
+  }
+
+  .sov-assure {
+    transition: text-shadow 0.9s ease;
+  }
+
+  .sov-assure.is-lit {
+    text-shadow: 0 0 12px rgba(38, 198, 255, 0.45), 0 0 5px rgba(38, 198, 255, 0.3);
   }
 
   .sov-intro {
@@ -2670,6 +2593,13 @@ html[data-scene-intense] .header-intensity {
     grid-row: 1;
     text-align: right;
     will-change: transform, opacity;
+  }
+
+  .sov-intro-title {
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
   }
 
   .sov-intro-text {
@@ -2710,88 +2640,26 @@ html[data-scene-intense] .header-intensity {
     place-items: center;
   }
 
-  .sov-orbit {
-    grid-area: core;
-    position: relative;
-    width: var(--sov-orbit);
-    height: var(--sov-orbit);
-    will-change: transform, opacity;
-  }
-
-  .sov-ring {
-    position: absolute;
-    border-radius: 50%;
-  }
-
-  .sov-ring-outer {
-    inset: 0;
-    border: 1px dashed rgba(38, 198, 255, 0.3);
-  }
-
-  .sov-ring-inner {
-    inset: 14%;
-    border: 1px solid rgba(139, 45, 255, 0.28);
-    box-shadow: inset 0 0 40px rgba(139, 45, 255, 0.12);
-  }
-
   /* Rotated by the camera; the stations ride it. */
-  .sov-spin {
-    position: absolute;
-    inset: 0;
-  }
-
-  .sov-station {
-    position: absolute;
-    inset: 0;
-  }
 
   /* Anchored with margins, not a translate, so the camera's counter-rotation
      can own the transform outright without losing the centring. */
-  .sov-node {
-    position: absolute;
-    top: -0.5rem;
-    left: calc(50% - 4.25rem);
-    width: 8.5rem;
-    height: 1rem;
-  }
-
-  .sov-node-dot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin: -0.25rem 0 0 -0.25rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 12px rgba(38, 198, 255, 0.9);
-  }
 
   /* Set outside the ring: inside, the labels collide with the gate's own chips. */
-  .sov-node-label {
-    position: absolute;
-    bottom: 1.05rem;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    line-height: 1.4;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .sov-node[data-side="down"] .sov-node-label {
-    top: 1.05rem;
-    bottom: auto;
-  }
 
   /* Below 1280px the side columns arrive before the labels have room. */
   @media (max-width: 1279.98px) {
-    .sov-node-label {
-      display: none;
-    }
+  }
+
+  /* Breathing room around the gate: light only, no instrumentation. */
+  .sov-aura {
+    grid-area: core;
+    width: min(26rem, 74vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 45, 255, 0.2) 0%, rgba(38, 198, 255, 0.09) 42%, transparent 72%);
+    animation: sov-aura-breathe 14s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .sov-portal {
@@ -2807,37 +2675,116 @@ html[data-scene-intense] .header-intensity {
     filter: drop-shadow(0 0 60px rgba(139, 45, 255, 0.35));
   }
 
-  .sov-portal-chip,
-  .sov-portal-seal {
+  /* --- The gate, alive -------------------------------------------- */
+
+  /* A slow wedge of light turning behind the artwork's own alpha, so it can only
+     show where the neon actually is: light travelling around the outline. */
+  .sov-sheen {
+    grid-area: core;
+    position: relative;
+    width: clamp(10rem, 14vw, 13rem);
+    aspect-ratio: 1117 / 1408;
+    overflow: hidden;
+    -webkit-mask-image: url("/images/sovereign-portal.png");
+    mask-image: url("/images/sovereign-portal.png");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .sov-sheen-turn {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    background: rgba(3, 4, 10, 0.72);
-    border: 1px solid var(--border-subtle);
+    inset: -45%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(214, 236, 255, 0.8) 16deg,
+      transparent 48deg,
+      transparent 360deg
+    );
+    animation: sov-sheen-turn 13s linear infinite;
   }
 
-  .sov-portal-chip {
-    top: -0.9rem;
-    color: var(--neon-cyan);
-    border-color: rgba(38, 198, 255, 0.35);
+  /* A soft light stirring inside the opening. */
+  .sov-inner-light {
+    grid-area: core;
+    width: clamp(3.5rem, 5vw, 4.75rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196, 150, 255, 0.34) 0%, rgba(38, 198, 255, 0.13) 45%, transparent 72%);
+    filter: blur(5px);
+    animation: sov-inner-drift 19s ease-in-out infinite;
+    pointer-events: none;
   }
 
-  .sov-portal-seal {
-    bottom: -0.9rem;
-    color: var(--text-secondary);
+  /* Rings leaving the centre, spent well before they reach the cards. */
+  .sov-ripple {
+    grid-area: core;
+    width: clamp(6rem, 8vw, 8rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(139, 45, 255, 0.3);
+    opacity: 0;
+    animation: sov-ripple 5.5s ease-out infinite;
+    pointer-events: none;
+  }
+
+  .sov-ripple-b {
+    animation-delay: 2.75s;
+    border-color: rgba(38, 198, 255, 0.22);
+  }
+
+  /* The occasional mote coming off the edge. */
+  .sov-mote {
+    grid-area: core;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(198, 228, 255, 0.9);
+    opacity: 0;
+    animation: sov-mote-drift 15s ease-out infinite;
+    pointer-events: none;
+  }
+
+  /* A single pulse sent toward whichever capability is lit. Positioned by script. */
+  .sov-links {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .sov-link-pulse {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 244, 255, 0.95) 0%, rgba(139, 45, 255, 0.45) 55%, transparent 72%);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* A slow band crossing the blueprint grid. */
+  .sov-scan {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 34%;
+    background: linear-gradient(90deg, transparent, rgba(126, 192, 255, 0.05), transparent);
+    opacity: 0;
+    animation: sov-scan-sweep 11s linear infinite;
+    pointer-events: none;
   }
 
   /* Flow-mode copy of the bearings: the orbit itself is decorative. */
-  .sov-stations-flow {
-    display: none;
-  }
 
   /* --- The four enclave layers ------------------------------------ */
 
@@ -2860,6 +2807,27 @@ html[data-scene-intense] .header-intensity {
     background: linear-gradient(140deg, rgba(10, 16, 36, 0.72), rgba(5, 7, 17, 0.58));
     backdrop-filter: blur(6px);
     will-change: transform, opacity;
+    transition: border-color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
+  }
+
+  /* The focus scan: lit for a beat, then handed on. Nothing moves or disappears. */
+  .sov-card.is-focus {
+    border-color: rgba(150, 90, 255, 0.48);
+    background: linear-gradient(140deg, rgba(19, 27, 56, 0.8), rgba(7, 10, 24, 0.6));
+    box-shadow: 0 0 26px -8px rgba(139, 45, 255, 0.42);
+  }
+
+  .sov-card-title,
+  .sov-card-tag {
+    transition: color 0.6s ease, text-shadow 0.6s ease;
+  }
+
+  .sov-card.is-focus .sov-card-title {
+    color: #ffffff;
+  }
+
+  .sov-card.is-focus .sov-card-tag {
+    text-shadow: 0 0 10px rgba(139, 45, 255, 0.6), 0 0 6px rgba(38, 198, 255, 0.4);
   }
 
   .sov-card[data-slot="0"] { grid-column: 1; grid-row: 1; }
@@ -2926,105 +2894,69 @@ html[data-scene-intense] .header-intensity {
     color: var(--text-secondary);
   }
 
-  .sov-card-meta {
-    margin-top: 0.7rem;
-    padding-top: 0.55rem;
-    border-top: 1px solid var(--border-subtle);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .sov-card-stat {
-    color: var(--text-soft);
-    white-space: nowrap;
-  }
-
-  /* --- Deployment topology ---------------------------------------- */
-
-  .sov-bar {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(0.75rem, 2vw, 2rem);
-    padding-top: clamp(0.75rem, 1.8vh, 1.25rem);
-    border-top: 1px solid var(--border-subtle);
-    will-change: transform, opacity;
-  }
-
-  .sov-bar-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .sov-bar-label,
-  .sov-assurances,
-  .sov-chip,
-  .sov-cta {
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  .sov-bar-label {
-    color: var(--text-muted);
-  }
-
-  .sov-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .sov-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.65rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: 999px;
-    color: var(--text-soft);
-  }
-
-  .sov-chip-dot {
-    width: 0.25rem;
-    height: 0.25rem;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-  }
-
-  .sov-assurances {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.1rem;
-    color: var(--text-muted);
-  }
-
-  /* Non-clickable by design: this has no destination yet. */
-  .sov-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-primary);
-    cursor: default;
-  }
 }
 
-@keyframes sov-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+@keyframes sov-aura-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+@keyframes sov-sheen-turn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sov-inner-drift {
+  0%, 100% { transform: translate3d(-5%, -6%, 0) scale(1); opacity: 0.75; }
+  50% { transform: translate3d(5%, 6%, 0) scale(1.12); opacity: 1; }
+}
+
+/* Spent before it reaches the cards. */
+@keyframes sov-ripple {
+  0% { transform: scale(0.55); opacity: 0; }
+  14% { opacity: 0.5; }
+  70% { opacity: 0; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+
+@keyframes sov-mote-drift {
+  0% { transform: translate3d(var(--sx, 0), var(--sy, 0), 0) scale(0.5); opacity: 0; }
+  6% { opacity: 0.7; }
+  55% { opacity: 0.35; }
+  100% { transform: translate3d(var(--ex, 0), var(--ey, 0), 0) scale(0.25); opacity: 0; }
+}
+
+@keyframes sov-scan-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  6% { opacity: 1; }
+  30% { opacity: 1; }
+  38% { transform: translateX(340%); opacity: 0; }
+  100% { transform: translateX(340%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sov-aura {
+    animation: none;
+    opacity: 0.65;
+  }
+
+  .sov-title-accent,
+  .sov-sheen-turn,
+  .sov-inner-light,
+  .sov-ripple,
+  .sov-mote,
+  .sov-scan {
+    animation: none;
+  }
+
+  .sov-title-accent {
+    background-position: 40% 50%;
+  }
+
+  .sov-ripple,
+  .sov-mote,
+  .sov-scan {
+    opacity: 0;
+  }
 }
 
 /* ============================================================
@@ -3074,26 +3006,6 @@ html[data-scene-intense] .header-intensity {
     width: min(16rem, 58vw);
   }
 
-  .sov-scene[data-motion="off"] .sov-orbit {
-    width: min(21rem, 78vw);
-    height: min(21rem, 78vw);
-  }
-
-  /* The orbit is decorative, so its bearings are carried as real text here. */
-  .sov-scene[data-motion="off"] .sov-spin {
-    display: none;
-  }
-
-  .sov-scene[data-motion="off"] .sov-stations-flow {
-    display: grid;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
   .sov-scene[data-motion="off"] .sov-layers {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -3110,10 +3022,8 @@ html[data-scene-intense] .header-intensity {
   .sov-scene[data-motion="off"] .sov-atmos,
   .sov-scene[data-motion="off"] .sov-head,
   .sov-scene[data-motion="off"] .sov-intro,
-  .sov-scene[data-motion="off"] .sov-orbit,
   .sov-scene[data-motion="off"] .sov-portal,
-  .sov-scene[data-motion="off"] .sov-card,
-  .sov-scene[data-motion="off"] .sov-bar {
+  .sov-scene[data-motion="off"] .sov-card {
     transform: none !important;
     opacity: 1 !important;
     filter: none !important;
@@ -3122,7 +3032,4 @@ html[data-scene-intense] .header-intensity {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sov-dot {
-    animation: none;
-  }
 }

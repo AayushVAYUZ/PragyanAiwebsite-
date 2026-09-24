@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
  * global telemetry HUD, its third case, its named client and its production attestation
  * are all invented, so none of them are here.
  *
- * The camera is a pure function of scroll progress written straight to the DOM.
+ * The scene assembles itself once the section is on screen; nothing is tied to scroll.
  * Reveals are cumulative: once a part of the dossier has arrived it stays. Selecting a
  * case is the one piece of React state — it changes content, not the camera.
  */
@@ -28,7 +28,7 @@ const CASES = [
     sector: "Finance & Wealth Management",
     metric: "5 days → 3 seconds",
     metricLabel: "Decision turnaround",
-    title: "AI-powered High Risk Prediction Software",
+    title: "ai-powered High Risk Prediction Software",
     summary:
       "Predictive analysis model for India's leading finance and wealth management firm, using multiple parameters to reduce decision time and effort from 5 days to 3 seconds.",
     challenge: "Manual credit assessment slowed lending decisions and limited risk visibility across the portfolio.",
@@ -49,8 +49,8 @@ const CASES = [
     sector: "Talent Advisory",
     metric: "90% fewer billing errors",
     metricLabel: "Billing accuracy",
-    title: "AI-backed Legacy Talent Advisory Platform",
-    summary: "Modernising the legacy talent advisory platform with AI and intelligent automation.",
+    title: "ai-backed Legacy Talent Advisory Platform",
+    summary: "Modernising the legacy talent advisory platform with ai and intelligent automation.",
     challenge: "Data was spread across systems, billing remained manual, and leaders lacked real-time operational visibility.",
     solution: ["Enterprise CRM", "ATS", "Real-time MIS & Dashboards", "Automated & Pre-Billing Validation", "Single Sign-On & Data Governance"],
     impact: [
@@ -65,36 +65,8 @@ const CASES = [
   },
 ] as const;
 
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-function smoothstep(edge0: number, edge1: number, v: number) {
-  const t = clamp01((v - edge0) / (edge1 - edge0 || 1));
-  return t * t * (3 - 2 * t);
-}
-
-interface Place {
-  x?: number;
-  y?: number;
-  s?: number;
-  o: number;
-  blur?: number;
-}
-
-/** Writes a placement onto an element, skipping properties that have not changed. */
-function write(el: HTMLElement | null, p: Place) {
-  if (!el) return;
-  const visible = p.o > 0.002;
-  const visibility = visible ? "visible" : "hidden";
-  if (el.style.visibility !== visibility) el.style.visibility = visibility;
-  if (!visible) return;
-  const o = p.o >= 0.999 ? "1" : p.o.toFixed(3);
-  if (el.style.opacity !== o) el.style.opacity = o;
-  const t = `translate3d(${(p.x ?? 0).toFixed(2)}px, ${(p.y ?? 0).toFixed(2)}px, 0) scale(${(p.s ?? 1).toFixed(4)})`;
-  if (el.style.transform !== t) el.style.transform = t;
-  const blur = p.blur ?? 0;
-  const f = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "none";
-  if (el.style.filter !== f) el.style.filter = f;
-}
+/** How long each case study holds the stage before the next one takes it, in seconds. */
+const CASE_STUDY_INTERVAL = 4.5;
 
 function clear(el: HTMLElement | null) {
   if (!el) return;
@@ -108,10 +80,8 @@ export default function CaseStudies() {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
 
-  // The camera's last progress, so a selection can re-place the swapped-in nodes
-  // without waiting for the next scroll tick.
-  const progress = useRef(0);
-  const frameRef = useRef<((p: number) => void) | null>(null);
+  // Settles nodes that a selection has just remounted, without waiting for anything.
+  const frameRef = useRef<(() => void) | null>(null);
 
   const els = useRef<{
     atmos: HTMLElement | null;
@@ -162,69 +132,64 @@ export default function CaseStudies() {
 
         section.dataset.motion = "on";
 
-        const frame = (p: number) => {
-          progress.current = p;
+        // Everything the entrance brings in, and the settled state it leaves them at.
+        const arriving = () =>
+          [e.head, e.stage, e.copy, e.brief, e.cta, e.deckLabel, ...e.stats, ...e.cards].filter(Boolean) as HTMLElement[];
 
-          write(e.atmos, { x: (p - 0.5) * 80, s: lerp(1.02, 1.16, p), o: lerp(0.5, 1, p) });
-
-          // Editorial header arrives first and holds for the whole scene.
-          const headIn = smoothstep(0, 0.1, p);
-          write(e.head, { y: lerp(46, 0, headIn) - p * 18, o: headIn, blur: lerp(8, 0, headIn) });
-
-          // The deep-dive stage rises out of depth, then holds.
-          const stageIn = smoothstep(0.1, 0.3, p);
-          write(e.stage, { y: lerp(72, 0, stageIn), s: lerp(0.95, 1, stageIn), o: stageIn, blur: lerp(9, 0, stageIn) });
-          // Slow drift inside the photograph, so the stage keeps breathing while held.
-          write(e.media, { y: (p - 0.5) * -46, s: lerp(1.08, 1.16, p), o: 1 });
-
-          // Then the dossier fills in, one band at a time, and each band stays.
-          const copyIn = smoothstep(0.26, 0.42, p);
-          write(e.copy, { y: lerp(34, 0, copyIn), o: copyIn, blur: lerp(6, 0, copyIn) });
-
-          const briefIn = smoothstep(0.4, 0.56, p);
-          write(e.brief, { y: lerp(28, 0, briefIn), o: briefIn, blur: lerp(5, 0, briefIn) });
-
-          e.stats.forEach((stat, i) => {
-            const start = 0.52 + i * 0.06;
-            const statIn = smoothstep(start, start + 0.12, p);
-            write(stat, { y: lerp(24, 0, statIn), s: lerp(0.96, 1, statIn), o: statIn, blur: lerp(4, 0, statIn) });
-          });
-
-          const ctaIn = smoothstep(0.78, 0.9, p);
-          write(e.cta, { y: lerp(20, 0, ctaIn), o: ctaIn });
-
-          // The archive deck assembles alongside, card by card, cumulatively.
-          const deckIn = smoothstep(0.24, 0.36, p);
-          write(e.deckLabel, { x: lerp(28, 0, deckIn), o: deckIn });
-
-          e.cards.forEach((card, i) => {
-            const start = 0.34 + i * 0.18;
-            const arrived = smoothstep(start, start + 0.2, p);
-            write(card, {
-              x: lerp(56, 0, arrived),
-              y: lerp(30, 0, arrived),
-              s: lerp(0.95, 1, arrived),
-              o: arrived,
-              blur: lerp(7, 0, arrived),
-            });
-          });
+        // Places nodes at their finished state. A selection remounts the deep-dive copy, so
+        // the fresh nodes are settled directly rather than replayed.
+        const settle = () => {
+          gsap.set(arriving(), { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "none" });
         };
+        frameRef.current = settle;
 
-        frameRef.current = frame;
-        frame(0);
+        // The photograph keeps a slow drift so the stage breathes while it is held.
+        gsap.set(e.media, { scale: 1.12 });
 
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-          onUpdate: (self) => frame(self.progress),
-          onRefresh: (self) => frame(self.progress),
-        });
+        gsap.set(arriving(), { autoAlpha: 0, y: 24 });
+
+        // The scene assembles itself once the section is on screen. Nothing is tied to scroll
+        // position: scrubbing it across four screens left an empty frame ahead of the content.
+        const intro = gsap.timeline({ paused: true });
+        if (e.head) intro.to(e.head, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0);
+        if (e.stage) intro.to(e.stage, { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" }, 0.12);
+        if (e.deckLabel) intro.to(e.deckLabel, { autoAlpha: 1, x: 0, y: 0, duration: 0.6, ease: "power2.out" }, 0.28);
+        if (e.copy) intro.to(e.copy, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 0.34);
+        if (e.brief) intro.to(e.brief, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 0.46);
+        const stats = e.stats.filter(Boolean) as HTMLElement[];
+        if (stats.length) intro.to(stats, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.07, ease: "power2.out" }, 0.56);
+        const cards = e.cards.filter(Boolean) as HTMLElement[];
+        if (cards.length) intro.to(cards, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power2.out" }, 0.4);
+        if (e.cta) intro.to(e.cta, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 0.78);
+
+        // Scroll keeps only a restrained depth drift on the environment and the photograph.
+        const drift = [e.atmos, e.media].filter(Boolean) as HTMLElement[];
+        if (drift.length) {
+          gsap.fromTo(
+            drift,
+            { yPercent: -1.8 },
+            { yPercent: 1.8, ease: "none", scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true } },
+          );
+        }
+
+        let started = false;
+        const visibility = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !started) {
+                started = true;
+                intro.play();
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        visibility.observe(section);
 
         return () => {
           frameRef.current = null;
-          trigger.kill();
+          visibility.disconnect();
+          intro.kill();
         };
       },
       section,
@@ -233,13 +198,42 @@ export default function CaseStudies() {
     return () => media.revert();
   }, []);
 
-  // A selection remounts the deep-dive copy; place the fresh nodes at the camera's
-  // current progress so nothing pops back to its un-animated state.
+  // The deck advances on its own once the section is on screen — no click, hover or scroll.
+  // Reduced motion holds the first case study instead.
   useEffect(() => {
-    frameRef.current?.(progress.current);
-  }, [active]);
+    const section = sectionRef.current;
+    if (!section) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const select = useCallback((i: number) => setActive(i), []);
+    let timer: number | undefined;
+    // Guarded so re-entering the section cannot stack a second timer on the first.
+    const start = () => {
+      if (timer !== undefined) return;
+      timer = window.setInterval(() => setActive((i) => (i + 1) % CASES.length), CASE_STUDY_INTERVAL * 1000);
+    };
+    const stop = () => {
+      if (timer === undefined) return;
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    const visibility = new IntersectionObserver(
+      (entries) => entries.forEach((entry) => (entry.isIntersecting ? start() : stop())),
+      { threshold: 0.25 },
+    );
+    visibility.observe(section);
+
+    return () => {
+      visibility.disconnect();
+      stop();
+    };
+  }, []);
+
+  // Advancing remounts the deep-dive copy; settle the fresh nodes so nothing is left at
+  // the entrance's start state.
+  useEffect(() => {
+    frameRef.current?.();
+  }, [active]);
 
   const study = CASES[active];
 
@@ -259,17 +253,9 @@ export default function CaseStudies() {
         <div className="proof-inner">
           {/* Master editorial header */}
           <header ref={(el) => void (els.current.head = el)} className="proof-head">
-            <p className="proof-eyebrow">
-              <span aria-hidden="true" className="proof-dot" />
-              09 — Proof / Case Studies
-            </p>
             <h2 id="case-studies-heading" className="proof-title">
-              AI that has <span className="proof-title-accent">left the lab.</span>
+              ai solving <span className="proof-title-accent">real business problems.</span>
             </h2>
-            <p className="proof-intro">
-              We work on problems where intelligence needs to create a measurable business outcome — not simply
-              demonstrate what technology can do.
-            </p>
           </header>
 
           <div className="proof-split">
@@ -277,9 +263,7 @@ export default function CaseStudies() {
             <article
               ref={(el) => void (els.current.stage = el)}
               className="proof-stage"
-              id={`case-panel-${study.id}`}
-              role="tabpanel"
-              aria-labelledby={`case-tab-${study.id}`}
+              aria-live="polite"
               data-tone={study.tone}
             >
               <div aria-hidden="true" className="proof-stage-media">
@@ -353,32 +337,16 @@ export default function CaseStudies() {
             <div className="proof-deck">
               <p ref={(el) => void (els.current.deckLabel = el)} className="proof-deck-label">
                 <span>Case archive</span>
-                <span className="proof-deck-cue">Select to open</span>
               </p>
 
-              <div className="proof-deck-list" role="tablist" aria-label="Case studies">
+              <ul className="proof-deck-list" aria-label="Case studies">
                 {CASES.map((c, i) => (
-                  <div key={c.id} ref={(el) => void (els.current.cards[i] = el)} className="proof-card-anchor">
-                    <button
-                      type="button"
-                      role="tab"
-                      id={`case-tab-${c.id}`}
-                      aria-selected={i === active}
-                      aria-controls={`case-panel-${c.id}`}
-                      tabIndex={i === active ? 0 : -1}
-                      onClick={() => select(i)}
-                      onKeyDown={(event) => {
-                        if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-                          event.preventDefault();
-                          select((i + 1) % CASES.length);
-                        } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-                          event.preventDefault();
-                          select((i - 1 + CASES.length) % CASES.length);
-                        }
-                      }}
+                  <li key={c.id} ref={(el) => void (els.current.cards[i] = el)} className="proof-card-anchor">
+                    <div
                       className="proof-card"
                       data-tone={c.tone}
                       data-active={i === active ? "" : undefined}
+                      aria-current={i === active ? "true" : undefined}
                     >
                       <span className="proof-card-media">
                         {/* A tall thumbnail strip: cover crops to the height, not the width. */}
@@ -388,16 +356,15 @@ export default function CaseStudies() {
                         <span className="proof-card-id">
                           <span aria-hidden="true" className="proof-card-dot" />
                           {c.index}
-                          {i === active && <span className="proof-card-flag">Open</span>}
                         </span>
                         <span className="proof-card-title">{c.title}</span>
                         <span className="proof-card-metric">{c.metric}</span>
                         <span className="proof-card-sector">{c.sector}</span>
                       </span>
-                    </button>
-                  </div>
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </div>

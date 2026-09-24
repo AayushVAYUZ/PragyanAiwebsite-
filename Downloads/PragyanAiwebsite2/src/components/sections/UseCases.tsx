@@ -313,10 +313,6 @@ export default function UseCases() {
         <div className="uc-inner">
           <header className="uc-head-row">
             <div ref={(el) => void (els.current.head = el)} className="uc-head">
-              <p className="uc-eyebrow">
-                <span aria-hidden="true" className="uc-dot" />
-                11 — Where We Apply Intelligence
-              </p>
               <h2 id="use-cases-heading" className="uc-title">
                 <span>Different industries.</span>
                 <span className="uc-title-accent">Different problems.</span>
@@ -324,10 +320,6 @@ export default function UseCases() {
             </div>
 
             <div ref={(el) => void (els.current.count = el)} className="uc-count">
-              <p className="uc-count-figure">
-                <span className="uc-count-value">{INDUSTRIES.length}</span>
-                <span className="uc-count-text">industries</span>
-              </p>
               <div className="uc-controls">
                 <button
                   type="button"
@@ -383,10 +375,6 @@ export default function UseCases() {
                   </div>
 
                   <div className="uc-card-body">
-                    <p className="uc-card-tag">
-                      <span aria-hidden="true" className="uc-card-dot" />
-                      {String(i + 1).padStart(2, "0")} / {industry.name}
-                    </p>
                     <h3 className="uc-card-name">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="uc-card-icon">
                         <path d={industry.icon} />
@@ -411,17 +399,13 @@ export default function UseCases() {
 
           <div ref={(el) => void (els.current.closing = el)} className="uc-closing">
             <p className="uc-closing-text">
-              40+ production-ready AI model prototypes available for rapid customer demonstrations.
+              40+ production-ready ai model prototypes available for rapid demonstrations.
             </p>
-            <p className="uc-hint">
-              <span aria-hidden="true" className="uc-hint-mark" />
-              Scroll the strip sideways for every industry
-            </p>
-            {/* No destination exists for this yet, so it is text, not a link. */}
-            <p className="uc-cta">
-              <span>Explore the Possibilities</span>
+            {/* No destination exists for this yet, so it carries no handler. */}
+            <button type="button" className="uc-cta">
+              <span>Explore all POCs</span>
               <span aria-hidden="true">→</span>
-            </p>
+            </button>
           </div>
         </div>
       </div>
