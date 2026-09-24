@@ -892,390 +892,1371 @@ html[data-scene-intense] .header-intensity {
 }
 
 @layer components {
-  /* Frame 09 — Proof / Case Studies (Stitch atmosphere: violet/cyan behind the cards, violet low left). */
-  .cases-ambient {
-    background: radial-gradient(circle at 75% 40%, rgba(84, 24, 200, 0.15) 0%, rgba(38, 198, 255, 0.08) 25%, transparent 60%),
-      radial-gradient(circle at 20% 80%, rgba(139, 45, 255, 0.08) 0%, transparent 50%);
+  /* ============================================================
+     FRAME 09 — PROOF (CASE STUDIES), CINEMATIC INTERACTIVE
+     Tall scene, sticky viewport. The camera is scrubbed in
+     CaseStudies.tsx; this file only lays out the world.
+     ============================================================ */
+
+  .proof-scene {
+    position: relative;
+    isolation: isolate;
+    background: var(--void-black);
+    height: calc(400 * var(--svh));
   }
 
-  .cases-headline-gradient {
-    background: linear-gradient(135deg, #f5f7ff 60%, rgba(38, 198, 255, 0.9) 100%);
+  .proof-viewport {
+    position: sticky;
+    top: 0;
+    height: calc(100 * var(--svh));
+    overflow: hidden;
+  }
+
+  .proof-env {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .proof-atmos {
+    position: absolute;
+    inset: -14%;
+    background:
+      radial-gradient(46% 44% at 72% 38%, rgba(84, 24, 200, 0.2), transparent 68%),
+      radial-gradient(40% 40% at 18% 78%, rgba(139, 45, 255, 0.12), transparent 66%),
+      radial-gradient(38% 34% at 46% 24%, rgba(38, 198, 255, 0.1), transparent 70%);
+    will-change: transform, opacity;
+  }
+
+  .proof-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: calc(var(--header-h) + clamp(0.75rem, 2.5vh, 1.75rem)) var(--gutter-x) clamp(1.5rem, 4vh, 2.5rem);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: clamp(0.85rem, 2.4vh, 1.75rem);
+  }
+
+  /* --- Master editorial header ------------------------------------ */
+
+  .proof-head {
+    max-width: 62rem;
+    will-change: transform, opacity;
+  }
+
+  .proof-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+  }
+
+  .proof-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(38, 198, 255, 0.8);
+  }
+
+  .proof-title {
+    margin-top: 0.55rem;
+    font-size: clamp(1.75rem, 3.2vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  .proof-title-accent {
+    background: linear-gradient(135deg, #f5f7ff 40%, rgba(38, 198, 255, 0.95) 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 400;
   }
 
-  .cases-card {
-    border: 1px solid rgba(160, 175, 220, 0.1);
-    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.7);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  .proof-intro {
+    margin-top: 0.6rem;
+    max-width: 52ch;
+    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+    line-height: 1.7;
+    color: var(--text-secondary);
   }
 
-  /* Readability at the foot of the card; lighter above than Stitch because the result headline is not shown. */
-  .cases-card-gradient {
-    background: linear-gradient(
-      to top,
-      rgba(3, 4, 10, 0.97) 0%,
-      rgba(7, 11, 24, 0.78) 26%,
-      rgba(3, 4, 10, 0.38) 58%,
-      rgba(3, 4, 10, 0.16) 100%
-    );
+  /* --- Split stage ------------------------------------------------ */
+
+  .proof-split {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(0.85rem, 1.6vw, 1.5rem);
+    min-height: 0;
   }
 
-  .cases-card-image {
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @media (hover: hover) {
-    .cases-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(38, 198, 255, 0.38);
-      box-shadow: 0 10px 40px -10px rgba(38, 198, 255, 0.18), 0 0 0 1px rgba(139, 45, 255, 0.15);
-    }
-
-    .cases-card:hover .cases-card-image {
-      transform: scale(1.05);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cases-card,
-  .cases-card-image {
-    transition: none;
-  }
-
-  .cases-card:hover,
-  .cases-card:hover .cases-card-image {
-    transform: none;
-  }
-}
-
-@layer components {
-  /* Frame 10 — What We've Built (Stitch light orbs: cyan top right, violet left, faint cyan low centre). */
-  .built-ambient {
-    background: radial-gradient(circle at 88% 6%, rgba(38, 198, 255, 0.1) 0%, transparent 32%),
-      radial-gradient(circle at 4% 55%, rgba(139, 45, 255, 0.12) 0%, transparent 30%),
-      radial-gradient(circle at 62% 104%, rgba(38, 198, 255, 0.05) 0%, transparent 34%),
-      radial-gradient(ellipse at top, rgba(23, 37, 84, 0.2) 0%, transparent 70%);
-  }
-
-  /* Solid translucent surface: over the plain dark ground a backdrop blur adds nothing visible,
-     and WebKit can fail to paint blurred panels' contents while their parent fades in. */
-  .built-panel {
-    background: rgba(8, 13, 31, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .built-media-image {
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Light fade at the foot of the key art so it meets the panel; the image itself stays bright. */
-  .built-media-fade {
-    background: linear-gradient(to top, rgba(8, 13, 31, 0.85) 0%, rgba(8, 13, 31, 0) 30%);
-  }
-
-  /* A soft band of light that passes across the key art as the panel arrives (positioned by GSAP). */
-  .built-media-sheen {
-    background: linear-gradient(105deg, transparent 38%, rgba(190, 225, 255, 0.14) 50%, transparent 62%);
-    mix-blend-mode: screen;
-    transform: translateX(-120%);
-  }
-
-  /* Slow ambient drift of the product key art; the two panels run out of phase. */
-  .built-media-drift {
-    animation: built-drift 16s ease-in-out infinite alternate;
-  }
-
-  .built-media-drift-minuta {
-    animation-duration: 19s;
-    animation-delay: -7s;
-  }
-
-  /* Visual response only: the panels do not navigate anywhere. */
-  @media (hover: hover) {
-    .built-panel-rex:hover {
-      border-color: rgba(139, 45, 255, 0.4);
-      box-shadow: 0 0 40px -10px rgba(139, 45, 255, 0.25);
-      background-color: rgba(12, 20, 46, 0.8);
-    }
-
-    .built-panel-minuta:hover {
-      border-color: rgba(38, 198, 255, 0.4);
-      box-shadow: 0 0 40px -10px rgba(38, 198, 255, 0.25);
-      background-color: rgba(12, 20, 46, 0.8);
-    }
-
-    .built-panel:hover .built-media-image {
-      transform: scale(1.025);
-    }
-  }
-}
-
-@keyframes built-drift {
-  from { transform: scale(1.045) translate3d(-1.2%, 0.4%, 0); }
-  to { transform: scale(1.045) translate3d(1.2%, -0.6%, 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .built-panel,
-  .built-media-image {
-    transition: none;
-  }
-
-  .built-media-drift {
-    animation: none;
-  }
-
-  .built-media-sheen {
-    display: none;
-  }
-
-  .built-panel:hover .built-media-image {
-    transform: none;
-  }
-}
-
-@layer components {
-  /* Frame 11 — Use Cases (Stitch atmosphere: violet/cyan glow right of centre, pulsing violet orb low left). */
-  .usecases-ambient {
-    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.08) 0%, rgba(38, 198, 255, 0.05) 35%, transparent 70%);
-  }
-
-  .usecases-orb {
-    background: radial-gradient(circle, rgba(139, 45, 255, 0.38) 0%, rgba(139, 45, 255, 0) 68%);
-    opacity: 0.2;
-    animation: usecases-orb 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .usecases-headline-accent {
-    filter: drop-shadow(0 0 14px rgba(38, 198, 255, 0.35));
-  }
-
-  .usecase-panel {
+  .proof-stage {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.9rem;
+    background: rgba(7, 11, 24, 0.6);
+    will-change: transform, opacity;
+  }
+
+  .proof-stage[data-tone="cyan"] { --tone: var(--neon-cyan); }
+  .proof-stage[data-tone="violet"] { --tone: var(--electric-violet); }
+
+  .proof-stage-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .proof-stage-plate {
+    position: absolute;
+    inset: -8%;
+    will-change: transform;
+  }
+
+  .proof-stage-img {
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.72);
+    /* The photograph changes with the selection: ease it in rather than cutting. */
+    animation: proof-media-in 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proof-stage-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(3, 4, 10, 0.97) 6%, rgba(7, 11, 24, 0.82) 38%, rgba(3, 4, 10, 0.42) 72%, rgba(3, 4, 10, 0.3) 100%),
+      linear-gradient(to right, rgba(3, 4, 10, 0.86) 0%, rgba(7, 11, 24, 0.42) 52%, transparent 100%);
+  }
+
+  .proof-stage-hud {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem clamp(0.9rem, 1.5vw, 1.35rem);
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(3, 4, 10, 0.5);
+    backdrop-filter: blur(8px);
+  }
+
+  .proof-hud-id,
+  .proof-hud-sector {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .proof-hud-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--tone, var(--neon-cyan));
+    font-weight: 600;
+  }
+
+  .proof-hud-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .proof-hud-sector {
+    color: var(--text-muted);
+  }
+
+  .proof-stage-body {
+    position: relative;
+    z-index: 1;
+    padding: clamp(0.9rem, 2vh, 1.4rem) clamp(0.9rem, 1.5vw, 1.35rem) clamp(1rem, 2.2vh, 1.5rem);
+  }
+
+  /* Remounted on selection, so the whole dossier eases in together. */
+  .proof-swap {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.65rem, 1.6vh, 1.1rem);
+    animation: proof-swap-in 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proof-copy,
+  .proof-brief,
+  .proof-stat,
+  .proof-cta {
+    will-change: transform, opacity;
+  }
+
+  .proof-metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--tone, var(--neon-cyan));
+    font-weight: 600;
+  }
+
+  .proof-metric {
+    margin-top: 0.25rem;
+    font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+    line-height: 1.1;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .proof-case-title {
+    margin-top: 0.45rem;
+    font-size: clamp(0.9375rem, 1.15vw, 1.125rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .proof-case-summary {
+    margin-top: 0.35rem;
+    max-width: 58ch;
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  .proof-brief {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(0.75rem, 1.4vw, 1.4rem);
+    padding-top: clamp(0.6rem, 1.4vh, 0.9rem);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .proof-brief-label {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .proof-brief-text {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  .proof-chips {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .proof-chip {
+    padding: 0.22rem 0.55rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background: rgba(10, 16, 36, 0.6);
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    color: var(--text-soft);
+  }
+
+  .proof-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding-top: clamp(0.5rem, 1.2vh, 0.85rem);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .proof-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background: rgba(5, 7, 17, 0.72);
+  }
+
+  .proof-stat-value {
+    font-size: clamp(0.8125rem, 1vw, 1rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .proof-stat:first-child .proof-stat-value { color: var(--tone, var(--neon-cyan)); }
+
+  .proof-stat-text {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: var(--text-muted);
+  }
+
+  /* Non-clickable by design: the full study is not published yet. */
+  .proof-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    cursor: default;
+  }
+
+  .proof-cta span:last-child {
+    color: var(--tone, var(--neon-cyan));
+  }
+
+  /* --- Archive deck ----------------------------------------------- */
+
+  .proof-deck {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.2vh, 0.85rem);
+    min-height: 0;
+  }
+
+  .proof-deck-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    will-change: transform, opacity;
+  }
+
+  .proof-deck-cue {
+    color: var(--neon-cyan);
+  }
+
+  /* Two approved cases, so the cards share the column's full height rather than
+     leaving a dead band under the deck. */
+  .proof-deck-list {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.2vh, 0.85rem);
+  }
+
+  .proof-card-anchor {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    will-change: transform, opacity;
+  }
+
+  .proof-card {
+    flex: 1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: clamp(5rem, 7vw, 6.5rem) minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: stretch;
+    text-align: left;
+    padding: 0.7rem;
+    border: 1px solid var(--border-subtle);
     border-radius: 0.75rem;
-    border: 1px solid rgba(160, 175, 220, 0.16);
-    background: #03040a;
-    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(7, 11, 24, 0.78);
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s, transform 0.3s;
   }
 
-  .usecase-panel:focus {
-    outline: none;
+  .proof-card[data-tone="cyan"] { --tone: var(--neon-cyan); }
+  .proof-card[data-tone="violet"] { --tone: var(--electric-violet); }
+
+  .proof-card[data-active] {
+    border-color: color-mix(in srgb, var(--tone) 50%, transparent);
+    background: rgba(10, 16, 36, 0.92);
+    box-shadow: 0 0 26px color-mix(in srgb, var(--tone) 16%, transparent);
   }
 
-  .usecase-panel:focus-visible {
-    outline: 2px solid rgba(38, 198, 255, 0.85);
+  @media (hover: hover) {
+    .proof-card:hover {
+      border-color: color-mix(in srgb, var(--tone) 42%, transparent);
+      transform: translateY(-2px);
+    }
+  }
+
+  .proof-card:focus-visible {
+    outline: 2px solid var(--neon-cyan);
     outline-offset: 2px;
   }
 
-  .usecase-image {
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  .proof-card-media {
+    position: relative;
+    display: block;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
   }
 
-  /* Light atmospheric shade over the photograph (lifts when a panel opens); the photo stays clearly
-     visible at rest. A separate, fixed fade at the foot keeps the card text readable. */
-  .usecase-shade {
-    background: linear-gradient(to top, rgba(3, 4, 10, 0.7) 0%, rgba(3, 4, 10, 0.32) 42%, transparent 70%);
-    transition: opacity 0.4s ease;
+  .proof-card-img {
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.82);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .usecase-text-fade {
-    background: linear-gradient(to top, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.45) 26%, transparent 46%);
-  }
-
-  .usecase-accent {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .usecase-tag {
-    color: rgb(203 213 225);
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.4);
-    transition: color 0.3s ease, border-color 0.3s ease;
-  }
-
-  .usecase-title {
-    color: #fff;
-    font-size: 1.375rem;
-    line-height: 1.25;
-    transition: color 0.3s ease;
-  }
-
-  .usecase-explore {
-    opacity: 0.7;
-    transition: opacity 0.35s ease;
-  }
-
-  /* BFSI is the featured industry: its accent line and tag stay lit. */
-  .usecase-panel[data-default] .usecase-accent {
-    opacity: 0.6;
-  }
-
-  .usecase-panel[data-default] .usecase-tag {
-    color: rgba(38, 198, 255, 0.9);
-    border-color: rgba(38, 198, 255, 0.2);
-  }
-
-  .usecase-panel[data-default] .usecase-explore {
-    opacity: 0.8;
-  }
-
-  @media (min-width: 1280px) {
-    /* The strip itself switches to a row at xl via its utility classes (xl:flex xl:h-[520px]). */
-    .usecase-strip > .usecase-panel {
-      flex: 1 1 0;
-      min-width: 0;
-      transition: flex-grow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  @media (hover: hover) {
+    .proof-card:hover .proof-card-img {
+      transform: scale(1.08);
     }
+  }
 
-    .usecase-title {
-      font-size: clamp(1.25rem, 1.55vw, 1.5rem);
-    }
+  .proof-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    min-width: 0;
+  }
 
-    /* The open panel: BFSI while the strip is idle, otherwise the hovered or keyboard-focused panel. */
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default],
-    .usecase-strip > .usecase-panel:hover,
-    .usecase-strip > .usecase-panel:focus {
-      flex-grow: 2.2;
-      border-color: rgba(38, 198, 255, 0.55);
-      box-shadow: inset 0 0 24px rgba(38, 198, 255, 0.12), 0 0 30px rgba(7, 11, 24, 0.8);
-    }
+  .proof-card-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tone, var(--neon-cyan));
+    font-weight: 600;
+  }
 
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-shade,
-    .usecase-strip > .usecase-panel:hover .usecase-shade,
-    .usecase-strip > .usecase-panel:focus .usecase-shade {
-      opacity: 0.15;
-    }
+  .proof-card-dot {
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
 
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-image,
-    .usecase-strip > .usecase-panel:hover .usecase-image,
-    .usecase-strip > .usecase-panel:focus .usecase-image {
-      transform: scale(1.05);
-    }
+  .proof-card-flag {
+    padding: 0.05rem 0.35rem;
+    border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent);
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, var(--tone) 12%, transparent);
+    letter-spacing: 0.16em;
+  }
 
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-accent,
-    .usecase-strip > .usecase-panel:hover .usecase-accent,
-    .usecase-strip > .usecase-panel:focus .usecase-accent,
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-explore,
-    .usecase-strip > .usecase-panel:hover .usecase-explore,
-    .usecase-strip > .usecase-panel:focus .usecase-explore {
-      opacity: 1;
-    }
+  .proof-card-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
 
-    .usecase-strip:not(:hover):not(:focus-within) > .usecase-panel[data-default] .usecase-title,
-    .usecase-strip > .usecase-panel:hover .usecase-title,
-    .usecase-strip > .usecase-panel:focus .usecase-title,
-    .usecase-strip > .usecase-panel:hover .usecase-tag,
-    .usecase-strip > .usecase-panel:focus .usecase-tag {
-      color: var(--neon-cyan);
-    }
+  .proof-card-metric {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+  }
 
-    .usecase-strip > .usecase-panel:hover .usecase-tag,
-    .usecase-strip > .usecase-panel:focus .usecase-tag {
-      border-color: rgba(38, 198, 255, 0.3);
-    }
+  .proof-card-sector {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 }
 
-@keyframes usecases-orb {
-  0%,
-  100% { opacity: 0.2; }
-  50% { opacity: 0.45; }
+@keyframes proof-media-in {
+  from { opacity: 0.25; }
+  to { opacity: 1; }
+}
+
+@keyframes proof-swap-in {
+  from { opacity: 0.35; transform: translate3d(0, 8px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   FRAME 09 — PROOF, FLOW MODE
+   Narrow screens and reduced motion get the same content as an
+   ordinary stacked document. Nothing is left stranded invisible.
+   ============================================================ */
+
+@layer components {
+  .proof-scene[data-motion="off"] {
+    height: auto;
+    padding-block: clamp(4rem, 12vh, 7rem);
+  }
+
+  .proof-scene[data-motion="off"] .proof-viewport {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .proof-scene[data-motion="off"] .proof-inner {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 5vh, 2.5rem);
+    padding-block: 0;
+  }
+
+  .proof-scene[data-motion="off"] .proof-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .proof-scene[data-motion="off"] .proof-brief {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .proof-scene[data-motion="off"] .proof-stats {
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  }
+
+  .proof-scene[data-motion="off"] .proof-stage-plate {
+    inset: 0;
+  }
+
+  /* Whatever the camera last wrote inline is discarded in flow mode. */
+  .proof-scene[data-motion="off"] .proof-atmos,
+  .proof-scene[data-motion="off"] .proof-head,
+  .proof-scene[data-motion="off"] .proof-stage,
+  .proof-scene[data-motion="off"] .proof-stage-plate,
+  .proof-scene[data-motion="off"] .proof-copy,
+  .proof-scene[data-motion="off"] .proof-brief,
+  .proof-scene[data-motion="off"] .proof-stat,
+  .proof-scene[data-motion="off"] .proof-cta,
+  .proof-scene[data-motion="off"] .proof-deck-label,
+  .proof-scene[data-motion="off"] .proof-card-anchor {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .usecases-orb {
+  .proof-stage-img,
+  .proof-swap {
     animation: none;
   }
 
-  .usecase-panel,
-  .usecase-image,
-  .usecase-shade,
-  .usecase-accent,
-  .usecase-tag,
-  .usecase-title,
-  .usecase-explore,
-  .usecase-strip > .usecase-panel {
+  .proof-card,
+  .proof-card-img {
     transition: none;
   }
 
-  /* Stable widths and no zoom: the open panel is shown by lighting alone. */
-  .usecase-strip > .usecase-panel {
-    flex-grow: 1 !important;
-  }
-
-  .usecase-image {
-    transform: none !important;
+  .proof-card:hover {
+    transform: none;
   }
 }
 
 @layer components {
-  /* Frame 12 — Client Proof (Stitch atmosphere: violet/cyan glow right of centre, faint violet lower left). */
-  .proof-ambient {
-    background: radial-gradient(circle at 75% 45%, rgba(139, 45, 255, 0.11) 0%, rgba(38, 198, 255, 0.06) 35%, transparent 70%),
-      radial-gradient(circle at 20% 70%, rgba(139, 45, 255, 0.05) 0%, transparent 60%);
+  /* ============================================================
+     FRAME 10 — WHAT WE'VE BUILT
+     Tall scene, sticky viewport, over the generated enterprise backdrop.
+     The camera is scrubbed in BuiltProducts.tsx; this file lays out the world.
+     ============================================================ */
+
+  .built-scene {
+    position: relative;
+    isolation: isolate;
+    background: var(--void-black);
+    height: calc(380 * var(--svh));
   }
 
-  /* Halo behind the framed image: built in CSS, not baked into the photograph. Breathes very slowly. */
-  .proof-halo {
-    background: linear-gradient(to top right, rgba(139, 45, 255, 0.15), transparent, rgba(38, 198, 255, 0.15));
-    filter: blur(40px);
-    animation: proof-halo 14s ease-in-out infinite alternate;
+  .built-viewport {
+    position: sticky;
+    top: 0;
+    height: calc(100 * var(--svh));
+    overflow: hidden;
   }
 
-  .proof-frame {
-    box-shadow: 0 0 60px -15px rgba(139, 45, 255, 0.25), 0 0 40px -10px rgba(38, 198, 255, 0.18);
+  .built-env {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 
-  /* Rests at a slight zoom and eases to 1 on hover (Stitch). */
-  .proof-image {
-    transform: scale(1.02);
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Oversized so the slow push never exposes an edge. */
+  .built-backdrop {
+    position: absolute;
+    inset: -14%;
+    will-change: transform;
+  }
+
+  .built-backdrop-img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* The backdrop is a stage, not the subject — but it still has to read. Shade only
+     where the copy sits: heavier at the top-left behind the headline, light elsewhere. */
+  .built-backdrop-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(3, 4, 10, 0.72) 0%, rgba(3, 4, 10, 0.34) 30%, rgba(3, 4, 10, 0.3) 70%, rgba(3, 4, 10, 0.55) 100%),
+      radial-gradient(58% 46% at 12% 16%, rgba(3, 4, 10, 0.62), transparent 72%);
+  }
+
+  .built-atmos {
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(32% 30% at 88% 8%, rgba(38, 198, 255, 0.14), transparent 68%),
+      radial-gradient(34% 32% at 4% 56%, rgba(139, 45, 255, 0.14), transparent 66%),
+      radial-gradient(34% 28% at 62% 102%, rgba(38, 198, 255, 0.07), transparent 70%);
+    will-change: transform, opacity;
+  }
+
+  .built-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: calc(var(--header-h) + clamp(0.75rem, 2.5vh, 1.75rem)) var(--gutter-x) clamp(1.5rem, 4vh, 2.5rem);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: clamp(0.9rem, 2.6vh, 2rem);
+  }
+
+  /* --- Editorial header ------------------------------------------- */
+
+  .built-head-row {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .built-head {
+    will-change: transform, opacity;
+  }
+
+  .built-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .built-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(38, 198, 255, 0.85);
+  }
+
+  .built-title {
+    margin-top: 0.7rem;
+    font-size: clamp(1.9rem, 3.4vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  .built-title span {
+    display: block;
+  }
+
+  .built-title-accent {
+    background: linear-gradient(90deg, #ffffff 10%, #e0e5f5 46%, var(--neon-cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .built-intro {
+    justify-self: end;
+    max-width: 34ch;
+    text-align: right;
+    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+    line-height: 1.7;
+    color: var(--text-secondary);
+    will-change: transform, opacity;
+  }
+
+  /* --- Product showcases ------------------------------------------ */
+
+  .built-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+    min-height: 0;
+  }
+
+  .built-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(0.85rem, 1.6vh, 1.3rem);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    background: rgba(8, 13, 31, 0.72);
+    will-change: transform, opacity;
+  }
+
+  .built-card[data-tone="cyan"] { --tone: var(--neon-cyan); }
+  .built-card[data-tone="violet"] { --tone: #c47fff; }
+
+  .built-card-media {
+    position: relative;
+    flex: none;
+    height: clamp(9rem, 30vh, 18rem);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.7rem;
+    background: #050711;
+  }
+
+  .built-card-plate {
+    position: absolute;
+    inset: -6%;
+    will-change: transform;
+  }
+
+  .built-card-img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .built-card-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8, 13, 31, 0.85) 0%, rgba(8, 13, 31, 0) 32%);
+  }
+
+  /* Fills the card so the call to action anchors to its foot rather than
+     leaving a dead band under the feature list. */
+  .built-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding-top: clamp(0.7rem, 1.6vh, 1.15rem);
+    will-change: transform, opacity;
+  }
+
+  .built-card-name {
+    font-size: clamp(1.25rem, 1.9vw, 1.85rem);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  .built-card-full {
+    margin-top: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .built-card-tagline {
+    margin-top: 0.45rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tone, var(--neon-cyan));
+  }
+
+  .built-card-text {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .built-features {
+    margin-top: clamp(0.55rem, 1.3vh, 0.9rem);
+    padding-top: clamp(0.5rem, 1.2vh, 0.8rem);
+    border-top: 1px solid var(--border-subtle);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.28rem clamp(0.6rem, 1.2vw, 1.1rem);
+    min-height: 0;
+  }
+
+  .built-feature {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    color: var(--text-soft);
+  }
+
+  .built-feature-mark {
+    flex: none;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background: var(--tone, var(--neon-cyan));
+    opacity: 0.85;
+    transform: translateY(-0.15em);
+  }
+
+  /* Non-clickable by design: no product page exists yet. */
+  .built-cta {
+    margin-top: auto;
+    padding-top: clamp(0.6rem, 1.4vh, 1rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+    cursor: default;
+  }
+
+  .built-cta span:last-child {
+    color: var(--tone, var(--neon-cyan));
+  }
+}
+
+/* ============================================================
+   FRAME 10 — FLOW MODE
+   Narrow screens and reduced motion get the same content as an
+   ordinary stacked document. Nothing is left stranded invisible.
+   ============================================================ */
+
+@layer components {
+  .built-scene[data-motion="off"] {
+    height: auto;
+    padding-block: clamp(4rem, 12vh, 7rem);
+  }
+
+  .built-scene[data-motion="off"] .built-viewport {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .built-scene[data-motion="off"] .built-inner {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 5vh, 2.5rem);
+    padding-block: 0;
+  }
+
+  .built-scene[data-motion="off"] .built-head-row {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(0.85rem, 3vh, 1.5rem);
+  }
+
+  .built-scene[data-motion="off"] .built-intro {
+    justify-self: start;
+    text-align: left;
+    max-width: 52ch;
+  }
+
+  .built-scene[data-motion="off"] .built-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .built-scene[data-motion="off"] .built-backdrop,
+  .built-scene[data-motion="off"] .built-card-plate {
+    inset: 0;
+  }
+
+  .built-scene[data-motion="off"] .built-features {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  .built-scene[data-motion="off"] .built-cta {
+    margin-top: clamp(0.75rem, 2vh, 1.15rem);
+  }
+
+  /* Whatever the camera last wrote inline is discarded in flow mode. */
+  .built-scene[data-motion="off"] .built-backdrop,
+  .built-scene[data-motion="off"] .built-atmos,
+  .built-scene[data-motion="off"] .built-head,
+  .built-scene[data-motion="off"] .built-intro,
+  .built-scene[data-motion="off"] .built-card,
+  .built-scene[data-motion="off"] .built-card-plate,
+  .built-scene[data-motion="off"] .built-card-body {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
+}
+
+@layer components {
+  /* ============================================================
+     FRAME 11 — USE CASES
+     Tall scene, sticky viewport, a panoramic industry strip the
+     camera pans along. Scrubbed in UseCases.tsx.
+     ============================================================ */
+
+  /* An ordinary section: the page does not get pinned. Only the strip inside moves. */
+  .uc-scene {
+    position: relative;
+    isolation: isolate;
+    background: var(--void-black);
+    padding-block: clamp(4rem, 11vh, 7rem);
+  }
+
+  .uc-viewport {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .uc-env {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .uc-atmos {
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(44% 42% at 74% 44%, rgba(139, 45, 255, 0.16), transparent 70%),
+      radial-gradient(38% 36% at 10% 72%, rgba(139, 45, 255, 0.1), transparent 66%),
+      radial-gradient(40% 34% at 50% 14%, rgba(38, 198, 255, 0.09), transparent 72%);
+    will-change: transform, opacity;
+  }
+
+  .uc-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2.6vh, 1.9rem);
+  }
+
+  /* --- Editorial header ------------------------------------------- */
+
+  .uc-head-row {
+    padding-inline: var(--gutter-x);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .uc-head {
+    will-change: transform, opacity;
+  }
+
+  .uc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .uc-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(38, 198, 255, 0.85);
+  }
+
+  .uc-title {
+    margin-top: 0.65rem;
+    font-size: clamp(1.8rem, 3.2vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  .uc-title span {
+    display: block;
+  }
+
+  .uc-title-accent {
+    background: linear-gradient(90deg, #ffffff 20%, #cfeaff 58%, var(--neon-cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .uc-count {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    will-change: transform, opacity;
+  }
+
+  .uc-count-figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+
+  .uc-controls {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .uc-arrow {
+    width: 2.1rem;
+    height: 2.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background: rgba(7, 11, 24, 0.7);
+    color: var(--text-soft);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: color 0.25s, border-color 0.25s, background-color 0.25s;
   }
 
   @media (hover: hover) {
-    .proof-frame:hover .proof-image {
-      transform: scale(1);
+    .uc-arrow:not(:disabled):hover {
+      color: var(--text-primary);
+      border-color: rgba(38, 198, 255, 0.5);
+      background: rgba(38, 198, 255, 0.08);
     }
   }
 
-  /* Edge blend into the void, lighter than Stitch's so the portal on the right stays visible. */
-  .proof-vignette {
-    background: linear-gradient(90deg, rgba(3, 4, 10, 0.85) 0%, rgba(3, 4, 10, 0.35) 9%, transparent 20%, transparent 84%, rgba(3, 4, 10, 0.35) 94%, rgba(3, 4, 10, 0.8) 100%),
-      linear-gradient(180deg, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.25) 8%, transparent 20%, transparent 80%, rgba(3, 4, 10, 0.4) 92%, rgba(3, 4, 10, 0.85) 100%);
+  .uc-arrow:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
   }
 
-  /* Testimonial rule (used once approved copy is present). */
-  .proof-quote {
-    border-left: 1px solid rgba(139, 45, 255, 0.35);
+  .uc-arrow:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .uc-count-value {
+    font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--neon-cyan);
+  }
+
+  .uc-count-text {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* --- The panoramic strip ----------------------------------------- */
+
+  /* The scroll container itself. Sideways scrolling moves the cards and nothing else. */
+  .uc-deck {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    /* Snapping aligns to the container edge, which would otherwise ignore the track's
+       gutter and leave the first card clipped by exactly that much. */
+    scroll-padding-inline: var(--gutter-x);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    will-change: transform, opacity;
+  }
+
+  .uc-deck::-webkit-scrollbar {
+    display: none;
+  }
+
+  .uc-deck:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 4px;
+    border-radius: 0.85rem;
+  }
+
+  .uc-track {
+    padding-inline: var(--gutter-x);
+    display: flex;
+    align-items: stretch;
+    gap: clamp(0.6rem, 1.1vw, 1rem);
+    width: max-content;
+  }
+
+  .uc-card {
+    scroll-snap-align: start;
+  }
+
+  .uc-card {
+    position: relative;
+    flex: none;
+    width: clamp(15rem, 20vw, 19rem);
+    height: clamp(22rem, 52vh, 30rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.85rem;
+    background: #050711;
+    will-change: transform, opacity;
+  }
+
+  .uc-card-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .uc-card-img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .uc-card-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(3, 4, 10, 0.97) 8%, rgba(7, 11, 24, 0.86) 44%, rgba(3, 4, 10, 0.4) 78%, rgba(3, 4, 10, 0.26) 100%);
+  }
+
+  .uc-card-body {
+    position: relative;
+    z-index: 1;
+    padding: clamp(0.85rem, 1.6vh, 1.2rem);
+  }
+
+  .uc-card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(38, 198, 255, 0.28);
+    border-radius: 0.3rem;
+    background: rgba(3, 4, 10, 0.6);
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+  }
+
+  .uc-card-dot {
+    width: 0.28rem;
+    height: 0.28rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .uc-card-name {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .uc-card-icon {
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--neon-cyan);
+  }
+
+  .uc-card-cases {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+  }
+
+  .uc-case {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    color: var(--text-soft);
+  }
+
+  .uc-case-mark {
+    flex: none;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    opacity: 0.8;
+    transform: translateY(-0.15em);
+  }
+
+  /* --- Closing ------------------------------------------------------ */
+
+  .uc-closing {
+    padding-inline: var(--gutter-x);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    padding-top: clamp(0.6rem, 1.6vh, 1.1rem);
+    will-change: transform, opacity;
+  }
+
+  .uc-closing {
+    border-top: 1px solid var(--border-subtle);
+    margin-inline: var(--gutter-x);
+    padding-inline: 0;
+  }
+
+  .uc-closing-text {
+    max-width: 62ch;
+    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .uc-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .uc-hint-mark {
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+  }
+
+  /* Non-clickable by design: this has no destination yet. */
+  .uc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    cursor: default;
+  }
+
+  .uc-cta span:last-child {
+    color: var(--neon-cyan);
   }
 }
 
-@keyframes proof-halo {
-  from { opacity: 0.8; }
-  to { opacity: 1; }
-}
+/* ============================================================
+   FRAME 11 — FLOW MODE
+   Narrow screens and reduced motion get the same content as an
+   ordinary stacked grid. Nothing is left stranded invisible.
+   ============================================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  .proof-halo {
-    animation: none;
+@layer components {
+  .uc-scene[data-motion="off"] .uc-viewport {
+    overflow: visible;
   }
 
-  .proof-image {
-    transform: none;
-    transition: none;
+  .uc-scene[data-motion="off"] .uc-head-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(0.85rem, 3vh, 1.5rem);
   }
 
-  .proof-frame:hover .proof-image {
-    transform: none;
+  /* Reduced motion: the strip becomes a grid, so nothing has to be scrolled sideways. */
+  .uc-scene[data-motion="off"] .uc-deck {
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .uc-scene[data-motion="off"] .uc-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: clamp(0.75rem, 3vw, 1.25rem);
+    width: auto;
+  }
+
+  .uc-scene[data-motion="off"] .uc-card {
+    width: auto;
+    height: auto;
+    min-height: 20rem;
+  }
+
+  .uc-scene[data-motion="off"] .uc-controls,
+  .uc-scene[data-motion="off"] .uc-hint {
+    display: none;
+  }
+
+  .uc-scene[data-motion="off"] .uc-closing {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .uc-scene[data-motion="off"] .uc-closing::before {
+    left: var(--gutter-x);
+    right: var(--gutter-x);
+  }
+
+  /* Whatever the camera last wrote inline is discarded in flow mode. */
+  .uc-scene[data-motion="off"] .uc-atmos,
+  .uc-scene[data-motion="off"] .uc-head,
+  .uc-scene[data-motion="off"] .uc-count,
+  .uc-scene[data-motion="off"] .uc-deck,
+  .uc-scene[data-motion="off"] .uc-track,
+  .uc-scene[data-motion="off"] .uc-card,
+  .uc-scene[data-motion="off"] .uc-closing {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
   }
 }
 
@@ -1556,5 +2537,592 @@ html[data-scene-intense] .header-intensity {
 
   .footer-link {
     transition: none;
+  }
+}
+
+/* ============================================================
+   FRAME 09 — SOVEREIGN AI
+   A tall scene with a sticky viewport. The camera is scrubbed by
+   ScrollTrigger in SovereignAI.tsx; this file only lays out the world.
+   ============================================================ */
+
+@layer components {
+  .sov-scene {
+    position: relative;
+    isolation: isolate;
+    background: var(--void-black);
+    height: calc(440 * var(--svh));
+    --sov-mid: clamp(20rem, 30vw, 30rem);
+    --sov-gap: clamp(1rem, 2.2vw, 2.25rem);
+    --sov-orbit: clamp(17rem, 23vw, 23rem);
+  }
+
+  .sov-viewport {
+    position: sticky;
+    top: 0;
+    height: calc(100 * var(--svh));
+    overflow: hidden;
+  }
+
+  /* --- Environment ------------------------------------------------ */
+
+  .sov-env {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* A blueprint floor: the enclave is a drawing before it is a place. */
+  .sov-grid {
+    position: absolute;
+    inset: -20%;
+    background-image:
+      linear-gradient(rgba(38, 198, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(38, 198, 255, 0.055) 1px, transparent 1px);
+    background-size: 68px 68px;
+    mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, #000 12%, transparent 76%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, #000 12%, transparent 76%);
+    will-change: transform;
+  }
+
+  .sov-atmos {
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(38% 46% at 50% 50%, rgba(139, 45, 255, 0.22), transparent 70%),
+      radial-gradient(52% 40% at 18% 78%, rgba(23, 107, 255, 0.16), transparent 72%),
+      radial-gradient(46% 38% at 84% 22%, rgba(38, 198, 255, 0.14), transparent 74%);
+    will-change: transform, opacity;
+  }
+
+  /* --- Blueprint grid --------------------------------------------- */
+
+  .sov-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    /* The header floats over the scene, so the blueprint starts below it. */
+    padding: calc(var(--header-h) + clamp(0.75rem, 2.5vh, 1.75rem)) var(--gutter-x) clamp(1.5rem, 4vh, 2.75rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--sov-mid) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    column-gap: var(--sov-gap);
+    row-gap: clamp(0.75rem, 2vh, 1.75rem);
+    align-items: start;
+  }
+
+  .sov-head {
+    grid-column: 1;
+    grid-row: 1;
+    will-change: transform, opacity;
+  }
+
+  .sov-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+  }
+
+  .sov-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(38, 198, 255, 0.8);
+    animation: sov-pulse 2.4s ease-in-out infinite;
+  }
+
+  .sov-eyebrow-sep {
+    padding-left: 0.7rem;
+    border-left: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+  }
+
+  .sov-title {
+    margin-top: clamp(0.75rem, 1.6vh, 1.25rem);
+    font-size: clamp(1.75rem, 3vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+    color: var(--text-primary);
+  }
+
+  .sov-title span {
+    display: block;
+  }
+
+  .sov-title-accent {
+    background: linear-gradient(90deg, var(--electric-violet), var(--neon-cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 400;
+  }
+
+  .sov-intro {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
+    will-change: transform, opacity;
+  }
+
+  .sov-intro-text {
+    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 34ch;
+    margin-left: auto;
+  }
+
+  .sov-assure {
+    margin-top: clamp(0.75rem, 1.6vh, 1.15rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .sov-assure svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--neon-cyan);
+    flex: none;
+  }
+
+  /* --- The gate and its revolving orbit --------------------------- */
+
+  .sov-stage {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    display: grid;
+    grid-template-areas: "core";
+    place-items: center;
+  }
+
+  .sov-orbit {
+    grid-area: core;
+    position: relative;
+    width: var(--sov-orbit);
+    height: var(--sov-orbit);
+    will-change: transform, opacity;
+  }
+
+  .sov-ring {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .sov-ring-outer {
+    inset: 0;
+    border: 1px dashed rgba(38, 198, 255, 0.3);
+  }
+
+  .sov-ring-inner {
+    inset: 14%;
+    border: 1px solid rgba(139, 45, 255, 0.28);
+    box-shadow: inset 0 0 40px rgba(139, 45, 255, 0.12);
+  }
+
+  /* Rotated by the camera; the stations ride it. */
+  .sov-spin {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sov-station {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Anchored with margins, not a translate, so the camera's counter-rotation
+     can own the transform outright without losing the centring. */
+  .sov-node {
+    position: absolute;
+    top: -0.5rem;
+    left: calc(50% - 4.25rem);
+    width: 8.5rem;
+    height: 1rem;
+  }
+
+  .sov-node-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: -0.25rem 0 0 -0.25rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(38, 198, 255, 0.9);
+  }
+
+  /* Set outside the ring: inside, the labels collide with the gate's own chips. */
+  .sov-node-label {
+    position: absolute;
+    bottom: 1.05rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .sov-node[data-side="down"] .sov-node-label {
+    top: 1.05rem;
+    bottom: auto;
+  }
+
+  /* Below 1280px the side columns arrive before the labels have room. */
+  @media (max-width: 1279.98px) {
+    .sov-node-label {
+      display: none;
+    }
+  }
+
+  .sov-portal {
+    grid-area: core;
+    position: relative;
+    width: clamp(10rem, 14vw, 13rem);
+    will-change: transform, opacity;
+  }
+
+  .sov-portal-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 60px rgba(139, 45, 255, 0.35));
+  }
+
+  .sov-portal-chip,
+  .sov-portal-seal {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(3, 4, 10, 0.72);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .sov-portal-chip {
+    top: -0.9rem;
+    color: var(--neon-cyan);
+    border-color: rgba(38, 198, 255, 0.35);
+  }
+
+  .sov-portal-seal {
+    bottom: -0.9rem;
+    color: var(--text-secondary);
+  }
+
+  /* Flow-mode copy of the bearings: the orbit itself is decorative. */
+  .sov-stations-flow {
+    display: none;
+  }
+
+  /* --- The four enclave layers ------------------------------------ */
+
+  .sov-layers {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--sov-mid) minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    column-gap: var(--sov-gap);
+    row-gap: clamp(0.6rem, 1.6vh, 1.25rem);
+    align-content: center;
+  }
+
+  .sov-card {
+    padding: clamp(0.85rem, 1.6vh, 1.15rem) clamp(0.9rem, 1.2vw, 1.25rem);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    background: linear-gradient(140deg, rgba(10, 16, 36, 0.72), rgba(5, 7, 17, 0.58));
+    backdrop-filter: blur(6px);
+    will-change: transform, opacity;
+  }
+
+  .sov-card[data-slot="0"] { grid-column: 1; grid-row: 1; }
+  .sov-card[data-slot="1"] { grid-column: 1; grid-row: 2; }
+  .sov-card[data-slot="2"] { grid-column: 3; grid-row: 1; }
+  .sov-card[data-slot="3"] { grid-column: 3; grid-row: 2; }
+
+  .sov-card[data-slot="2"],
+  .sov-card[data-slot="3"] {
+    border-color: rgba(139, 45, 255, 0.22);
+  }
+
+  .sov-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .sov-card-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+  }
+
+  .sov-card[data-slot="2"] .sov-card-tag,
+  .sov-card[data-slot="3"] .sov-card-tag {
+    color: #c4b5fd;
+  }
+
+  .sov-card-dot {
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .sov-card-icon {
+    color: var(--text-muted);
+  }
+
+  .sov-card-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .sov-card-title {
+    margin-top: 0.5rem;
+    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+
+  .sov-card-text {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .sov-card-meta {
+    margin-top: 0.7rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .sov-card-stat {
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  /* --- Deployment topology ---------------------------------------- */
+
+  .sov-bar {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    padding-top: clamp(0.75rem, 1.8vh, 1.25rem);
+    border-top: 1px solid var(--border-subtle);
+    will-change: transform, opacity;
+  }
+
+  .sov-bar-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .sov-bar-label,
+  .sov-assurances,
+  .sov-chip,
+  .sov-cta {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .sov-bar-label {
+    color: var(--text-muted);
+  }
+
+  .sov-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .sov-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    color: var(--text-soft);
+  }
+
+  .sov-chip-dot {
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+  }
+
+  .sov-assurances {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  /* Non-clickable by design: this has no destination yet. */
+  .sov-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    cursor: default;
+  }
+}
+
+@keyframes sov-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* ============================================================
+   FRAME 09 — FLOW MODE
+   Narrow screens and reduced motion get the same content as an
+   ordinary stacked document. Nothing is left stranded invisible.
+   ============================================================ */
+
+@layer components {
+  .sov-scene[data-motion="off"] {
+    height: auto;
+    padding-block: clamp(4rem, 12vh, 7rem);
+  }
+
+  .sov-scene[data-motion="off"] .sov-viewport {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sov-scene[data-motion="off"] .sov-env {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sov-scene[data-motion="off"] .sov-inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 5vh, 2.5rem);
+    height: auto;
+    padding-block: 0;
+  }
+
+  .sov-scene[data-motion="off"] .sov-intro {
+    text-align: left;
+  }
+
+  .sov-scene[data-motion="off"] .sov-intro-text {
+    margin-left: 0;
+  }
+
+  .sov-scene[data-motion="off"] .sov-stage {
+    justify-self: center;
+  }
+
+  .sov-scene[data-motion="off"] .sov-portal {
+    width: min(16rem, 58vw);
+  }
+
+  .sov-scene[data-motion="off"] .sov-orbit {
+    width: min(21rem, 78vw);
+    height: min(21rem, 78vw);
+  }
+
+  /* The orbit is decorative, so its bearings are carried as real text here. */
+  .sov-scene[data-motion="off"] .sov-spin {
+    display: none;
+  }
+
+  .sov-scene[data-motion="off"] .sov-stations-flow {
+    display: grid;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .sov-scene[data-motion="off"] .sov-layers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-template-rows: none;
+  }
+
+  .sov-scene[data-motion="off"] .sov-card {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  /* Whatever the camera last wrote inline is discarded in flow mode. */
+  .sov-scene[data-motion="off"] .sov-grid,
+  .sov-scene[data-motion="off"] .sov-atmos,
+  .sov-scene[data-motion="off"] .sov-head,
+  .sov-scene[data-motion="off"] .sov-intro,
+  .sov-scene[data-motion="off"] .sov-orbit,
+  .sov-scene[data-motion="off"] .sov-portal,
+  .sov-scene[data-motion="off"] .sov-card,
+  .sov-scene[data-motion="off"] .sov-bar {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sov-dot {
+    animation: none;
   }
 }

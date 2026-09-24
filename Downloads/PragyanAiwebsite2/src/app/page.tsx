@@ -8,10 +8,10 @@ import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
 import PrismApproach from "@/components/sections/PrismApproach";
 import Capabilities from "@/components/sections/Capabilities";
+import SovereignAI from "@/components/sections/SovereignAI";
 import CaseStudies from "@/components/sections/CaseStudies";
 import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
-import ClientProof from "@/components/sections/ClientProof";
 import HowWeThink from "@/components/sections/HowWeThink";
 import ReadyToExplore from "@/components/sections/ReadyToExplore";
 import Footer from "@/components/sections/Footer";
@@ -43,11 +43,13 @@ export default function Home() {
       <PrismApproach />
       <Capabilities />
 
+      {/* Frame 09 — Sovereign AI: the enclave blueprint assembles as you scroll */}
+      <SovereignAI />
+
       {/* Phase 2B content frames */}
       <CaseStudies />
       <BuiltProducts />
       <UseCases />
-      <ClientProof />
 
       {/* Phase 3 content frames */}
       <HowWeThink />
