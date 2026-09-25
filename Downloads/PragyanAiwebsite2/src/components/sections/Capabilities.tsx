@@ -360,7 +360,7 @@ export default function Capabilities() {
       id="capabilities"
       ref={sectionRef}
       aria-labelledby="capabilities-heading"
-      className="relative isolate min-h-[clamp(40rem,calc(var(--svh)*100),46rem)] overflow-hidden bg-[var(--void-black)]"
+      className="relative isolate min-h-[clamp(40rem,calc(var(--svh)*100),46rem)] overflow-hidden"
     >
       {/* Crystalline intelligence environment (artwork unchanged) */}
       <div data-service-background className="absolute inset-0">

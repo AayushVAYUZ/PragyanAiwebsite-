@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Header from "@/components/layout/Header";
+import CosmicField from "@/components/layout/CosmicField";
 import EyeBlinkPreloader, { type IntroPhase } from "@/components/cinematic/EyeBlinkPreloader";
 import CinematicOpening from "@/components/cinematic/CinematicOpening";
 import BeliefQuestions from "@/components/sections/BeliefQuestions";
@@ -25,6 +26,10 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-[var(--void-black)] text-[var(--text-primary)] selection:bg-[#8B2DFF]/30">
+      {/* One continuous field of space behind every section, so the gaps between them read
+          as the same dimension rather than dead black. */}
+      <CosmicField />
+
       {/* Page-load eye reveal, brand identity and header handoff (time-based, runs once) */}
       <EyeBlinkPreloader onPhase={setIntroPhase} onGateReady={handleGateReady} onComplete={handleIntroComplete} />
 

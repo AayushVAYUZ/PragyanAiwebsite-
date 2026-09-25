@@ -522,7 +522,7 @@ export default function OurJourney() {
       id="journey"
       ref={sectionRef}
       aria-labelledby="journey-heading"
-      className="relative isolate min-h-[calc(var(--svh)*100)] overflow-hidden bg-[var(--void-black)]"
+      className="relative isolate min-h-[calc(var(--svh)*100)] overflow-hidden"
     >
       <div className="relative h-[calc(var(--svh)*100)] w-full overflow-hidden">
         {/* Mountain environment with the painted journey path (restrained parallax) */}

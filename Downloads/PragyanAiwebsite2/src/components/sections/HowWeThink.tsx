@@ -101,7 +101,7 @@ export default function HowWeThink() {
       id="insights"
       ref={sectionRef}
       aria-labelledby="insights-heading"
-      className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden bg-[var(--void-black)]"
+      className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden"
     >
       <div aria-hidden="true" className="insights-ambient pointer-events-none absolute inset-0" />
 
@@ -118,12 +118,9 @@ export default function HowWeThink() {
                 Ideas for a more
                 <br />
                 <span className="bg-gradient-to-r from-white via-white to-[var(--neon-cyan)]/80 bg-clip-text pb-1 text-transparent">
-                  intelligent tomorrow.
+                  intelligent today.
                 </span>
               </h2>
-              <p data-insights-copy className="max-w-lg pt-1 text-sm leading-relaxed font-light text-[#A2A8BC] md:text-base">
-                Insights, perspectives and learnings from our team shaping the next frontier of enterprise intelligence.
-              </p>
             </div>
 
             {/* No insights destination exists yet: plain text in the Stitch pill, not a link. */}

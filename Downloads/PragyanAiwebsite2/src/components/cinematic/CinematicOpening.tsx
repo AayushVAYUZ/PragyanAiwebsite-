@@ -399,9 +399,13 @@ export default function CinematicOpening({
       data-testid="cinematic-scene"
       className="relative h-[calc(var(--svh)*700)] md:h-[calc(var(--svh)*820)]"
     >
+      {/* No background of its own: the cosmic field sits behind the whole page, and an opaque
+          viewport here blanked it out for the entire opening — including the long stretch after
+          the gate, which then read as dead black rather than open space. The eye and gate layers
+          already cover the frame during the beats that need darkness. */}
       <div
         ref={viewportRef}
-        className="sticky top-0 h-[calc(var(--lvh)*100)] w-full overflow-hidden bg-[var(--void-black)]"
+        className="sticky top-0 h-[calc(var(--lvh)*100)] w-full overflow-hidden"
       >
         {/* 01 — the eye (nearest to the camera) */}
         <Image

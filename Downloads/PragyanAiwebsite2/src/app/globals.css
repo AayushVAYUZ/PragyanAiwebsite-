@@ -901,7 +901,6 @@ html[data-scene-intense] .header-intensity {
   .proof-scene {
     position: relative;
     isolation: isolate;
-    background: var(--void-black);
     /* One screen plus a short sticky hold. The scene assembles on arrival rather than over
        four screens of scrolling, which left an empty frame ahead of the content. */
     height: calc(118 * var(--svh));
@@ -1465,7 +1464,6 @@ html[data-scene-intense] .header-intensity {
   .built-scene {
     position: relative;
     isolation: isolate;
-    background: var(--void-black);
     height: calc(118 * var(--svh));
   }
 
@@ -1812,7 +1810,6 @@ html[data-scene-intense] .header-intensity {
   .uc-scene {
     position: relative;
     isolation: isolate;
-    background: var(--void-black);
     padding-block: clamp(4rem, 11vh, 7rem);
   }
 
@@ -2382,7 +2379,7 @@ html[data-scene-intense] .header-intensity {
   /* Below lg the content stacks full width and the gateway runs the full height behind it, so the
      shade is vertical: darkest where the copy is dense, lifting across the middle so the portal reads. */
   .footer-scrims {
-    background: linear-gradient(to bottom, rgba(3, 4, 10, 0.9) 0%, rgba(3, 4, 10, 0.78) 34%, rgba(3, 4, 10, 0.56) 62%, rgba(3, 4, 10, 0.66) 86%, rgba(3, 4, 10, 0.86) 100%);
+    background: linear-gradient(to bottom, rgba(3, 4, 10, 0.88) 0%, rgba(3, 4, 10, 0.72) 34%, rgba(3, 4, 10, 0.5) 62%, rgba(3, 4, 10, 0.6) 86%, rgba(3, 4, 10, 0.8) 100%);
   }
 
   /* Small screens keep the copy over the brighter stretch of the gateway: a soft shade holds contrast. */
@@ -2391,9 +2388,14 @@ html[data-scene-intense] .header-intensity {
   }
 
   @media (min-width: 1024px) {
+    /* The portal is the subject here, so the shade opens across the middle and closes again at
+       both edges: dark enough on the left for the wordmark and newsletter, dark enough on the
+       right for the pillar words, and nearly clear where the gateway itself sits. */
     .footer-scrims {
-      background: linear-gradient(to right, #03040a 0%, rgba(3, 4, 10, 0.82) 30%, rgba(3, 4, 10, 0.45) 58%, rgba(3, 4, 10, 0.2) 100%),
-        linear-gradient(to top, rgba(3, 4, 10, 0.75) 0%, rgba(3, 4, 10, 0.2) 22%, transparent 45%, rgba(3, 4, 10, 0.55) 100%);
+      /* Only as dark as the copy needs: the second gateway is cropped out of the plate rather
+         than shaded over, so the plain, its mountains and the wet floor are all left to read. */
+      background: linear-gradient(to right, rgba(3, 4, 10, 0.92) 0%, rgba(3, 4, 10, 0.82) 20%, rgba(3, 4, 10, 0.5) 38%, rgba(3, 4, 10, 0.16) 56%, rgba(3, 4, 10, 0.2) 78%, rgba(3, 4, 10, 0.36) 100%),
+        linear-gradient(to top, rgba(3, 4, 10, 0.62) 0%, rgba(3, 4, 10, 0.18) 20%, transparent 46%, rgba(3, 4, 10, 0.45) 100%);
     }
 
     .footer-content {
@@ -2434,15 +2436,136 @@ html[data-scene-intense] .header-intensity {
   }
 
   .footer-pillar-beyond {
-    background: linear-gradient(90deg, #c4b5fd, #67e8f9);
+    background: linear-gradient(90deg, #ddd6fe, #a5f3fc);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  .footer-legal {
-    border-top: 1px solid rgba(160, 175, 220, 0.14);
-    background: rgba(3, 4, 10, 0.72);
+  /* The portal, sized off the footer's own height and stood on the horizon. Below lg the copy
+     stacks full width over this area, so the gateway that is already painted into the landscape
+     is left to carry the frame on its own. */
+  /* Oversized and left-anchored: the right ~26% of the artwork (which holds a second, fainter
+     gateway) is pushed outside the footer, which clips it. */
+  .footer-backdrop-plate {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 136%;
+  }
+
+  .footer-gate {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .footer-gate {
+      display: block;
+      position: absolute;
+      left: 70%;
+      bottom: 19%;
+      height: 62%;
+      /* Native proportions of gateway-portal-4k.png (1114 x 1411). */
+      aspect-ratio: 1114 / 1411;
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Tucked inside the frame's aperture (measured from the artwork in lib/cinematic/scene.ts:
+     left 342, right 818, top 263, bottom 1300 of 1114 x 1411). */
+  .footer-gate-interior {
+    position: absolute;
+    /* Deliberately wider than the aperture: the burst runs on behind the frame, which draws over
+       it, so the light reads as coming through the opening rather than sitting inside a panel. */
+    top: 13%;
+    right: 22%;
+    bottom: 3%;
+    left: 26%;
+    /* Radii of 50%/52% put the transparent stop exactly at the plate's own edges, so no straight
+       edge can survive anywhere on it. */
+    -webkit-mask-image: radial-gradient(ellipse 50% 52% at 50% 47%, #000 26%, rgba(0, 0, 0, 0.5) 62%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 52% at 50% 47%, #000 26%, rgba(0, 0, 0, 0.5) 62%, transparent 100%);
+  }
+
+  .footer-gate-frame {
+    filter: saturate(1.05);
+  }
+
+  /* Halo: the portal's light spilling onto the plain around it. */
+  .footer-gate-aura {
+    position: absolute;
+    top: -22%;
+    right: -38%;
+    bottom: -16%;
+    left: -38%;
+    background: radial-gradient(ellipse 42% 44% at 50% 48%, rgba(139, 45, 255, 0.34), rgba(80, 90, 255, 0.18) 46%, rgba(38, 198, 255, 0.08) 68%, transparent 82%);
+  }
+
+  /* The wet floor under the gateway throws the portal back up at the camera. */
+  .footer-gate-reflection {
+    position: absolute;
+    top: 86%;
+    left: 10%;
+    width: 80%;
+    height: 50%;
+    /* A radial falloff anchored at the gateway's base, so the pool fades out on every side. A
+       box gradient here leaves visible straight edges no amount of blur will hide. The origin is
+       at the element's own top, which would draw a bright line along that edge, so it is tucked
+       up behind the frame's legs and the first band is masked away. */
+    background: radial-gradient(ellipse 34% 50% at 50% 0%, rgba(178, 128, 255, 0.4), rgba(96, 148, 255, 0.2) 40%, rgba(38, 198, 255, 0.07) 66%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
+  }
+
+  /* The pillar rail: a lit spine beside the words, capped by a dot at each end. The caps are
+     drawn as pseudo-elements so the rail stays a single element in the markup. */
+  .footer-pillar-rail {
+    position: relative;
+    width: 1px;
+    flex: none;
+    background: linear-gradient(to bottom, rgba(139, 45, 255, 0), #8b2dff 12%, #26c6ff 88%, rgba(38, 198, 255, 0));
+  }
+
+  .footer-pillar-rail::before,
+  .footer-pillar-rail::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    transform: translateX(-50%);
+  }
+
+  .footer-pillar-rail::before {
+    top: 0;
+    background: #8b2dff;
+    box-shadow: 0 0 8px rgba(139, 45, 255, 0.9);
+  }
+
+  .footer-pillar-rail::after {
+    bottom: 0;
+    background: #26c6ff;
+    box-shadow: 0 0 8px rgba(38, 198, 255, 0.9);
+  }
+
+  /* Hairline above the legal row, fading out at both ends rather than stopping hard. */
+  .footer-rule {
+    height: 1px;
+    background: linear-gradient(to right, rgba(160, 175, 220, 0), rgba(160, 175, 220, 0.22) 12%, rgba(160, 175, 220, 0.22) 88%, rgba(160, 175, 220, 0));
+  }
+
+  .footer-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(160, 175, 220, 0.24);
+  }
+
+  /* No profiles are wired up yet, so these carry no hover affordance and no pointer. */
+  .footer-social {
+    color: #cbd5e1;
+    display: inline-flex;
   }
 
   .footer-status-dot {
@@ -2475,7 +2598,6 @@ html[data-scene-intense] .header-intensity {
   .sov-scene {
     position: relative;
     isolation: isolate;
-    background: var(--void-black);
     /* One screen plus a short sticky hold. The blueprint no longer needs scroll runway to
        assemble itself, and the long scene left a dead, empty frame ahead of the content. */
     height: calc(118 * var(--svh));
@@ -3032,4 +3154,65 @@ html[data-scene-intense] .header-intensity {
 }
 
 @media (prefers-reduced-motion: reduce) {
+}
+
+@layer components {
+  /* The field of space the whole page sits in. Fixed behind every section, so the quiet
+     stretches between them read as the same continuous dimension rather than dead black. */
+  .cosmic-field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .cosmic-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 5px rgba(198, 226, 255, 0.8), 0 0 10px rgba(140, 190, 255, 0.35);
+    opacity: var(--star-base, 0.5);
+    animation: cosmic-twinkle 9s ease-in-out infinite;
+  }
+
+  /* A head with a tail behind it, angled along its lane and swept across on a long cycle. */
+  .cosmic-comet {
+    position: absolute;
+    left: 0;
+    height: 1.5px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--comet-hue) 82%, #ffffff 100%);
+    filter: drop-shadow(0 0 5px var(--comet-hue));
+    opacity: 0;
+    transform-origin: 100% 50%;
+    animation-name: cosmic-comet-pass;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.5, 1);
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes cosmic-twinkle {
+  0%, 100% { opacity: var(--star-base, 0.5); }
+  50% { opacity: calc(var(--star-base, 0.5) * 0.42); }
+}
+
+/* Mostly empty: the pass itself occupies a small slice of each cycle. */
+@keyframes cosmic-comet-pass {
+  0% { opacity: 0; transform: translate3d(var(--from), 0, 0) rotate(var(--angle)) scaleX(0.4); }
+  3% { opacity: 0.85; }
+  16% { opacity: 0.85; transform: translate3d(calc((var(--from) + var(--to)) / 2), 0, 0) rotate(var(--angle)) scaleX(1); }
+  26% { opacity: 0; transform: translate3d(var(--to), 0, 0) rotate(var(--angle)) scaleX(0.6); }
+  100% { opacity: 0; transform: translate3d(var(--to), 0, 0) rotate(var(--angle)) scaleX(0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-star {
+    animation: none;
+  }
+
+  .cosmic-comet {
+    animation: none;
+    opacity: 0;
+  }
 }

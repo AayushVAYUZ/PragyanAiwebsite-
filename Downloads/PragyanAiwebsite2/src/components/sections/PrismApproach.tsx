@@ -370,7 +370,7 @@ export default function PrismApproach() {
       id="prism"
       ref={sectionRef}
       aria-labelledby="prism-heading"
-      className="relative isolate min-h-[clamp(53rem,calc(var(--svh)*100),55rem)] overflow-hidden bg-[var(--void-black)]"
+      className="relative isolate min-h-[clamp(53rem,calc(var(--svh)*100),55rem)] overflow-hidden"
     >
       {/* Crystalline prism: the dominant visual (subtle parallax) */}
       <div data-prism-parallax className="absolute inset-x-0 -top-[3%] -bottom-[3%]">

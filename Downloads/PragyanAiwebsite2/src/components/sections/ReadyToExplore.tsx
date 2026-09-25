@@ -54,7 +54,7 @@ export default function ReadyToExplore() {
       id="contact"
       ref={sectionRef}
       aria-labelledby="contact-heading"
-      className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden bg-[var(--void-black)]"
+      className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden"
     >
       {/* Decorative horizon: full-bleed, scoped to this section */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
