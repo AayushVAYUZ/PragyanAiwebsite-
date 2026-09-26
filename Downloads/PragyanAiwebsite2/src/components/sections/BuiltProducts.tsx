@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { requestContact } from "@/lib/contact";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -236,11 +237,16 @@ export default function BuiltProducts() {
                     ))}
                   </ul>
 
-                  {/* No product page exists yet, so this is text, not a link. */}
-                  <p className="built-cta">
+                  {/* No product page exists yet, so the CTA books a demo through the contact form.
+                      TODO: link to the product page once it is published. */}
+                  <a
+                    href="#contact"
+                    onClick={(event) => requestContact(event, "Product / accelerator demo")}
+                    className="built-cta"
+                  >
                     <span>{product.cta}</span>
                     <span aria-hidden="true">→</span>
-                  </p>
+                  </a>
                 </div>
               </li>
             ))}

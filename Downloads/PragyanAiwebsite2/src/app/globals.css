@@ -1845,22 +1845,34 @@ html[data-scene-intense] .header-intensity {
     transform: translateY(-0.15em);
   }
 
-  /* Non-clickable by design: no product page exists yet. */
+  /* No product page exists yet: the CTA books a demo through the contact form. */
   .built-cta {
     margin-top: auto;
     padding-top: clamp(0.6rem, 1.4vh, 1rem);
     display: inline-flex;
+    align-self: flex-start;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: 0.01em;
     color: var(--text-primary);
-    cursor: default;
+    transition: color 0.3s ease;
   }
 
   .built-cta span:last-child {
     color: var(--tone, var(--neon-cyan));
+    transition: transform 0.3s ease;
+  }
+
+  .built-cta:hover span:last-child {
+    transform: translateX(3px);
+  }
+
+  .built-cta:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
@@ -2318,12 +2330,11 @@ html[data-scene-intense] .header-intensity {
       radial-gradient(ellipse at bottom left, rgba(139, 45, 255, 0.06) 0%, transparent 60%);
   }
 
-  /* "Read Insights" is plain text in the Stitch pill until a destination exists: no pointer cursor. */
+  /* "Read Insights" only renders once it has a destination (see HowWeThink). */
   .insights-pill {
     border: 1px solid rgba(255, 255, 255, 0.15);
     background: rgba(255, 255, 255, 0.02);
     color: var(--text-primary);
-    cursor: default;
     transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
   }
 
@@ -3540,7 +3551,7 @@ html[data-scene-intense] .header-intensity {
     will-change: transform, opacity;
   }
 
-  /* Non-clickable by design: this has no destination yet. */
+  /* No ai Droplets page exists yet: the CTA leads to the contact form. */
   .drop-cta {
     display: inline-flex;
     align-items: center;
@@ -3555,12 +3566,22 @@ html[data-scene-intense] .header-intensity {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--text-primary);
-    cursor: default;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     will-change: transform, opacity;
   }
 
   .drop-cta span:last-child {
     color: #71d2ff;
+  }
+
+  .drop-cta:hover {
+    border-color: rgba(38, 198, 255, 0.45);
+    box-shadow: 0 0 20px -4px rgba(38, 198, 255, 0.35);
+  }
+
+  .drop-cta:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
   }
 
   /* --- Visual stage ------------------------------------------------ */

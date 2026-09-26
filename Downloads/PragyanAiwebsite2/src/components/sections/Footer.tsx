@@ -36,7 +36,7 @@ const PILLARS = [
   { word: "Beyond", className: "footer-pillar-beyond font-medium" },
 ] as const;
 
-/* No social profiles are wired up yet, so these are icons only — not links. */
+/* TODO: social profile URLs. Until they exist these are icons only — not links. */
 const SOCIALS = [
   {
     name: "LinkedIn",
@@ -211,7 +211,7 @@ export default function Footer() {
 
             <div className="flex flex-col items-center gap-6 sm:flex-row md:gap-8">
               <div className="flex items-center text-sm font-light whitespace-nowrap">
-                {/* No Privacy or Terms page exists: plain text, not links. */}
+                {/* TODO: Privacy Policy and Terms of Use URLs. Until the pages exist these are plain text, not links. */}
                 <span className="px-3 text-slate-400 sm:px-5">Privacy Policy</span>
                 <span aria-hidden="true" className="footer-divider" />
                 <span className="px-3 text-slate-400 sm:px-5">Terms of Use</span>

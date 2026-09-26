@@ -12,11 +12,25 @@ gsap.registerPlugin(ScrollTrigger);
  * header (label, headline, lead) with the "Read Insights" pill on the right, then three
  * equal insight cards with alternating cyan / violet / cyan accents.
  *
- * No article destinations exist yet, so "Read Insights" and "Explore Article" are plain
- * text and the cards are not links. The photographs are artwork only: nothing visible
- * inside them is repeated as page copy.
+ * "Read Insights" and each card's "Explore Article" only render once they have a URL, so no
+ * dead CTA ships. The photographs are artwork only: nothing visible inside them is repeated
+ * as page copy.
  */
-const INSIGHTS = [
+
+// TODO: insights index URL. "Read Insights" is hidden until this is set.
+const INSIGHTS_URL: string | null = null;
+
+// TODO: article URLs. Each card's "Explore Article" is hidden until its href is set.
+const INSIGHTS: {
+  id: string;
+  tag: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  alt: string;
+  accent: "cyan" | "violet";
+  href: string | null;
+}[] = [
   {
     id: "adoption",
     tag: "01 // Adoption",
@@ -25,6 +39,7 @@ const INSIGHTS = [
     image: "/images/insight-card-01.jpg",
     alt: "Executives in discussion around a boardroom table at night, a city skyline behind them",
     accent: "cyan",
+    href: null,
   },
   {
     id: "systems",
@@ -34,6 +49,7 @@ const INSIGHTS = [
     image: "/images/insight-card-02.jpg",
     alt: "A glowing crystalline data core inside a dark glass hall, two people studying a console beside it",
     accent: "violet",
+    href: null,
   },
   {
     id: "leadership",
@@ -43,8 +59,9 @@ const INSIGHTS = [
     image: "/images/insight-card-03.jpg",
     alt: "Colleagues in conversation, silhouetted against floor-to-ceiling windows over a campus at dusk",
     accent: "cyan",
+    href: null,
   },
-] as const;
+];
 
 export default function HowWeThink() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -123,13 +140,18 @@ export default function HowWeThink() {
               </h2>
             </div>
 
-            {/* No insights destination exists yet: plain text in the Stitch pill, not a link. */}
-            <p data-insights-copy className="insights-pill inline-flex shrink-0 items-center gap-2.5 self-start rounded-full px-6 py-3 text-xs tracking-wider whitespace-nowrap uppercase md:mb-1 md:self-auto">
-              <span>Read Insights</span>
-              <span aria-hidden="true" className="insights-pill-arrow text-[var(--neon-cyan)]">
-                →
-              </span>
-            </p>
+            {INSIGHTS_URL && (
+              <a
+                href={INSIGHTS_URL}
+                data-insights-copy
+                className="insights-pill inline-flex shrink-0 items-center gap-2.5 self-start rounded-full px-6 py-3 text-xs tracking-wider whitespace-nowrap uppercase md:mb-1 md:self-auto"
+              >
+                <span>Read Insights</span>
+                <span aria-hidden="true" className="insights-pill-arrow text-[var(--neon-cyan)]">
+                  →
+                </span>
+              </a>
+            )}
           </div>
 
           {/* Insight cards: three columns on desktop, horizontal editorial rows on tablet, stacked on mobile. */}
@@ -165,13 +187,17 @@ export default function HowWeThink() {
                       </h3>
                       <p className="text-sm leading-relaxed font-light text-[#A2A8BC]">{insight.excerpt}</p>
                     </div>
-                    {/* No article destination yet: plain text, not a link. */}
-                    <p className="insight-explore flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] tracking-wide uppercase">
-                      <span>Explore Article</span>
-                      <span aria-hidden="true" className="insight-arrow text-xs text-[var(--neon-cyan)]">
-                        →
-                      </span>
-                    </p>
+                    {insight.href && (
+                      <a
+                        href={insight.href}
+                        className="insight-explore flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] tracking-wide uppercase"
+                      >
+                        <span>Explore Article</span>
+                        <span aria-hidden="true" className="insight-arrow text-xs text-[var(--neon-cyan)]">
+                          →
+                        </span>
+                      </a>
+                    )}
                   </div>
                 </article>
               </li>

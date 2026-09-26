@@ -4,7 +4,7 @@ export const BELIEF_COPY = {
   heading: ["ai doesn't", "start with a model.", "It starts with"],
   headingAccent: "the right questions.",
   body: "Effective enterprise ai begins with understanding the business, the underlying friction, and the high-value questions that matter—not simply deploying an off-the-shelf model into existing complexity.",
-  cta: { label: "Explore Our Belief", href: "#journey" },
+  cta: { label: "See how PRISM answers these", href: "#prism" },
   methodologyNote: "PRISM_METHODOLOGY // ORIENT",
 };
 
