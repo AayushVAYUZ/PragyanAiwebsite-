@@ -161,6 +161,57 @@
     box-shadow: 0 0 20px rgba(139, 45, 255, 0.2);
   }
 
+  /* Hero CTAs: the primary carries the cyan glow of the page's other live CTAs (.uc-cta),
+     the secondary is the header's glass pill. */
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-primary);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+  }
+
+  .hero-cta:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+
+  .hero-cta-primary {
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 50%, transparent);
+    background: linear-gradient(180deg, rgba(38, 198, 255, 0.16), rgba(139, 45, 255, 0.14));
+    box-shadow: 0 0 22px -6px color-mix(in srgb, var(--neon-cyan) 55%, transparent),
+      inset 0 0 14px -8px color-mix(in srgb, var(--neon-cyan) 60%, transparent);
+  }
+
+  .hero-cta-primary span:last-child {
+    color: var(--neon-cyan);
+  }
+
+  .hero-cta-secondary {
+    border: 1px solid var(--border-active);
+    background: var(--glass-surface);
+  }
+
+  @media (hover: hover) {
+    .hero-cta-primary:hover {
+      border-color: color-mix(in srgb, var(--neon-cyan) 80%, transparent);
+      box-shadow: 0 0 34px -4px color-mix(in srgb, var(--neon-cyan) 70%, transparent),
+        inset 0 0 18px -8px color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+    }
+
+    .hero-cta-secondary:hover {
+      border-color: rgba(139, 45, 255, 0.45);
+      box-shadow: 0 0 20px rgba(139, 45, 255, 0.2);
+    }
+  }
+
   .vignette-layer {
     background: radial-gradient(
       ellipse at center,

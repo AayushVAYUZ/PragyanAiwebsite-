@@ -28,6 +28,7 @@ import {
 import TransitionToArrival from "./TransitionToArrival";
 import ParticleField, { type ParticleFieldHandle } from "./ParticleField";
 import BeliefFrame from "../sections/BeliefFrame";
+import { navigateToHash } from "@/lib/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,8 +61,11 @@ interface FrameCopy {
   /** One-off markup for headings the generic `heading`/`staged` shapes can't express
    * (the Gate title's mixed line sizes and accented internal dot). */
   custom?: ReactNode;
-  headingLevel: "h1" | "h2";
+  /** "p" when the frame's big line is mood copy and the page's h1 lives in `lead`. */
+  headingLevel: "h1" | "h2" | "p";
   sub?: string[];
+  /** The value proposition and CTAs, under the heading, on the frame visible at first load. */
+  lead?: ReactNode;
   /** A smaller, self-contained block (its own heading/tagline/copy) instead of a single big headline. */
   card?: ReactNode;
   /** Mirrors `card`/`heading` on the right side of the viewport, independent of the left column. */
@@ -74,12 +78,46 @@ interface FrameCopy {
 const FRAMES: FrameCopy[] = [
   {
     label: "the-eye",
-    headingLevel: "h1",
+    headingLevel: "p",
     staged: [
       { text: "A smarter" },
       { text: "yesterday", accent: true },
       { text: "is already looking at us." },
     ],
+    // Visible before any scrolling, so the offer and the way in are there before the Gate.
+    lead: (
+      <div className="hero-lead mt-6 md:mt-8">
+        <h1 className="text-[clamp(1.3rem,2.3vw,1.85rem)] leading-snug font-normal tracking-tight text-[var(--text-primary)]">
+          Enterprise ai that moves from pilot to production.
+        </h1>
+        <p className="mt-3 max-w-[30rem] text-sm leading-relaxed font-light text-[var(--text-secondary)] md:text-base">
+          We find the right ai opportunities, engineer them with PRISM, and run them on your data, under your control.
+        </p>
+        <div className="pointer-events-auto mt-6 flex flex-wrap items-center gap-3">
+          <a
+            href="#contact"
+            onClick={(event) => navigateToHash(event, "#contact")}
+            className="hero-cta hero-cta-primary"
+          >
+            <span>Book a Discovery Call</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a
+            href="#case-studies"
+            onClick={(event) => navigateToHash(event, "#case-studies")}
+            className="hero-cta hero-cta-secondary"
+          >
+            <span>See Our Work</span>
+          </a>
+        </div>
+        <p aria-hidden="true" className="mt-6 flex items-center gap-3">
+          <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.35em] text-white/55">
+            Scroll to Enter
+          </span>
+          <span className="scroll-indicator-dot h-1.5 w-1.5 rounded-full bg-[var(--neon-cyan)] shadow-[0_0_8px_var(--neon-cyan)]" />
+        </p>
+      </div>
+    ),
   },
   {
     label: "the-gate-of-p-ai",
@@ -485,10 +523,11 @@ export default function CinematicOpening({
             }}
           />
 
+          {/* Below md the hero lead's own "Scroll to Enter" cue sits where this would, so it stands in for it. */}
           <div
             ref={hintRef}
             aria-hidden="true"
-            className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2"
+            className="absolute inset-x-0 bottom-6 hidden flex-col items-center gap-2 md:flex"
           >
             <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.35em] text-[var(--text-muted)]">
               Scroll
@@ -570,6 +609,7 @@ function FrameCopyBlock({
         )}
 
         {frame.card}
+        {frame.lead}
       </div>
 
       {frame.rightContent && (
