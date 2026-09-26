@@ -1289,9 +1289,10 @@ html[data-scene-intense] .header-intensity {
     color: var(--text-muted);
   }
 
-  /* Non-clickable by design: the full study is not published yet. */
+  /* No detail page is published yet: the CTA leads to the contact form. */
   .proof-cta {
     display: inline-flex;
+    align-self: flex-start;
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
@@ -1299,11 +1300,37 @@ html[data-scene-intense] .header-intensity {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--text-primary);
-    cursor: default;
+    transition: color 0.3s ease;
   }
 
   .proof-cta span:last-child {
     color: var(--tone, var(--neon-cyan));
+    transition: transform 0.3s ease;
+  }
+
+  .proof-cta:hover {
+    color: var(--tone, var(--neon-cyan));
+  }
+
+  .proof-cta:hover span:last-child {
+    transform: translateX(3px);
+  }
+
+  .proof-cta:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Stands in for a case study photograph that has not been supplied yet. */
+  .proof-placeholder {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background:
+      radial-gradient(ellipse at 72% 28%, rgba(139, 45, 255, 0.42), transparent 58%),
+      radial-gradient(ellipse at 22% 78%, rgba(38, 198, 255, 0.24), transparent 55%),
+      linear-gradient(135deg, #0b0f24 0%, #05060f 100%);
   }
 
   /* --- Archive deck ----------------------------------------------- */

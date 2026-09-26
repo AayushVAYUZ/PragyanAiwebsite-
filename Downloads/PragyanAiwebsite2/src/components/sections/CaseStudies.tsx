@@ -5,6 +5,8 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { onCaseStudyRequest } from "@/lib/caseStudyLink";
+import { requestContact } from "@/lib/contact";
+import { CASE_STUDIES } from "@/content/caseStudies";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,49 +24,7 @@ gsap.registerPlugin(ScrollTrigger);
  * case is the one piece of React state — it changes content, not the camera.
  */
 
-const CASES = [
-  {
-    id: "risk",
-    index: "Case Study 01",
-    sector: "Finance & Wealth Management",
-    metric: "5 days → 3 seconds",
-    metricLabel: "Decision turnaround",
-    title: "ai-powered High Risk Prediction Software",
-    summary:
-      "Predictive analysis model for India's leading finance and wealth management firm, using multiple parameters to reduce decision time and effort from 5 days to 3 seconds.",
-    challenge: "Manual credit assessment slowed lending decisions and limited risk visibility across the portfolio.",
-    solution: ["Unified Data Intelligence", "Real-Time Risk Scoring", "Credit Behaviour Analysis", "Decision Intelligence Dashboard"],
-    impact: [
-      { value: "<1 sec", text: "risk assessment turnaround" },
-      { value: "5 days → 3 seconds", text: "decision turnaround time" },
-      { value: "70%", text: "parameters analysed" },
-    ],
-    cta: "View Case Study",
-    image: "/images/case-study-p-and-c.png",
-    alt: "A financial trading floor at night, analysts silhouetted against curved data screens",
-    tone: "cyan",
-  },
-  {
-    id: "talent",
-    index: "Case Study 02",
-    sector: "Talent Advisory",
-    metric: "90% fewer billing errors",
-    metricLabel: "Billing accuracy",
-    title: "ai-backed Legacy Talent Advisory Platform",
-    summary: "Modernising the legacy talent advisory platform with ai and intelligent automation.",
-    challenge: "Data was spread across systems, billing remained manual, and leaders lacked real-time operational visibility.",
-    solution: ["Enterprise CRM", "ATS", "Real-time MIS & Dashboards", "Automated & Pre-Billing Validation", "Single Sign-On & Data Governance"],
-    impact: [
-      { value: "90%", text: "reduction in billing errors" },
-      { value: "100%", text: "real-time operational visibility" },
-      { value: "70%", text: "time saved" },
-    ],
-    cta: "View Case Study",
-    image: "/images/case-study-02-manufacturing.png",
-    alt: "An advanced industrial facility at night, robotic systems lit by cool telemetry light",
-    tone: "violet",
-  },
-] as const;
+const CASES = CASE_STUDIES;
 
 /** How long each case study holds the stage before the next one takes it, in seconds. */
 const CASE_STUDY_INTERVAL = 4.5;
@@ -279,15 +239,19 @@ export default function CaseStudies() {
             >
               <div aria-hidden="true" className="proof-stage-media">
                 <div ref={(el) => void (els.current.media = el)} className="proof-stage-plate">
-                  <Image
-                    key={study.id}
-                    src={study.image}
-                    alt=""
-                    fill
-                    /* The plate is oversized and scaled for the drift, so it needs more than the column's width. */
-                    sizes="(min-width: 1024px) 72vw, 100vw"
-                    className="proof-stage-img"
-                  />
+                  {study.image ? (
+                    <Image
+                      key={study.id}
+                      src={study.image}
+                      alt=""
+                      fill
+                      /* The plate is oversized and scaled for the drift, so it needs more than the column's width. */
+                      sizes="(min-width: 1024px) 72vw, 100vw"
+                      className="proof-stage-img"
+                    />
+                  ) : (
+                    <div key={study.id} className="proof-stage-img proof-placeholder" data-tone={study.tone} />
+                  )}
                 </div>
                 <div className="proof-stage-scrim" />
               </div>
@@ -335,11 +299,16 @@ export default function CaseStudies() {
                     ))}
                   </ul>
 
-                  {/* The full study is not published yet, so this is text, not a link. */}
-                  <p ref={(el) => void (els.current.cta = el)} className="proof-cta">
+                  {/* No detail page is published yet, so the CTA leads to the contact form. */}
+                  <a
+                    ref={(el) => void (els.current.cta = el)}
+                    href="#contact"
+                    onClick={(event) => requestContact(event, study.interest)}
+                    className="proof-cta"
+                  >
                     <span>{study.cta}</span>
                     <span aria-hidden="true">→</span>
-                  </p>
+                  </a>
                 </div>
               </div>
             </article>
@@ -361,7 +330,11 @@ export default function CaseStudies() {
                     >
                       <span className="proof-card-media">
                         {/* A tall thumbnail strip: cover crops to the height, not the width. */}
-                        <Image src={c.image} alt="" fill sizes="(min-width: 1024px) 240px, 128px" className="proof-card-img" />
+                        {c.image ? (
+                          <Image src={c.image} alt="" fill sizes="(min-width: 1024px) 240px, 128px" className="proof-card-img" />
+                        ) : (
+                          <span className="proof-card-img proof-placeholder" data-tone={c.tone} />
+                        )}
                       </span>
                       <span className="proof-card-body">
                         <span className="proof-card-id">
