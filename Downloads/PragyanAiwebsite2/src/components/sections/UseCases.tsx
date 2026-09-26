@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { INDUSTRIES as ALL_INDUSTRIES, USE_CASES_CLOSING, type IndustryIcon } from "@/content/industries";
+import { requestContact } from "@/lib/contact";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,25 +13,16 @@ gsap.registerPlugin(ScrollTrigger);
  * Frame 11 — Use Cases. Cinematic industry deck.
  *
  * Composition follows the approved Stitch screen: an editorial header over a panoramic
- * strip of industry cards. The content is the approved .docx list — nine industries and
- * the named use cases actually delivered in each. The Stitch screen's own ten sectors,
+ * strip of industry cards. The industries and their delivered use cases live in
+ * `@/content/industries`; only the visible ones are shown. The Stitch screen's own sectors,
  * their descriptions and their per-card CTAs were written for the mockup, so none are here.
- *
- * Five of the nine have no approved photograph. Rather than invent one, those cards carry
- * a drawn lattice that assembles with the camera — the same treatment the earlier polish
- * pass used for this frame's photograph-less worlds.
  *
  * The strip scrolls horizontally on its own: the frame stays where it is and only the
  * cards move, driven by the reader rather than by page scroll. Vertical scrolling past
  * the section plays the cards in once, cumulatively — once an industry has arrived it stays.
- *
- * The first nine carry the use cases named in the document. The six after them are the
- * remaining sectors from the Stitch screen; no delivered work is documented for those yet,
- * so they carry the sector and nothing more. The Stitch screen's invented capability lines
- * for them ("Hyperspectral telemetry", "Sovereign LLM infrastructure", …) are not used.
  */
 
-const ICON = {
+const ICON: Record<IndustryIcon, string> = {
   bank: "M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18M12 3 3 8h18l-9-5Z",
   sprout: "M12 21v-7m0 0C12 10 9 7 5 7c0 4 3 7 7 7Zm0 0c0-3.3 2.7-6 6-6 0 3.3-2.7 6-6 6Z",
   stethoscope: "M6 3v5a4 4 0 0 0 8 0V3M6 3H4m2 0h2m6 0h2m-2 0h-2m-4 9v2a5 5 0 0 0 10 0v-1m0 0a2 2 0 1 0 0 .1Z",
@@ -40,96 +33,9 @@ const ICON = {
   bolt: "M13 2 4 14h7l-1 8 9-12h-7l1-8Z",
   cap: "M12 4 2 9l10 5 10-5-10-5ZM6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5",
   home: "M4 11 12 4l8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-9Z",
-} as const;
+};
 
-/**
- * The ten industries, in the order supplied. Four carry the use cases named in the
- * document; the other six have no documented delivered work yet, so they carry the
- * sector and nothing more. The Stitch screen's invented capability lines for them
- * ("Hyperspectral telemetry", "Sovereign LLM infrastructure", …) are not used.
- */
-const INDUSTRIES = [
-  {
-    id: "bfsi",
-    name: "BFSI",
-    icon: ICON.bank,
-    cases: ["Credit Covenant Intelligence", "Loan Risk Prediction", "RM Copilot"],
-    image: "/images/usecase-bfsi.png",
-    alt: "A banking headquarters at night with curved analytics screens",
-  },
-  {
-    id: "agriculture",
-    name: "Agriculture",
-    icon: ICON.sprout,
-    cases: [],
-    image: "/images/usecase-agriculture.jpg",
-    alt: "An autonomous tractor working a field at night under guidance lighting",
-  },
-  {
-    id: "healthcare",
-    name: "Healthcare",
-    icon: ICON.stethoscope,
-    cases: ["Diagnostic Capacity Forecasting", "Provider Fraud Detection"],
-    image: "/images/usecase-healthcare.png",
-    alt: "A clinical control centre at night with diagnostic telemetry",
-  },
-  {
-    id: "retail-fmcg",
-    name: "Retail & FMCG",
-    icon: ICON.cart,
-    cases: ["Inventory Intelligence", "Demand Forecasting", "Dynamic Pricing"],
-    image: "/images/usecase-retail.png",
-    alt: "A connected retail flagship at night with ambient display fixtures",
-  },
-  {
-    id: "supply-chain",
-    name: "Supply Chain",
-    icon: ICON.truck,
-    cases: [],
-    image: "/images/usecase-logistics.png",
-    alt: "An automated distribution hub at night with guided vehicles and conveyor tracks",
-  },
-  {
-    id: "government",
-    name: "Government",
-    icon: ICON.civic,
-    cases: [],
-    image: "/images/usecase-government.jpg",
-    alt: "An operations control room at night overlooking a lit city",
-  },
-  {
-    id: "manufacturing",
-    name: "Manufacturing",
-    icon: ICON.factory,
-    cases: ["Predictive Maintenance", "Quality Inspection", "Production Planning"],
-    image: "/images/case-study-02-manufacturing.png",
-    alt: "An automated manufacturing facility at night with precision robotics",
-  },
-  {
-    id: "energy-utilities",
-    name: "Energy & Utilities",
-    icon: ICON.bolt,
-    cases: [],
-    image: "/images/usecase-energy-utilities.jpg",
-    alt: "An electrical substation at night with transmission lines and wind turbines beyond",
-  },
-  {
-    id: "education",
-    name: "Education",
-    icon: ICON.cap,
-    cases: [],
-    image: "/images/usecase-education.jpg",
-    alt: "A dark hall of tall illuminated panels in drifting mist",
-  },
-  {
-    id: "real-estate",
-    name: "Real Estate",
-    icon: ICON.home,
-    cases: [],
-    image: "/images/usecase-real-estate.jpg",
-    alt: "An illuminated high-rise tower at night seen from the street",
-  },
-] as const;
+const INDUSTRIES = ALL_INDUSTRIES.filter((industry) => industry.visible);
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -377,7 +283,7 @@ export default function UseCases() {
                   <div className="uc-card-body">
                     <h3 className="uc-card-name">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="uc-card-icon">
-                        <path d={industry.icon} />
+                        <path d={ICON[industry.icon]} />
                       </svg>
                       {industry.name}
                     </h3>
@@ -398,14 +304,15 @@ export default function UseCases() {
           </div>
 
           <div ref={(el) => void (els.current.closing = el)} className="uc-closing">
-            <p className="uc-closing-text">
-              40+ production-ready ai model prototypes available for rapid demonstrations.
-            </p>
-            {/* No destination exists for this yet, so it carries no handler. */}
-            <button type="button" className="uc-cta">
-              <span>Explore all POCs</span>
+            <p className="uc-closing-text">{USE_CASES_CLOSING.text}</p>
+            <a
+              href="#contact"
+              onClick={(event) => requestContact(event, USE_CASES_CLOSING.interest)}
+              className="uc-cta"
+            >
+              <span>{USE_CASES_CLOSING.cta}</span>
               <span aria-hidden="true">→</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
