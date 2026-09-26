@@ -16,6 +16,7 @@ import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
 import HowWeThink from "@/components/sections/HowWeThink";
 import ReadyToExplore from "@/components/sections/ReadyToExplore";
+import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -63,6 +64,7 @@ export default function Home() {
       {/* Phase 3 content frames */}
       <HowWeThink />
       <ReadyToExplore />
+      <ContactSection />
       <Footer />
     </main>
   );

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { navigateToHash } from "@/lib/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,8 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
  * horizon arc, the closing question on the left seven columns and the brand tagline,
  * right-aligned with a cyan/violet underline, on the right five.
  *
- * This section is the header's "Talk to Us" target (#contact). No contact destination is
- * confirmed yet, so the "Talk to Us" pill here is plain text: not a link, not focusable.
+ * The contact form (#contact) follows directly, and the "Talk to Us" pill leads to it.
  */
 export default function ReadyToExplore() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -51,9 +51,9 @@ export default function ReadyToExplore() {
 
   return (
     <section
-      id="contact"
+      id="ready-to-explore"
       ref={sectionRef}
-      aria-labelledby="contact-heading"
+      aria-labelledby="ready-to-explore-heading"
       className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden"
     >
       {/* Decorative horizon: full-bleed, scoped to this section */}
@@ -75,7 +75,7 @@ export default function ReadyToExplore() {
           {/* Closing question */}
           <div className="flex flex-col items-start lg:col-span-7">
             <h2
-              id="contact-heading"
+              id="ready-to-explore-heading"
               data-explore-copy
               className="mb-6 text-[clamp(2.5rem,12.3vw,3rem)] leading-[1.08] font-light tracking-tight text-[#F5F7FF] sm:text-6xl xl:text-7xl"
             >
@@ -86,15 +86,18 @@ export default function ReadyToExplore() {
             <p data-explore-copy className="mb-9 max-w-md text-base leading-relaxed font-light tracking-wide text-[#A2A8BC] sm:text-lg">
               Let&apos;s build what&apos;s next. Together.
             </p>
-            {/* No contact destination is confirmed yet: plain text in the Stitch pill, not a link.
-                The reveal animates the wrapper, so its inline transform never cancels the pill's hover lift. */}
+            {/* The reveal animates the wrapper, so its inline transform never cancels the pill's hover lift. */}
             <div data-explore-copy>
-              <p className="explore-pill inline-flex items-center gap-3 rounded-full px-6 py-3 text-xs font-medium tracking-widest whitespace-nowrap uppercase">
+              <a
+                href="#contact"
+                onClick={(event) => navigateToHash(event, "#contact")}
+                className="explore-pill inline-flex items-center gap-3 rounded-full px-6 py-3 text-xs font-medium tracking-widest whitespace-nowrap uppercase"
+              >
                 <span>Talk to Us</span>
                 <span aria-hidden="true" className="text-[var(--neon-cyan)]">
                   →
                 </span>
-              </p>
+              </a>
             </div>
           </div>
 

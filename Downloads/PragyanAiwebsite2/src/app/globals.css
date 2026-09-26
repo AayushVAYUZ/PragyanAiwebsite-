@@ -2462,12 +2462,11 @@ html[data-scene-intense] .header-intensity {
       linear-gradient(to right, rgba(3, 4, 10, 0.6) 0%, rgba(3, 4, 10, 0.2) 45%, transparent 70%);
   }
 
-  /* "Talk to Us" is plain text in the Stitch pill until a destination exists: no pointer cursor, no tab stop. */
+  /* "Talk to Us" leads to the contact form directly below. */
   .explore-pill {
     border: 1px solid rgba(160, 175, 220, 0.22);
     background: rgba(255, 255, 255, 0.04);
     color: #fff;
-    cursor: default;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
   }
 
@@ -2482,6 +2481,11 @@ html[data-scene-intense] .header-intensity {
   /* The tagline sits over the brightest stretch of the arc: a soft shadow keeps it legible. */
   .explore-tagline {
     text-shadow: 0 0 18px rgba(3, 4, 10, 0.85), 0 0 4px rgba(3, 4, 10, 0.6);
+  }
+
+  .explore-pill:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
   }
 
   .explore-underline {
@@ -3828,5 +3832,113 @@ html[data-scene-intense] .header-intensity {
   .uc-title-accent {
     padding-bottom: 0.14em;
     margin-bottom: -0.14em;
+  }
+}
+
+@layer components {
+  /* Contact section: the form reads as one of the page's glass cards (.service-card). */
+  .contact-form {
+    background: linear-gradient(180deg, rgba(14, 20, 42, 0.62) 0%, rgba(7, 11, 24, 0.48) 100%);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(160, 175, 220, 0.14);
+  }
+
+  .contact-label,
+  .contact-detail-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .contact-label span,
+  .contact-detail-label {
+    color: color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+  }
+
+  .contact-detail-label {
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-detail-link {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+  }
+
+  .contact-detail-link:hover {
+    color: var(--neon-cyan);
+  }
+
+  .contact-detail-link:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .contact-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-active);
+    border-radius: 0.75rem;
+    background: rgba(5, 7, 17, 0.72);
+    color: var(--text-primary);
+    font-size: 0.9375rem;
+    font-weight: 300;
+    color-scheme: dark;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .contact-input:hover {
+    border-color: rgba(160, 175, 220, 0.34);
+  }
+
+  .contact-input:focus,
+  .contact-input:focus-visible {
+    outline: none;
+    border-color: color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+    box-shadow: 0 0 0 3px rgba(38, 198, 255, 0.16), 0 0 22px -6px rgba(38, 198, 255, 0.45);
+  }
+
+  .contact-input[aria-invalid="true"] {
+    border-color: rgba(255, 110, 130, 0.7);
+  }
+
+  .contact-select {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: linear-gradient(45deg, transparent 50%, var(--neon-cyan) 50%),
+      linear-gradient(135deg, var(--neon-cyan) 50%, transparent 50%);
+    background-position: calc(100% - 1.15rem) 52%, calc(100% - 0.8rem) 52%;
+    background-size: 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+  }
+
+  .contact-select option {
+    background: #0a0f23;
+    color: var(--text-primary);
+  }
+
+  .contact-error,
+  .contact-status[data-state="error"] {
+    color: #ff8fa0;
+  }
+
+  .contact-status[data-state="success"] {
+    color: var(--neon-cyan);
+  }
+
+  .contact-submit:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .contact-honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 }

@@ -17,7 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
  *
  * The six navigation links are real in-page destinations. The newsletter has no backend, so its
  * field is a visual echo only: no form, no input, no submission and nothing focusable. Privacy,
- * Terms and the social icons have no destination and are plain text; Contact points at Frame 14.
+ * Terms and the social icons have no destination and are plain text; Contact points at the form.
  */
 const NAV_LINKS = [
   { label: "Who We Are", href: "#journey" },
