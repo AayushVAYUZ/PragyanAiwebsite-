@@ -4,7 +4,7 @@ import { keepAiLowercase } from "@/lib/brandText";
 /**
  * Shared pieces for the business-story sections (stakes, why, engagement, PRISM offers,
  * impact, trust), so they read as one system with the rest of the page: the eyebrow and
- * heading scale of the Services section, one step smaller, and the "Talk to Us" pill for CTAs.
+ * heading scale of the Services section, one step smaller, and the final CTA's pill for CTAs.
  */
 
 export function StoryEyebrow({ children }: { children: string }) {
@@ -26,7 +26,7 @@ export function StoryHeading({ id, children }: { id: string; children: ReactNode
   );
 }
 
-/** The final CTA's pill ("Talk to Us"), reused as-is for every new CTA. */
+/** The final CTA's pill ("Talk to Pragyan ai"), reused as-is for every new CTA. */
 export function StoryPill({
   href,
   onClick,

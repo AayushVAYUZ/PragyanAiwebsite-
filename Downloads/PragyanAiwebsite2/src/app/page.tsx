@@ -9,6 +9,7 @@ import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
 import ProblemStakes from "@/components/sections/ProblemStakes";
 import WhyPragyan from "@/components/sections/WhyPragyan";
+import PersonaRouting from "@/components/sections/PersonaRouting";
 import EngagementModels from "@/components/sections/EngagementModels";
 import PrismApproach from "@/components/sections/PrismApproach";
 import PrismOffers from "@/components/sections/PrismOffers";
@@ -44,7 +45,7 @@ export default function Home() {
       <Header phase={introPhase} />
 
       {/* Frames 01 → 04 → 04.5 → 05: one continuous scene on one scroll timeline; Frame 05 is its resting state */}
-      <section id="hero" aria-label="Cinematic opening: from the eye, through the Gate of PAI, to The Belief">
+      <section id="hero" aria-label="Cinematic opening: from the eye, through the Gate of P.ai, to The Belief">
         <CinematicOpening introComplete={introComplete} gateReady={gateReady} />
       </section>
 
@@ -57,6 +58,9 @@ export default function Home() {
       {/* Business context: why enterprise ai is hard, then why Pragyan ai */}
       <ProblemStakes />
       <WhyPragyan />
+
+      {/* Persona routing: points each role at the sections closest to its questions */}
+      <PersonaRouting />
 
       {/* How to engage, then the method and the offers it packages */}
       <EngagementModels />

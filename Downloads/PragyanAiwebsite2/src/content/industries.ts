@@ -111,6 +111,6 @@ export const INDUSTRIES: Industry[] = [
 
 export const USE_CASES_CLOSING = {
   text: "40+ ready-to-demo ai accelerators across industries.",
-  cta: "Book a Live Demo",
+  cta: "Explore the possibilities",
   interest: "Product / accelerator demo",
 } as const;

@@ -2473,7 +2473,7 @@ html[data-scene-intense] .header-intensity {
       linear-gradient(to right, rgba(3, 4, 10, 0.6) 0%, rgba(3, 4, 10, 0.2) 45%, transparent 70%);
   }
 
-  /* "Talk to Us" leads to the contact form directly below. */
+  /* "Talk to Pragyan ai" leads to the contact form directly below. */
   .explore-pill {
     border: 1px solid rgba(160, 175, 220, 0.22);
     background: rgba(255, 255, 255, 0.04);
@@ -2569,22 +2569,6 @@ html[data-scene-intense] .header-intensity {
     }
   }
 
-  /* The pillar column sits over the brightest part of the gateway: a soft shade keeps it legible. */
-  .footer-pillars {
-    text-shadow: 0 0 16px rgba(3, 4, 10, 0.9), 0 0 4px rgba(3, 4, 10, 0.75);
-  }
-
-  .footer-pillar-glow {
-    text-shadow: 0 0 12px rgba(38, 198, 255, 0.35), 0 0 16px rgba(3, 4, 10, 0.9);
-  }
-
-  .footer-pillar-beyond {
-    background: linear-gradient(90deg, #ddd6fe, #a5f3fc);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
   /* The portal, sized off the footer's own height and stood on the horizon. Below lg the copy
      stacks full width over this area, so the gateway that is already painted into the landscape
      is left to carry the frame on its own. */
@@ -2661,38 +2645,6 @@ html[data-scene-intense] .header-intensity {
     mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
   }
 
-  /* The pillar rail: a lit spine beside the words, capped by a dot at each end. The caps are
-     drawn as pseudo-elements so the rail stays a single element in the markup. */
-  .footer-pillar-rail {
-    position: relative;
-    width: 1px;
-    flex: none;
-    background: linear-gradient(to bottom, rgba(139, 45, 255, 0), #8b2dff 12%, #26c6ff 88%, rgba(38, 198, 255, 0));
-  }
-
-  .footer-pillar-rail::before,
-  .footer-pillar-rail::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    border-radius: 9999px;
-    transform: translateX(-50%);
-  }
-
-  .footer-pillar-rail::before {
-    top: 0;
-    background: #8b2dff;
-    box-shadow: 0 0 8px rgba(139, 45, 255, 0.9);
-  }
-
-  .footer-pillar-rail::after {
-    bottom: 0;
-    background: #26c6ff;
-    box-shadow: 0 0 8px rgba(38, 198, 255, 0.9);
-  }
-
   /* Hairline above the legal row, fading out at both ends rather than stopping hard. */
   .footer-rule {
     height: 1px;
@@ -2704,28 +2656,9 @@ html[data-scene-intense] .header-intensity {
     height: 14px;
     background: rgba(160, 175, 220, 0.24);
   }
-
-  /* No profiles are wired up yet, so these carry no hover affordance and no pointer. */
-  .footer-social {
-    color: #cbd5e1;
-    display: inline-flex;
-  }
-
-  .footer-status-dot {
-    animation: footer-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-}
-
-@keyframes footer-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .footer-status-dot {
-    animation: none;
-  }
-
   .footer-link {
     transition: none;
   }
@@ -4103,5 +4036,42 @@ html[data-scene-intense] .header-intensity {
 
   .trust-figure {
     font-size: clamp(2.25rem, 4vw, 3.25rem);
+  }
+}
+
+@layer components {
+  /* Persona paths: the service card, with a slight lift and its own glow on hover or focus. */
+  .persona-card {
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .persona-card:hover,
+  .persona-card:focus-visible {
+    border-color: rgba(38, 198, 255, 0.45);
+    box-shadow: 0 0 26px -8px rgba(139, 45, 255, 0.45), 0 12px 30px -12px rgba(38, 198, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .persona-card:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+
+  .persona-arrow {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .persona-card:hover .persona-arrow,
+  .persona-card:focus-visible .persona-arrow {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .persona-card:hover,
+  .persona-card:focus-visible,
+  .persona-card:hover .persona-arrow,
+  .persona-card:focus-visible .persona-arrow {
+    transform: none;
   }
 }

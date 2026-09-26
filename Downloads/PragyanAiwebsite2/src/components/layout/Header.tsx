@@ -3,15 +3,11 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import { lockScroll } from "@/lib/scrollLock";
 import { navigateToHash } from "@/lib/navigation";
+import { PRIMARY_NAV } from "@/content/navigation";
 import type { IntroPhase } from "@/components/cinematic/EyeBlinkPreloader";
 
-const NAV_LINKS = [
-  { label: "Who We Are", href: "#journey" },
-  { label: "What We Do", href: "#prism" },
-  { label: "What We Think", href: "#insights" },
-  { label: "Work With Us", href: "#capabilities" },
-  { label: "Connect With Us", href: "#contact" },
-];
+// Every primary nav entry has an in-page destination, so `href` is never null here.
+const NAV_LINKS = PRIMARY_NAV.filter((link): link is { label: string; href: `#${string}` } => link.href?.startsWith("#") ?? false);
 
 // The CTA renders inside an `uppercase`-styled pill; "ai" stays lowercase (brand rule).
 const CTA_TEXT = (

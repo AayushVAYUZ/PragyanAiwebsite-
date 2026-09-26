@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import NewsletterPrompt from "./NewsletterPrompt";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,54 +13,67 @@ gsap.registerPlugin(ScrollTrigger);
  * header (label, headline, lead) with the "Read Insights" pill on the right, then three
  * equal insight cards with alternating cyan / violet / cyan accents.
  *
- * "Read Insights" and each card's "Explore Article" only render once they have a URL, so no
+ * "Explore our thinking" and each card's "Read insight" only render once they have a URL, so no
  * dead CTA ships. The photographs are artwork only: nothing visible inside them is repeated
  * as page copy.
  */
 
-// TODO: insights index URL. "Read Insights" is hidden until this is set.
+// TODO: insights index URL. "Explore our thinking" is hidden until this is set.
 const INSIGHTS_URL: string | null = null;
 
-// TODO: article URLs. Each card's "Explore Article" is hidden until its href is set.
-const INSIGHTS: {
+interface Insight {
   id: string;
-  tag: string;
+  category: string;
   title: string;
-  excerpt: string;
+  description: string;
+  /** Only confirmed authorship is shown; null keeps the field empty rather than inventing one. */
+  author: string | null;
+  /** Confirmed publication date, e.g. "12 Sep 2026"; null until one exists. */
+  date: string | null;
+  /** Article destination; "Read insight" only renders once this exists. */
+  href: string | null;
   image: string;
   alt: string;
   accent: "cyan" | "violet";
-  href: string | null;
-}[] = [
+}
+
+// TODO: confirmed author, date and URL for each article. None exist in the approved content yet.
+const INSIGHTS: Insight[] = [
   {
     id: "adoption",
-    tag: "01 // Adoption",
+    category: "Adoption",
     title: "Rethinking ai Adoption in Enterprise",
-    excerpt: "Why organizational readiness, cognitive workflows, and operating architecture matter more than raw model benchmarks.",
+    description: "Why organizational readiness, cognitive workflows, and operating architecture matter more than raw model benchmarks.",
+    author: null,
+    date: null,
+    href: null,
     image: "/images/insight-card-01.jpg",
     alt: "Executives in discussion around a boardroom table at night, a city skyline behind them",
     accent: "cyan",
-    href: null,
   },
   {
     id: "systems",
-    tag: "02 // Systems",
+    category: "Systems",
     title: "From Data to Decisions",
-    excerpt: "Bridging the gap between vast enterprise telemetry and decisive executive execution through structured contextual intelligence.",
+    description: "Bridging the gap between vast enterprise telemetry and decisive executive execution through structured contextual intelligence.",
+    author: null,
+    date: null,
+    href: null,
     image: "/images/insight-card-02.jpg",
     alt: "A glowing crystalline data core inside a dark glass hall, two people studying a console beside it",
     accent: "violet",
-    href: null,
   },
   {
     id: "leadership",
-    tag: "03 // Leadership",
+    category: "Leadership",
     title: "The Human Side of ai Transformation",
-    excerpt: "How human empathy, leadership intuition, and collaborative trust remain the ultimate differentiator in intelligent systems.",
+    description: "How human empathy, leadership intuition, and collaborative trust remain the ultimate differentiator in intelligent systems.",
+    author: null,
+    date: null,
+    href: null,
     image: "/images/insight-card-03.jpg",
     alt: "Colleagues in conversation, silhouetted against floor-to-ceiling windows over a campus at dusk",
     accent: "cyan",
-    href: null,
   },
 ];
 
@@ -146,7 +160,7 @@ export default function HowWeThink() {
                 data-insights-copy
                 className="insights-pill inline-flex shrink-0 items-center gap-2.5 self-start rounded-full px-6 py-3 text-xs tracking-wider whitespace-nowrap uppercase md:mb-1 md:self-auto"
               >
-                <span>Read Insights</span>
+                <span>Explore our thinking</span>
                 <span aria-hidden="true" className="insights-pill-arrow text-[var(--neon-cyan)]">
                   →
                 </span>
@@ -156,7 +170,7 @@ export default function HowWeThink() {
 
           {/* Insight cards: three columns on desktop, horizontal editorial rows on tablet, stacked on mobile. */}
           <ul aria-label="Insights" className="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:gap-8">
-            {INSIGHTS.map((insight) => (
+            {INSIGHTS.map((insight, index) => (
               <li key={insight.id} data-insight-card className="flex">
                 <article
                   tabIndex={0}
@@ -176,7 +190,7 @@ export default function HowWeThink() {
                     />
                     <div aria-hidden="true" className="insight-fade pointer-events-none absolute inset-0" />
                     <span className="absolute top-4 left-4 rounded-full border border-white/10 bg-[#03040A]/70 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] tracking-widest text-[#A2A8BC] uppercase">
-                      {insight.tag}
+                      {String(index + 1).padStart(2, "0")} {"//"} {insight.category}
                     </span>
                   </div>
 
@@ -185,14 +199,19 @@ export default function HowWeThink() {
                       <h3 id={`insight-${insight.id}`} className="insight-title text-xl leading-snug font-normal xl:text-2xl">
                         {insight.title}
                       </h3>
-                      <p className="text-sm leading-relaxed font-light text-[#A2A8BC]">{insight.excerpt}</p>
+                      <p className="text-sm leading-relaxed font-light text-[#A2A8BC]">{insight.description}</p>
+                      {(insight.author || insight.date) && (
+                        <p className="mt-1 text-xs text-[var(--text-muted)]">
+                          {[insight.author, insight.date].filter(Boolean).join(" · ")}
+                        </p>
+                      )}
                     </div>
                     {insight.href && (
                       <a
                         href={insight.href}
                         className="insight-explore flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] tracking-wide uppercase"
                       >
-                        <span>Explore Article</span>
+                        <span>Read insight</span>
                         <span aria-hidden="true" className="insight-arrow text-xs text-[var(--neon-cyan)]">
                           →
                         </span>
@@ -203,6 +222,11 @@ export default function HowWeThink() {
               </li>
             ))}
           </ul>
+
+          {/* The same newsletter proposition as the footer, word for word. */}
+          <div data-insights-copy className="mt-14 border-t border-[var(--border-subtle)] pt-10">
+            <NewsletterPrompt />
+          </div>
         </div>
       </div>
     </section>

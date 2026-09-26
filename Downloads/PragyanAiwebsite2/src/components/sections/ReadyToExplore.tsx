@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navigateToHash } from "@/lib/navigation";
+import { keepAiLowercase } from "@/lib/brandText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
  * horizon arc, the closing question on the left seven columns and the brand tagline,
  * right-aligned with a cyan/violet underline, on the right five.
  *
- * The contact form (#contact) follows directly, and the "Talk to Us" pill leads to it.
+ * The contact form (#contact) follows directly, and the "Talk to Pragyan ai" pill leads to it.
  */
 export default function ReadyToExplore() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -93,7 +94,7 @@ export default function ReadyToExplore() {
                 onClick={(event) => navigateToHash(event, "#contact")}
                 className="explore-pill inline-flex items-center gap-3 rounded-full px-6 py-3 text-xs font-medium tracking-widest whitespace-nowrap uppercase"
               >
-                <span>Talk to Us</span>
+                <span>{keepAiLowercase("Talk to Pragyan ai")}</span>
                 <span aria-hidden="true" className="text-[var(--neon-cyan)]">
                   →
                 </span>

@@ -21,7 +21,7 @@ export function GatewayPortal({ layerRef }: { layerRef: LayerRef }) {
         layerRef(img);
       }}
       src={gate.src}
-      alt="The Gate of PAI — a glowing violet and cyan gateway"
+      alt="The Gate of P.ai — a glowing violet and cyan gateway"
       width={gate.width}
       height={gate.height}
       quality={90}
