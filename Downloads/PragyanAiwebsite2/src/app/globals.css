@@ -853,6 +853,56 @@ html[data-scene-intense] .header-intensity {
     color: #ffffff;
   }
 
+  .service-label {
+    margin-bottom: 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+  }
+
+  .service-proof {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #F2C744;
+  }
+
+  .service-proof-link {
+    text-decoration: underline;
+    text-decoration-color: rgba(242, 199, 68, 0.35);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.3s ease;
+  }
+
+  .service-proof-link:hover {
+    text-decoration-color: #F2C744;
+  }
+
+  .service-link {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+  }
+
+  .service-link > span[aria-hidden="true"] {
+    color: var(--neon-cyan);
+  }
+
+  .service-link:hover {
+    color: var(--neon-cyan);
+  }
+
+  .service-link:focus-visible,
+  .service-proof-link:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
   .service-sweep {
     background: linear-gradient(
       105deg,

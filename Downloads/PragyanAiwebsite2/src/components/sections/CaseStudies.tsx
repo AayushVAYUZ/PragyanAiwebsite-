@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { onCaseStudyRequest } from "@/lib/caseStudyLink";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -197,6 +198,16 @@ export default function CaseStudies() {
 
     return () => media.revert();
   }, []);
+
+  // Links elsewhere on the page (a service's proof line) can ask for a specific case study.
+  useEffect(
+    () =>
+      onCaseStudyRequest((id) => {
+        const index = CASES.findIndex((c) => c.id === id);
+        if (index >= 0) setActive(index);
+      }),
+    [],
+  );
 
   // The deck advances on its own once the section is on screen — no click, hover or scroll.
   // Reduced motion holds the first case study instead.

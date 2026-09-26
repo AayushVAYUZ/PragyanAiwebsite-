@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { keepAiLowercase } from "@/lib/brandText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,20 +51,6 @@ const DROPLETS: Droplet[] = [
 
 /** The ambient scan: how long one droplet stays lit, and the gap before the pass repeats. */
 const FOCUS = { lit: 0.7, cycle: 16 };
-
-/** These labels are set in uppercase by the design, so "ai" is opted out of the
- * transform — the same treatment the header gives "Ask P.ai". */
-function keepAiLowercase(text: string) {
-  return text.split(/\b(ai)\b/g).map((part, i) =>
-    part === "ai" ? (
-      <span key={i} className="normal-case">
-        ai
-      </span>
-    ) : (
-      part
-    ),
-  );
-}
 
 function clear(el: HTMLElement | null) {
   if (!el) return;

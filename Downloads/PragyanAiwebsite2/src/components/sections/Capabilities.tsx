@@ -4,6 +4,11 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SERVICES, type Service, type ServiceId } from "@/content/services";
+import { requestContact } from "@/lib/contact";
+import { showCaseStudy } from "@/lib/caseStudyLink";
+import { navigateToHash } from "@/lib/navigation";
+import { keepAiLowercase } from "@/lib/brandText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,96 +18,61 @@ const CORE_EMISSION = { x: 636, y: 472 };
 
 const ICON_PROPS = { fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", "aria-hidden": true } as const;
 
-/**
- * Frame 08 — Services. The eight service lines, named exactly as the source deck states them.
- * This is a catalogue, not a process: the order carries no dependency between entries.
- */
-const SERVICES: { number: string; title: string; icon: ReactNode }[] = [
-  {
-    number: "01",
-    title: "Agentic ai & Enterprise Automation",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <rect height="9" rx="1.5" width="9" x="7.5" y="7.5" />
-        <path d="M10.5 4V2M13.5 4V2M10.5 22v-2M13.5 22v-2M4 10.5H2M4 13.5H2M22 10.5h-2M22 13.5h-2M7.5 4.5h9M7.5 19.5h9M4.5 7.5v9M19.5 7.5v9" />
-      </svg>
-    ),
-  },
-  {
-    number: "02",
-    title: "ai Strategy & Transformation",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <circle cx="12" cy="12" r="9" />
-        <polygon points="15.6 8.4 13.4 13.4 8.4 15.6 10.6 10.6 15.6 8.4" />
-      </svg>
-    ),
-  },
-  {
-    number: "03",
-    title: "Knowledge & Data Intelligence",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <ellipse cx="12" cy="5.5" rx="7.5" ry="3" />
-        <path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6" />
-        <path d="M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6" />
-      </svg>
-    ),
-  },
-  {
-    number: "04",
-    title: "Predictive & Decision Intelligence",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <polyline points="3 16.5 9 10.5 13 14.5 21 6.5" />
-        <polyline points="21 11 21 6.5 16.5 6.5" />
-        <line x1="3" x2="3" y1="20.5" y2="3.5" />
-      </svg>
-    ),
-  },
-  {
-    number: "05",
-    title: "Custom ai & LLM Engineering",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <polyline points="8 7 3.5 12 8 17" />
-        <polyline points="16 7 20.5 12 16 17" />
-        <line x1="13.5" x2="10.5" y1="5.5" y2="18.5" />
-      </svg>
-    ),
-  },
-  {
-    number: "06",
-    title: "Multimodal ai Analysis",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <polygon points="12 3 21 7.5 12 12 3 7.5 12 3" />
-        <polyline points="3 12.5 12 17 21 12.5" />
-        <polyline points="3 16.5 12 21 21 16.5" />
-      </svg>
-    ),
-  },
-  {
-    number: "07",
-    title: "ai Droplets & Embedded Intelligence",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <path d="M12 3.5c3.2 3.6 5.5 6.4 5.5 9a5.5 5.5 0 0 1-11 0c0-2.6 2.3-5.4 5.5-9z" />
-        <path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5" />
-      </svg>
-    ),
-  },
-  {
-    number: "08",
-    title: "Sovereign ai Infrastructure & Governance",
-    icon: (
-      <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
-        <path d="M12 2.8 4.5 6v6c0 4.3 3.1 7.9 7.5 9.2 4.4-1.3 7.5-4.9 7.5-9.2V6z" />
-        <polyline points="9 12 11.3 14.3 15.5 10" />
-      </svg>
-    ),
-  },
-];
+/** One icon per service line; the service copy itself lives in `@/content/services`. */
+const SERVICE_ICONS: Record<ServiceId, ReactNode> = {
+  agentic: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <rect height="9" rx="1.5" width="9" x="7.5" y="7.5" />
+      <path d="M10.5 4V2M13.5 4V2M10.5 22v-2M13.5 22v-2M4 10.5H2M4 13.5H2M22 10.5h-2M22 13.5h-2M7.5 4.5h9M7.5 19.5h9M4.5 7.5v9M19.5 7.5v9" />
+    </svg>
+  ),
+  strategy: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <circle cx="12" cy="12" r="9" />
+      <polygon points="15.6 8.4 13.4 13.4 8.4 15.6 10.6 10.6 15.6 8.4" />
+    </svg>
+  ),
+  knowledge: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <ellipse cx="12" cy="5.5" rx="7.5" ry="3" />
+      <path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6" />
+      <path d="M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6" />
+    </svg>
+  ),
+  predictive: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <polyline points="3 16.5 9 10.5 13 14.5 21 6.5" />
+      <polyline points="21 11 21 6.5 16.5 6.5" />
+      <line x1="3" x2="3" y1="20.5" y2="3.5" />
+    </svg>
+  ),
+  "custom-llm": (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <polyline points="8 7 3.5 12 8 17" />
+      <polyline points="16 7 20.5 12 16 17" />
+      <line x1="13.5" x2="10.5" y1="5.5" y2="18.5" />
+    </svg>
+  ),
+  multimodal: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <polygon points="12 3 21 7.5 12 12 3 7.5 12 3" />
+      <polyline points="3 12.5 12 17 21 12.5" />
+      <polyline points="3 16.5 12 21 21 16.5" />
+    </svg>
+  ),
+  droplets: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <path d="M12 3.5c3.2 3.6 5.5 6.4 5.5 9a5.5 5.5 0 0 1-11 0c0-2.6 2.3-5.4 5.5-9z" />
+      <path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5" />
+    </svg>
+  ),
+  sovereign: (
+    <svg {...ICON_PROPS} strokeWidth={1.2} className="h-5 w-5">
+      <path d="M12 2.8 4.5 6v6c0 4.3 3.1 7.9 7.5 9.2 4.4-1.3 7.5-4.9 7.5-9.2V6z" />
+      <polyline points="9 12 11.3 14.3 15.5 10" />
+    </svg>
+  ),
+};
 
 /**
  * When the section comes into view, in seconds. The entrance runs once; the scan then walks
@@ -489,7 +459,7 @@ export default function Capabilities() {
               <li
                 key={service.number}
                 data-service-card
-                className="service-card group relative flex min-h-[112px] flex-col justify-between overflow-hidden rounded-xl p-4 sm:p-5"
+                className="service-card group relative flex min-h-[112px] flex-col overflow-hidden rounded-xl p-4 sm:p-5"
               >
                 <span aria-hidden="true" className="service-sweep pointer-events-none absolute inset-0" />
                 <div className="relative flex items-start justify-between gap-3">
@@ -497,12 +467,37 @@ export default function Capabilities() {
                     {service.number}
                   </span>
                   <span className="text-[var(--text-secondary)] transition-colors group-hover:text-[var(--neon-cyan)]">
-                    {service.icon}
+                    {SERVICE_ICONS[service.id]}
                   </span>
                 </div>
                 <h3 className="service-title relative mt-3 text-sm leading-snug font-medium tracking-tight text-[var(--text-primary)]">
                   {service.title}
                 </h3>
+                <dl className="relative mt-3 flex flex-col gap-2.5 text-[13px] leading-relaxed font-light">
+                  <div>
+                    <dt className="service-label">Problem</dt>
+                    <dd className="text-[var(--text-secondary)]">{service.problem}</dd>
+                  </div>
+                  <div>
+                    <dt className="service-label">What we deliver</dt>
+                    <dd className="text-[var(--text-soft)]">{service.deliver}</dd>
+                  </div>
+                </dl>
+                {service.proof && (
+                  <div className="relative mt-3">
+                    <ServiceProofLine proof={service.proof} />
+                  </div>
+                )}
+                <div className="relative mt-auto pt-4">
+                  <a
+                    href="#contact"
+                    onClick={(event) => requestContact(event, service.interest)}
+                    className="service-link"
+                    aria-label={`Discuss ${service.title}`}
+                  >
+                    Discuss this <span aria-hidden="true">→</span>
+                  </a>
+                </div>
               </li>
             ))}
           </ul>
@@ -510,4 +505,23 @@ export default function Capabilities() {
       </div>
     </section>
   );
+}
+
+function ServiceProofLine({ proof }: { proof: NonNullable<Service["proof"]> }) {
+  if (proof.kind === "section") {
+    return (
+      <a href={proof.href} onClick={(event) => navigateToHash(event, proof.href)} className="service-link">
+        {keepAiLowercase(proof.text)} <span aria-hidden="true">→</span>
+      </a>
+    );
+  }
+  if (proof.kind === "result" && proof.caseStudyId) {
+    const caseStudyId = proof.caseStudyId;
+    return (
+      <a href="#case-studies" onClick={(event) => showCaseStudy(event, caseStudyId)} className="service-proof service-proof-link">
+        {proof.text}
+      </a>
+    );
+  }
+  return <p className="service-proof">{proof.text}</p>;
 }
