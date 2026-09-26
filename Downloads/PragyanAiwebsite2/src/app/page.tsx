@@ -9,6 +9,7 @@ import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
 import PrismApproach from "@/components/sections/PrismApproach";
 import Capabilities from "@/components/sections/Capabilities";
+import AiDroplets from "@/components/sections/AiDroplets";
 import SovereignAI from "@/components/sections/SovereignAI";
 import CaseStudies from "@/components/sections/CaseStudies";
 import BuiltProducts from "@/components/sections/BuiltProducts";
@@ -47,6 +48,9 @@ export default function Home() {
       <OurJourney />
       <PrismApproach />
       <Capabilities />
+
+      {/* ai Droplets — making what the client already runs intelligent */}
+      <AiDroplets />
 
       {/* Frame 09 — Sovereign AI: the enclave blueprint assembles as you scroll */}
       <SovereignAI />
