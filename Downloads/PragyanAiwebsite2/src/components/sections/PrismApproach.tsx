@@ -560,8 +560,8 @@ export default function PrismApproach() {
 
           <div data-prism-copy className="pt-1">
             <a
-              href="#prism-stages"
-              onClick={(event: MouseEvent<HTMLAnchorElement>) => navigateToHash(event, "#prism-stages")}
+              href="#prism-offers"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) => navigateToHash(event, "#prism-offers")}
               className="group inline-flex items-center gap-3 rounded-full border border-[var(--border-active)] bg-[#0A0F23]/80 px-6 py-3 text-xs font-medium tracking-[0.16em] text-[var(--text-primary)] transition-[border-color,background-color,box-shadow] duration-300 hover:border-[var(--electric-violet)] hover:bg-[var(--electric-violet)]/15 hover:shadow-[0_0_24px_-4px_rgba(139,45,255,0.4)]"
             >
               <span>Explore PRISM</span>

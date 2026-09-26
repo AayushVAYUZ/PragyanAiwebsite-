@@ -70,6 +70,7 @@ function formatEnquiry(submission: ContactSubmission): string {
     `Company: ${submission.company}`,
     `Role: ${submission.role || "Not given"}`,
     `Area of interest: ${submission.interest || "Not selected"}`,
+    ...(submission.context ? [`Came from: ${submission.context}`] : []),
     "",
     "What needs to work better?",
     submission.message,

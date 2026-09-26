@@ -9,11 +9,13 @@ export interface ContactSubmission {
   role: string;
   interest: ContactInterest | "";
   message: string;
+  /** Which engagement model or PRISM offer the visitor came from, if any. */
+  context: string;
   /** Honeypot: hidden from people, so anything in it came from a bot. */
   website: string;
 }
 
-export type ContactField = "name" | "email" | "company" | "role" | "interest" | "message";
+export type ContactField = "name" | "email" | "company" | "role" | "interest" | "message" | "context";
 export type ContactErrors = Partial<Record<ContactField, string>>;
 
 export const CONTACT_LIMITS: Record<ContactField, number> = {
@@ -23,6 +25,7 @@ export const CONTACT_LIMITS: Record<ContactField, number> = {
   role: 100,
   interest: 60,
   message: 5000,
+  context: 200,
 };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -39,6 +42,7 @@ export function normaliseSubmission(input: unknown): ContactSubmission {
     role: text("role"),
     interest: isContactInterest(interest) ? interest : "",
     message: text("message"),
+    context: text("context"),
     website: text("website"),
   };
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { CONTACT_DETAILS, CONTACT_INTERESTS, type ContactInterest } from "@/content/contact";
-import { interestFromUrl, onContactInterest } from "@/lib/contact";
+import { interestFromUrl, onContactRequest } from "@/lib/contact";
 import {
   CONTACT_LIMITS,
   normaliseSubmission,
@@ -22,7 +22,16 @@ type Status =
   | { state: "success" }
   | { state: "error"; message: string };
 
-const EMPTY_FORM = { name: "", email: "", company: "", role: "", interest: "" as ContactInterest | "", message: "", website: "" };
+const EMPTY_FORM = {
+  name: "",
+  email: "",
+  company: "",
+  role: "",
+  interest: "" as ContactInterest | "",
+  message: "",
+  context: "",
+  website: "",
+};
 const FIELD_ORDER: ContactField[] = ["name", "email", "company", "role", "interest", "message"];
 
 export default function ContactSection() {
@@ -34,12 +43,14 @@ export default function ContactSection() {
   // Interest arrives from a CTA elsewhere on the page, or from a shared ?interest= link.
   // The URL is only read after hydration, so the server and first client render agree.
   useEffect(() => {
-    const setInterest = (interest: ContactInterest) => setValues((current) => ({ ...current, interest }));
     const frame = requestAnimationFrame(() => {
       const fromUrl = interestFromUrl();
-      if (fromUrl) setInterest(fromUrl);
+      if (fromUrl) setValues((current) => ({ ...current, interest: fromUrl }));
     });
-    const unsubscribe = onContactInterest(setInterest);
+    // A CTA replaces the context line it set before; an interest is only changed when given.
+    const unsubscribe = onContactRequest(({ interest, context }) =>
+      setValues((current) => ({ ...current, interest: interest ?? current.interest, context: context ?? "" })),
+    );
     return () => {
       cancelAnimationFrame(frame);
       unsubscribe();
@@ -164,6 +175,23 @@ export default function ContactSection() {
           aria-labelledby="contact-heading"
           className="contact-form flex flex-col gap-5 rounded-2xl p-5 sm:p-8 lg:col-span-7"
         >
+          {values.context && (
+            <p className="contact-context flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm">
+              <span>
+                <span className="contact-detail-label mr-2">Enquiry about</span>
+                {values.context}
+              </span>
+              <button
+                type="button"
+                onClick={() => setValues((current) => ({ ...current, context: "" }))}
+                aria-label={`Remove "${values.context}" from this enquiry`}
+                className="contact-context-clear"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </p>
+          )}
+
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <Field id="name" label="Name" required error={errors.name}>
               <input

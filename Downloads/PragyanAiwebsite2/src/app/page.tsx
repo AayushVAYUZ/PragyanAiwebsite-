@@ -7,13 +7,19 @@ import EyeBlinkPreloader, { type IntroPhase } from "@/components/cinematic/EyeBl
 import CinematicOpening from "@/components/cinematic/CinematicOpening";
 import BeliefQuestions from "@/components/sections/BeliefQuestions";
 import OurJourney from "@/components/sections/OurJourney";
+import ProblemStakes from "@/components/sections/ProblemStakes";
+import WhyPragyan from "@/components/sections/WhyPragyan";
+import EngagementModels from "@/components/sections/EngagementModels";
 import PrismApproach from "@/components/sections/PrismApproach";
+import PrismOffers from "@/components/sections/PrismOffers";
 import Capabilities from "@/components/sections/Capabilities";
 import AiDroplets from "@/components/sections/AiDroplets";
 import SovereignAI from "@/components/sections/SovereignAI";
 import CaseStudies from "@/components/sections/CaseStudies";
+import ImpactStrip from "@/components/sections/ImpactStrip";
 import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
+import TrustSection from "@/components/sections/TrustSection";
 import HowWeThink from "@/components/sections/HowWeThink";
 import ReadyToExplore from "@/components/sections/ReadyToExplore";
 import ContactSection from "@/components/sections/ContactSection";
@@ -47,7 +53,16 @@ export default function Home() {
 
       {/* Phase 2A content frames: normal scroll sections */}
       <OurJourney />
+
+      {/* Business context: why enterprise ai is hard, then why Pragyan ai */}
+      <ProblemStakes />
+      <WhyPragyan />
+
+      {/* How to engage, then the method and the offers it packages */}
+      <EngagementModels />
       <PrismApproach />
+      <PrismOffers />
+
       <Capabilities />
 
       {/* ai Droplets — making what the client already runs intelligent */}
@@ -58,8 +73,12 @@ export default function Home() {
 
       {/* Phase 2B content frames */}
       <CaseStudies />
+      <ImpactStrip />
       <BuiltProducts />
       <UseCases />
+
+      {/* Client proof / trust */}
+      <TrustSection />
 
       {/* Phase 3 content frames */}
       <HowWeThink />
