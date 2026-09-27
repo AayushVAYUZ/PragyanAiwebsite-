@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import NewsletterPrompt from "./NewsletterPrompt";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Frame 13 — How We Think. Composition from the approved Stitch reference: editorial
- * header (label, headline, lead) with the "Read Insights" pill on the right, then three
- * equal insight cards with alternating cyan / violet / cyan accents.
+ * Frame 13 — How We Think. Editorial header with the "Explore our thinking" pill on the right,
+ * then the insight cards in a carousel: three to a view on desktop, two on tablet, one on
+ * mobile. It advances on its own every few seconds, pausing while hovered, focused, off
+ * screen or in a background tab, and not at all under reduced motion. Swipe, the arrows and
+ * the dots move it by hand.
  *
  * "Explore our thinking" and each card's "Read insight" only render once they have a URL, so no
  * dead CTA ships. The photographs are artwork only: nothing visible inside them is repeated
@@ -23,7 +24,6 @@ const INSIGHTS_URL: string | null = null;
 
 interface Insight {
   id: string;
-  category: string;
   title: string;
   description: string;
   /** Only confirmed authorship is shown; null keeps the field empty rather than inventing one. */
@@ -38,10 +38,10 @@ interface Insight {
 }
 
 // TODO: confirmed author, date and URL for each article. None exist in the approved content yet.
+// The last three (production, sovereign, modernise) are draft copy awaiting approval.
 const INSIGHTS: Insight[] = [
   {
     id: "adoption",
-    category: "Adoption",
     title: "Rethinking ai Adoption in Enterprise",
     description: "Why organizational readiness, cognitive workflows, and operating architecture matter more than raw model benchmarks.",
     author: null,
@@ -53,7 +53,6 @@ const INSIGHTS: Insight[] = [
   },
   {
     id: "systems",
-    category: "Systems",
     title: "From Data to Decisions",
     description: "Bridging the gap between vast enterprise telemetry and decisive executive execution through structured contextual intelligence.",
     author: null,
@@ -65,7 +64,6 @@ const INSIGHTS: Insight[] = [
   },
   {
     id: "leadership",
-    category: "Leadership",
     title: "The Human Side of ai Transformation",
     description: "How human empathy, leadership intuition, and collaborative trust remain the ultimate differentiator in intelligent systems.",
     author: null,
@@ -75,7 +73,43 @@ const INSIGHTS: Insight[] = [
     alt: "Colleagues in conversation, silhouetted against floor-to-ceiling windows over a campus at dusk",
     accent: "cyan",
   },
+  {
+    id: "production",
+    title: "From Pilot to Production",
+    description: "Why so many promising proofs of concept stall, and what it takes to turn one into a dependable system the business runs on.",
+    author: null,
+    date: null,
+    href: null,
+    image: "/images/products-backdrop.jpg",
+    alt: "A dark control room under a glass arch, streams of cyan and violet data flowing across the dome",
+    accent: "violet",
+  },
+  {
+    id: "sovereign",
+    title: "Sovereign ai for Regulated Enterprises",
+    description: "What data residency, model ownership and governance mean in practice when intelligence has to stay under your control.",
+    author: null,
+    date: null,
+    href: null,
+    image: "/images/usecase-government.jpg",
+    alt: "A group standing at floor-to-ceiling windows over a city at night, data overlays glowing on the glass",
+    accent: "cyan",
+  },
+  {
+    id: "modernise",
+    title: "Don't Rebuild. Make It Intelligent.",
+    description: "How embedding ai into the platforms you already run delivers value sooner, and with less risk, than replacing them.",
+    author: null,
+    date: null,
+    href: null,
+    image: "/images/deceleration.jpg",
+    alt: "Beams of violet and cyan light fanning out from a single bright point in deep space",
+    accent: "violet",
+  },
 ];
+
+/** Seconds each view holds before the carousel moves on by one card. */
+const AUTOPLAY_SECONDS = 5;
 
 export default function HowWeThink() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -127,6 +161,73 @@ export default function HowWeThink() {
     return () => media.revert();
   }, []);
 
+  const trackRef = useRef<HTMLUListElement>(null);
+  const [position, setPosition] = useState(0);
+  const [stops, setStops] = useState(1);
+  const paused = useRef({ hover: false, focus: false, offscreen: true });
+
+  /** Distance between two cards' starts, and the number of positions the track can rest at. */
+  const measure = useCallback(() => {
+    const track = trackRef.current;
+    const first = track?.children[0] as HTMLElement | undefined;
+    const second = track?.children[1] as HTMLElement | undefined;
+    if (!track || !first) return { step: 0, count: 1 };
+    const step = second ? second.offsetLeft - first.offsetLeft : first.offsetWidth;
+    const count = step ? Math.round((track.scrollWidth - track.clientWidth) / step) + 1 : 1;
+    return { step, count: Math.max(1, count) };
+  }, []);
+
+  const goTo = useCallback(
+    (index: number) => {
+      const track = trackRef.current;
+      if (!track) return;
+      const { step, count } = measure();
+      const target = ((index % count) + count) % count;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      track.scrollTo({ left: target * step, behavior: reducedMotion ? "auto" : "smooth" });
+    },
+    [measure],
+  );
+
+  // Keep the dots in step with the track, however it was moved.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const sync = () => {
+      const { step, count } = measure();
+      setStops(count);
+      setPosition(step ? Math.min(count - 1, Math.round(track.scrollLeft / step)) : 0);
+    };
+    sync();
+    track.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      track.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, [measure]);
+
+  // Autoplay: one card at a time, wrapping to the start after the last view.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const visibility = new IntersectionObserver(([entry]) => void (paused.current.offscreen = !entry.isIntersecting), {
+      threshold: 0.3,
+    });
+    visibility.observe(track);
+    const timer = window.setInterval(() => {
+      const state = paused.current;
+      if (state.hover || state.focus || state.offscreen || document.hidden) return;
+      const { step, count } = measure();
+      if (!step) return;
+      goTo(Math.round(track.scrollLeft / step) + 1 >= count ? 0 : Math.round(track.scrollLeft / step) + 1);
+    }, AUTOPLAY_SECONDS * 1000);
+    return () => {
+      window.clearInterval(timer);
+      visibility.disconnect();
+    };
+  }, [goTo, measure]);
+
   return (
     <section
       id="insights"
@@ -168,64 +269,98 @@ export default function HowWeThink() {
             )}
           </div>
 
-          {/* Insight cards: three columns on desktop, horizontal editorial rows on tablet, stacked on mobile. */}
-          <ul aria-label="Insights" className="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:gap-8">
-            {INSIGHTS.map((insight, index) => (
-              <li key={insight.id} data-insight-card className="flex">
-                <article
-                  tabIndex={0}
-                  aria-labelledby={`insight-${insight.id}`}
-                  data-accent={insight.accent}
-                  className="insight-card relative flex w-full flex-col overflow-hidden rounded-2xl sm:flex-row lg:flex-col"
+          {/* Insight carousel */}
+          <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Insights"
+            data-insights-copy
+            onPointerEnter={() => void (paused.current.hover = true)}
+            onPointerLeave={() => void (paused.current.hover = false)}
+            onFocus={() => void (paused.current.focus = true)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) paused.current.focus = false;
+            }}
+          >
+            <ul ref={trackRef} className="insights-track -mx-1 flex snap-x snap-mandatory gap-6 overflow-x-auto px-1 pb-2">
+              {INSIGHTS.map((insight, index) => (
+                <li
+                  key={insight.id}
+                  data-insight-card
+                  aria-roledescription="slide"
+                  aria-label={`${index + 1} of ${INSIGHTS.length}`}
+                  className="flex shrink-0 basis-[86%] snap-start sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
                 >
-                  <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[var(--void-black)] sm:w-[42%] lg:w-full">
-                    <Image
-                      src={insight.image}
-                      alt={insight.alt}
-                      fill
-                      loading="eager"
-                      quality={90}
-                      sizes="(min-width: 1024px) 31vw, (min-width: 640px) 40vw, 92vw"
-                      className="insight-image object-cover object-center"
-                    />
-                    <div aria-hidden="true" className="insight-fade pointer-events-none absolute inset-0" />
-                    <span className="absolute top-4 left-4 rounded-full border border-white/10 bg-[#03040A]/70 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] tracking-widest text-[#A2A8BC] uppercase">
-                      {String(index + 1).padStart(2, "0")} {"//"} {insight.category}
-                    </span>
-                  </div>
+                  <article
+                    aria-labelledby={`insight-${insight.id}`}
+                    data-accent={insight.accent}
+                    className="insight-card relative flex w-full flex-col overflow-hidden rounded-2xl"
+                  >
+                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[var(--void-black)]">
+                      <Image
+                        src={insight.image}
+                        alt={insight.alt}
+                        fill
+                        quality={90}
+                        sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 86vw"
+                        className="insight-image object-cover object-center"
+                      />
+                      <div aria-hidden="true" className="insight-fade pointer-events-none absolute inset-0" />
+                    </div>
 
-                  <div className="flex flex-1 flex-col justify-between gap-5 p-6 md:p-7">
-                    <div className="flex flex-col gap-2.5">
-                      <h3 id={`insight-${insight.id}`} className="insight-title text-xl leading-snug font-normal xl:text-2xl">
-                        {insight.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed font-light text-[#A2A8BC]">{insight.description}</p>
-                      {(insight.author || insight.date) && (
-                        <p className="mt-1 text-xs text-[var(--text-muted)]">
-                          {[insight.author, insight.date].filter(Boolean).join(" · ")}
-                        </p>
+                    <div className="flex flex-1 flex-col justify-between gap-5 p-6 md:p-7">
+                      <div className="flex flex-col gap-2.5">
+                        <h3 id={`insight-${insight.id}`} className="insight-title text-xl leading-snug font-normal xl:text-2xl">
+                          {insight.title}
+                        </h3>
+                        <p className="text-sm leading-relaxed font-light text-[#A2A8BC]">{insight.description}</p>
+                        {(insight.author || insight.date) && (
+                          <p className="mt-1 text-xs text-[var(--text-muted)]">
+                            {[insight.author, insight.date].filter(Boolean).join(" · ")}
+                          </p>
+                        )}
+                      </div>
+                      {insight.href && (
+                        <a
+                          href={insight.href}
+                          className="insight-explore flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] tracking-wide uppercase"
+                        >
+                          <span>Read insight</span>
+                          <span aria-hidden="true" className="insight-arrow text-xs text-[var(--neon-cyan)]">
+                            →
+                          </span>
+                        </a>
                       )}
                     </div>
-                    {insight.href && (
-                      <a
-                        href={insight.href}
-                        className="insight-explore flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] tracking-wide uppercase"
-                      >
-                        <span>Read insight</span>
-                        <span aria-hidden="true" className="insight-arrow text-xs text-[var(--neon-cyan)]">
-                          →
-                        </span>
-                      </a>
-                    )}
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
+                  </article>
+                </li>
+              ))}
+            </ul>
 
-          {/* The same newsletter proposition as the footer, word for word. */}
-          <div data-insights-copy className="mt-14 border-t border-[var(--border-subtle)] pt-10">
-            <NewsletterPrompt />
+            {stops > 1 && (
+              <div className="mt-6 flex items-center justify-between gap-6">
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: stops }, (_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => goTo(index)}
+                      aria-label={`Show insight ${index + 1}`}
+                      aria-current={index === position ? "true" : undefined}
+                      className={`insights-dot${index === position ? " is-active" : ""}`}
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <button type="button" onClick={() => goTo(position - 1)} aria-label="Previous insight" className="insights-arrow">
+                    <span aria-hidden="true">←</span>
+                  </button>
+                  <button type="button" onClick={() => goTo(position + 1)} aria-label="Next insight" className="insights-arrow">
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

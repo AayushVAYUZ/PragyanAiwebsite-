@@ -10,15 +10,12 @@ import { FOOTER, PRIMARY_NAV, type NavLink } from "@/content/navigation";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Frame 15 — Footer / Journey Complete. The closing section, and the only one whose height
- * follows its content rather than the viewport. The gateway backdrop returns as a bookend to
- * Frame 02: it is given a tall panel and a light scrim so the portal reads as a full scene
- * rather than a sliver behind the copy.
+ * Frame 15 — Footer / Journey Complete. A compact closing band: the gateway backdrop returns
+ * as a bookend to Frame 02, standing on the right beside the copy.
  *
- * Left: the wordmark, tagline and positioning line (the newsletter lives in Insights). Then the
- * Navigate and Company columns, stacked from lg so the right is left to the Gate. Entries without a destination
- * (see `@/content/navigation`) render as plain text, never as dead links; the newsletter field
- * is a visual echo until a provider exists.
+ * Left: the wordmark, tagline and positioning line, then the Navigate and Company columns side
+ * by side, leaving the right to the Gate. Entries without a destination
+ * (see `@/content/navigation`) render as plain text, never as dead links.
  */
 
 export default function Footer() {
@@ -63,7 +60,7 @@ export default function Footer() {
       id="footer"
       ref={footerRef}
       aria-labelledby="footer-heading"
-      className="relative isolate flex min-h-[760px] flex-col overflow-hidden lg:min-h-[880px]"
+      className="relative isolate flex min-h-[420px] flex-col overflow-hidden lg:min-h-[480px]"
     >
       {/* Decorative gateway backdrop: the Frame 02 gate returning as a bookend. Scoped to the footer.
           The landscape carries the scrim; the portal is composed on top of it so the shade that keeps
@@ -105,24 +102,23 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footer-content relative z-10 flex flex-1 items-center px-[var(--gutter-x)] pt-28 pb-16">
+      <div className="footer-content relative z-10 flex flex-1 items-center px-[var(--gutter-x)] pt-16 pb-10">
         <div className="mx-auto w-full max-w-[1560px]">
-          <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-            {/* Wordmark, positioning and the newsletter proposition */}
-            <div data-footer-copy className="flex flex-col gap-10 lg:col-span-4 lg:pr-4">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+            {/* Wordmark and positioning */}
+            <div data-footer-copy className="flex flex-col lg:col-span-4 lg:pr-4">
               <div>
-                <h2 id="footer-heading" className="text-4xl font-semibold tracking-tight text-white lg:text-[2.75rem]">
+                <h2 id="footer-heading" className="text-3xl font-semibold tracking-tight text-white lg:text-4xl">
                   Pragyan{" "}
                   <span className="bg-gradient-to-r from-[#8B2DFF] to-[var(--neon-cyan)] bg-clip-text text-transparent">ai</span>
                 </h2>
-                <p className="mt-3 text-base font-light tracking-[0.18em] text-[#A2A8BC]">{FOOTER.tagline}</p>
-                <p className="mt-5 max-w-md text-sm leading-relaxed font-light text-[var(--text-soft)]">{FOOTER.description}</p>
+                <p className="mt-2 text-sm font-light tracking-[0.18em] text-[#A2A8BC]">{FOOTER.tagline}</p>
+                <p className="mt-4 max-w-md text-sm leading-relaxed font-light text-[var(--text-soft)]">{FOOTER.description}</p>
               </div>
             </div>
 
-            {/* Navigate + Company: side by side below lg; stacked from lg, so the column stays clear
-                of the Gate, which stands on the right from that width */}
-            <div data-footer-copy className="grid grid-cols-2 gap-8 lg:col-span-3 lg:grid-cols-1 lg:gap-10 lg:pl-8">
+            {/* Navigate + Company, side by side; the Gate stands to their right from lg */}
+            <div data-footer-copy className="grid grid-cols-2 gap-8 lg:col-span-4 lg:pl-8">
               <FooterColumn title="Navigate" label="Footer" links={PRIMARY_NAV} />
               <FooterColumn title="Company" label="Company" links={FOOTER.company} />
             </div>
@@ -131,10 +127,10 @@ export default function Footer() {
       </div>
 
       {/* Legal row */}
-      <div className="footer-content relative z-10 w-full px-[var(--gutter-x)] pb-8">
+      <div className="footer-content relative z-10 w-full px-[var(--gutter-x)] pb-6">
         <div className="mx-auto w-full max-w-[1560px]">
           <div className="footer-rule" />
-          <div className="flex flex-col items-center justify-between gap-5 pt-7 md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-4 pt-5 md:flex-row">
             <p className="text-sm text-slate-500">{FOOTER.copyright}</p>
             <ul aria-label="Legal" className="flex items-center text-sm font-light whitespace-nowrap">
               {FOOTER.legal.map((link, index) => (
@@ -154,13 +150,13 @@ export default function Footer() {
 function FooterColumn({ title, label, links }: { title: string; label: string; links: NavLink[] }) {
   return (
     <nav aria-label={label}>
-      <p className="mb-5 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.3em] text-[var(--neon-cyan)]/70 uppercase">
+      <p className="mb-4 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.3em] text-[var(--neon-cyan)]/70 uppercase">
         {title}
       </p>
-      <ul className="flex flex-col gap-3.5">
+      <ul className="flex flex-col gap-2.5">
         {links.map((link) => (
           <li key={link.label}>
-            <FooterEntry link={link} className="text-[15px] font-light" />
+            <FooterEntry link={link} className="text-sm font-light whitespace-nowrap" />
           </li>
         ))}
       </ul>

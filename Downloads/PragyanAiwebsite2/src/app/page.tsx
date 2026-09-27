@@ -16,13 +16,10 @@ import Capabilities from "@/components/sections/Capabilities";
 import AiDroplets from "@/components/sections/AiDroplets";
 import SovereignAI from "@/components/sections/SovereignAI";
 import CaseStudies from "@/components/sections/CaseStudies";
-import ImpactStrip from "@/components/sections/ImpactStrip";
 import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
 import HowWeThink from "@/components/sections/HowWeThink";
 import FinalContact from "@/components/sections/FinalContact";
-import { StoryPill } from "@/components/sections/StoryParts";
-import { requestContact } from "@/lib/contact";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -65,19 +62,12 @@ export default function Home() {
       {/* Signature capabilities: ai Droplets and Sovereign ai */}
       <div id="signature">
         <AiDroplets />
+        {/* Ends with the shared CTA for both signature capabilities */}
         <SovereignAI />
-        <div className="px-[var(--gutter-x)] pb-16">
-          <div className="mx-auto w-full max-w-7xl">
-            <StoryPill href="#contact" onClick={(event) => requestContact(event)}>
-              Talk to us about Droplets or Sovereign ai
-            </StoryPill>
-          </div>
-        </div>
       </div>
 
-      {/* Proof: outcomes first, then the case studies behind them */}
+      {/* Proof: the case studies */}
       <section id="case-studies" aria-label="Proof">
-        <ImpactStrip />
         <CaseStudies />
       </section>
 

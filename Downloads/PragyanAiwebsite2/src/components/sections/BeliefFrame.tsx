@@ -2,7 +2,7 @@
 
 import type { MouseEvent } from "react";
 import { navigateToHash } from "@/lib/navigation";
-import { BELIEF_COPY, BELIEF_QUESTIONS, type QuestionTone } from "./beliefContent";
+import { BELIEF_COPY, BELIEF_QUESTIONS } from "./beliefContent";
 
 type ElementBinding<T extends Element> = (element: T | null) => void;
 
@@ -28,24 +28,9 @@ const NETWORK_LAYOUT = [
   { card: "right-[8%] bottom-[10%] max-w-[220px]", line: { x: "80%", y: "84%" }, dash: "2 4" },
 ] as const;
 
-export function QuestionCard({ label, question, tone }: { label: string; question: string; tone: QuestionTone }) {
+export function QuestionCard({ question }: { question: string }) {
   return (
     <div className="belief-card rounded-xl px-4 py-3">
-      <div
-        className={`mb-1.5 flex items-center justify-between gap-4 font-[family-name:var(--font-mono)] text-[9px] uppercase tracking-wider ${
-          tone === "cyan" ? "text-[var(--neon-cyan)]/80" : "text-[#b58cff]/85"
-        }`}
-      >
-        <span>{label}</span>
-        <span
-          aria-hidden="true"
-          className={`h-1.5 w-1.5 rounded-full ${
-            tone === "cyan"
-              ? "bg-[var(--neon-cyan)] shadow-[0_0_6px_var(--neon-cyan)]"
-              : "bg-[#b58cff] shadow-[0_0_6px_var(--electric-violet)]"
-          }`}
-        />
-      </div>
       <p className="text-xs font-medium leading-snug text-[var(--text-primary)]">{question}</p>
     </div>
   );
@@ -77,7 +62,7 @@ export default function BeliefFrame({ bind }: { bind: BeliefFrameBindings }) {
                   {line}
                 </span>
               ))}
-              <span className="block bg-gradient-to-r from-[#a78bfa] via-[#d8b4fe] to-[var(--neon-cyan)] bg-clip-text font-normal text-transparent">
+              <span className="-mb-[0.14em] block bg-gradient-to-r from-[#a78bfa] via-[#d8b4fe] to-[var(--neon-cyan)] bg-clip-text pb-[0.14em] font-normal text-transparent">
                 {BELIEF_COPY.headingAccent}
               </span>
             </h2>
@@ -95,9 +80,6 @@ export default function BeliefFrame({ bind }: { bind: BeliefFrameBindings }) {
                   →
                 </span>
               </a>
-              <span className="hidden font-[family-name:var(--font-mono)] text-[10px] tracking-wider text-[var(--text-muted)] sm:block">
-                {BELIEF_COPY.methodologyNote}
-              </span>
             </div>
           </div>
         </div>
@@ -149,12 +131,12 @@ export default function BeliefFrame({ bind }: { bind: BeliefFrameBindings }) {
             <ul aria-label="The questions that come first" className="absolute inset-0">
               {BELIEF_QUESTIONS.map((question, index) => (
                 <li
-                  key={question.label}
+                  key={question}
                   ref={bind.card(index)}
                   className={`invisible absolute opacity-0 ${NETWORK_LAYOUT[index].card}`}
                 >
                   <div className={index % 2 === 0 ? "belief-float" : "belief-float-delayed"}>
-                    <QuestionCard {...question} />
+                    <QuestionCard question={question} />
                   </div>
                 </li>
               ))}

@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { WHY_PRAGYAN } from "@/content/story";
 import { useReveal, useScrollIndex } from "@/lib/storyMotion";
 import { navigateToHash } from "@/lib/navigation";
-import { StoryEyebrow, StoryHeading } from "./StoryParts";
+import { StoryHeading } from "./StoryParts";
 
 /**
  * Why Pragyan: what makes the approach different? Four principles as large editorial blocks,
@@ -27,7 +27,6 @@ export default function WhyPragyan() {
       <div className="mx-auto w-full max-w-7xl">
         <div data-reveal className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-5">
-            <StoryEyebrow>{WHY_PRAGYAN.label}</StoryEyebrow>
             <StoryHeading id="why-pragyan-heading">
               Why Pragyan <span className="service-accent font-normal">ai</span>
             </StoryHeading>

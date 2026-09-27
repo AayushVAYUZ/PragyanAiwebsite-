@@ -2,18 +2,10 @@ import type { MouseEvent, ReactNode } from "react";
 import { keepAiLowercase } from "@/lib/brandText";
 
 /**
- * Shared pieces for the business-story sections (stakes, why, engagement, PRISM offers,
- * impact, trust), so they read as one system with the rest of the page: the eyebrow and
- * heading scale of the Services section, one step smaller, and the final CTA's pill for CTAs.
+ * Shared pieces for the business-story sections (stakes, why, engagement,
+ * trust), so they read as one system with the rest of the page: the heading scale of the
+ * Services section, one step smaller, and the final CTA's pill for CTAs.
  */
-
-export function StoryEyebrow({ children }: { children: string }) {
-  return (
-    <p className="mb-4 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.3em] text-[var(--neon-cyan)]/70 uppercase">
-      {keepAiLowercase(children)}
-    </p>
-  );
-}
 
 export function StoryHeading({ id, children }: { id: string; children: ReactNode }) {
   return (

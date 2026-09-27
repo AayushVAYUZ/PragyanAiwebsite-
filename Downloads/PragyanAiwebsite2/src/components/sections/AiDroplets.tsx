@@ -189,10 +189,6 @@ export default function AiDroplets() {
         {/* Narrative */}
         <div className="drop-narrative">
           <div ref={(el) => void (els.current.head = el)} className="drop-head">
-            <p className="drop-eyebrow">
-              <span aria-hidden="true" className="drop-dot" />
-              {keepAiLowercase("ai Droplets — Modular Intelligence")}
-            </p>
             <h2 id="ai-droplets-heading" className="drop-title">
               <span>Make Legacy</span>
               <span className="drop-title-accent">Intelligent.</span>
@@ -210,7 +206,7 @@ export default function AiDroplets() {
               <span aria-hidden="true" className="drop-op">+</span>
               <span className="drop-term drop-term--accent">
                 <span aria-hidden="true" className="drop-term-mark" />
-                {DROPLETS.length} ai droplets
+                ai droplets
               </span>
               <span aria-hidden="true" className="drop-op drop-op--cyan">=</span>
               <span className="drop-term drop-term--result">Intelligent core</span>

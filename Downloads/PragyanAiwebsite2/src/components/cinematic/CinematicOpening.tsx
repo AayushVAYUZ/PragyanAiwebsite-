@@ -70,30 +70,22 @@ interface FrameCopy {
   card?: ReactNode;
   /** Mirrors `card`/`heading` on the right side of the viewport, independent of the left column. */
   rightContent?: ReactNode;
-  /** Centred near the bottom of the viewport, independent of the (left-aligned) heading column. */
-  scrollCue?: string;
 }
 
 /** Frames of the opening scene, keyframed by scroll. The Belief frame follows as its resting state. */
 const FRAMES: FrameCopy[] = [
   {
     label: "the-eye",
-    headingLevel: "p",
+    headingLevel: "h1",
     staged: [
       { text: "A smarter" },
       { text: "yesterday", accent: true },
       { text: "is already looking at us." },
     ],
-    // Visible before any scrolling, so the offer and the way in are there before the Gate.
+    // Visible before any scrolling, so the way in is there before the Gate.
     lead: (
       <div className="hero-lead mt-6 md:mt-8">
-        <h1 className="text-[clamp(1.3rem,2.3vw,1.85rem)] leading-snug font-normal tracking-tight text-[var(--text-primary)]">
-          Enterprise ai that moves from pilot to production.
-        </h1>
-        <p className="mt-3 max-w-[30rem] text-sm leading-relaxed font-light text-[var(--text-secondary)] md:text-base">
-          We find the right ai opportunities, engineer them with PRISM, and run them on your data, under your control.
-        </p>
-        <div className="pointer-events-auto mt-6 flex flex-wrap items-center gap-3">
+        <div className="pointer-events-auto flex flex-wrap items-center gap-3">
           <a
             href="#contact"
             onClick={(event) => navigateToHash(event, "#contact")}
@@ -110,12 +102,6 @@ const FRAMES: FrameCopy[] = [
             <span>See Our Work</span>
           </a>
         </div>
-        <p aria-hidden="true" className="mt-6 flex items-center gap-3">
-          <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.35em] text-white/55">
-            Scroll to Enter
-          </span>
-          <span className="scroll-indicator-dot h-1.5 w-1.5 rounded-full bg-[var(--neon-cyan)] shadow-[0_0_8px_var(--neon-cyan)]" />
-        </p>
       </div>
     ),
   },
@@ -126,32 +112,22 @@ const FRAMES: FrameCopy[] = [
       <>
         <span className="block">The Gate of</span>
         <span className="block text-[1.1em]">
-          P<span className="gate-period">.</span>ai
+          P<span className="gate-period">.</span>
+          <span className="gate-ai">ai</span>
         </span>
       </>
     ),
-    scrollCue: "Scroll to Enter",
   },
   {
     label: "pragyan-ai-definition",
     headingLevel: "h2",
     card: (
       <div className="max-w-[30rem]">
-        <h3 className="cinematic-headline text-[clamp(1.5rem,2.6vw,2.15rem)] text-[var(--text-primary)]">
-          Pragyan{" "}
-          <span className="inline-block rounded-[0.15em] bg-[var(--electric-violet)] px-[0.22em] py-[0.02em] text-[var(--void-black)]">
-            ai
-          </span>{" "}
-          INNOVATIONS
-        </h3>
-        <p className="mt-2 text-base font-medium tracking-wide text-[#F2C744] sm:text-lg">
-          Intelligence for Efficient Results
-        </p>
-        <p className="mt-5 text-sm leading-relaxed text-[var(--text-secondary)] sm:text-base">
-          Pragyan ai INNOVATIONS is the dedicated artificial intelligence company of VAYUZ Technologies,
-          focused on helping enterprises adopt ai with confidence. We combine research, engineering and
-          innovation to create intelligent products, modernize enterprise platforms, integrate ai across
-          digital ecosystems and build the foundation for a trusted Sovereign ai ecosystem.
+        <p className="text-sm leading-relaxed text-[var(--text-primary)] sm:text-base">
+          Pragyan <Ai /> INNOVATIONS is the dedicated artificial intelligence company of VAYUZ Technologies,
+          focused on helping enterprises adopt <Ai /> with confidence. We combine research, engineering and
+          innovation to create intelligent products, modernize enterprise platforms, integrate <Ai /> across
+          digital ecosystems and build the foundation for a trusted Sovereign <Ai /> ecosystem.
         </p>
       </div>
     ),
@@ -277,7 +253,6 @@ export default function CinematicOpening({
   const textRef = useRef<(HTMLElement | null)[]>([]);
   const vignetteRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
-  const hintRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleFieldHandle>(null);
   const beliefGradeRef = useRef<HTMLDivElement | null>(null);
   const gateRevealRef = useRef({ v: 0 });
@@ -358,7 +333,6 @@ export default function CinematicOpening({
 
       writeOpacity(vignetteRef.current, frame.vignette);
       writeOpacity(scrimRef.current, frame.scrim);
-      writeOpacity(hintRef.current, frame.scrollHint);
       frame.text.forEach((text, index) => writeOpacity(textRef.current[index], text.o, text.y));
 
       if (frame.intense !== intense) {
@@ -522,20 +496,6 @@ export default function CinematicOpening({
               card: (index) => (element) => void (beliefRef.current.cards[index] = element),
             }}
           />
-
-          {/* Below md the hero lead's own "Scroll to Enter" cue sits where this would, so it stands in for it. */}
-          <div
-            ref={hintRef}
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-6 hidden flex-col items-center gap-2 md:flex"
-          >
-            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.35em] text-[var(--text-muted)]">
-              Scroll
-            </span>
-            <span className="flex h-8 w-5 items-start justify-center rounded-full border border-white/20 p-1">
-              <span className="scroll-indicator-dot h-2 w-1 rounded-full bg-gradient-to-b from-[var(--electric-violet)] to-[var(--neon-cyan)]" />
-            </span>
-          </div>
         </div>
       </div>
 
@@ -618,17 +578,11 @@ function FrameCopyBlock({
         </div>
       )}
 
-      {frame.scrollCue && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-10 flex items-center justify-center gap-3">
-          <span className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.35em] text-white/70">
-            {frame.scrollCue}
-          </span>
-          <span
-            aria-hidden="true"
-            className="scroll-indicator-dot h-1.5 w-1.5 rounded-full bg-[var(--neon-cyan)] shadow-[0_0_8px_var(--neon-cyan)]"
-          />
-        </div>
-      )}
     </article>
   );
+}
+
+/** "ai" in the brand violet, as the wordmark sets it. */
+function Ai() {
+  return <span className="font-medium text-[var(--electric-violet)]">ai</span>;
 }

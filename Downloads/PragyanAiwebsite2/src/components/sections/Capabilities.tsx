@@ -145,7 +145,6 @@ export default function Capabilities() {
     const moteEls = Array.from(section.querySelectorAll<SVGCircleElement>("[data-service-mote]"));
     const cards = Array.from(section.querySelectorAll<HTMLElement>("[data-service-card]"));
     const headingEl = section.querySelector<HTMLElement>("[data-service-heading]");
-    const labelEl = section.querySelector<HTMLElement>("[data-service-label]");
     const supportEl = section.querySelector<HTMLElement>("[data-service-support]");
     const cardGrid = section.querySelector<HTMLElement>("[data-service-grid]");
 
@@ -209,7 +208,7 @@ export default function Capabilities() {
       (context) => {
         // Reduced motion: the heading and all eight services are simply there, background still.
         if (context.conditions?.reduceMotion) {
-          gsap.set([labelEl, headingEl, supportEl, cardGrid].filter(Boolean), { autoAlpha: 1, y: 0 });
+          gsap.set([headingEl, supportEl, cardGrid].filter(Boolean), { autoAlpha: 1, y: 0 });
           return;
         }
 
@@ -219,7 +218,7 @@ export default function Capabilities() {
           mote.style.display = index < activeMotes ? "" : "none";
         });
 
-        gsap.set([labelEl, headingEl, supportEl].filter(Boolean), { autoAlpha: 0, y: 18 });
+        gsap.set([headingEl, supportEl].filter(Boolean), { autoAlpha: 0, y: 18 });
         gsap.set(cardGrid, { autoAlpha: 0, y: 16 });
 
         // Stars drift a few pixels across the whole section — depth, not a screensaver.
@@ -261,7 +260,6 @@ export default function Capabilities() {
         // so no service is introduced ahead of any other.
         const { heading, support, cards: cardsAt, firstService, serviceStep, activeHold, loopGap } = SERVICE_TIMELINE;
         const intro = gsap.timeline({ paused: true });
-        if (labelEl) intro.to(labelEl, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, heading - 0.2);
         if (headingEl) intro.to(headingEl, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, heading);
         if (supportEl) intro.to(supportEl, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, support);
         if (cardGrid) intro.to(cardGrid, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, cardsAt);
@@ -432,12 +430,6 @@ export default function Capabilities() {
             pinned beside the cards (sticky, below the header) until the last one has scrolled by. */}
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:items-start lg:gap-10">
           <div className="flex flex-col lg:sticky lg:top-28 lg:col-span-5 lg:self-start lg:pr-8">
-            <p
-              data-service-label
-              className="mb-5 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.3em] text-[var(--neon-cyan)]/70 uppercase"
-            >
-              Our Services
-            </p>
             <h2
               id="capabilities-heading"
               data-service-heading

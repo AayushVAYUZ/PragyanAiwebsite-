@@ -10,8 +10,10 @@ const nextConfig: NextConfig = {
   images: {
     // 90 is used for the cinematic plates and the gateway, which are enlarged
     // by the camera and show compression artifacts at the default 75.
-    qualities: [75, 90],
+    qualities: [75, 85, 90],
   },
+  // Keeps the dev-mode "N" badge out of screenshots and shared previews.
+  devIndicators: false,
 };
 
 export default nextConfig;

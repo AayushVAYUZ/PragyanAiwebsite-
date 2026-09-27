@@ -5,7 +5,7 @@ import { PERSONAS, type Persona } from "@/content/personas";
 import { navigateToHash } from "@/lib/navigation";
 import { keepAiLowercase } from "@/lib/brandText";
 import { useReveal } from "@/lib/storyMotion";
-import { StoryEyebrow, StoryHeading } from "./StoryParts";
+import { StoryHeading } from "./StoryParts";
 
 /**
  * Persona routing: where do you sit in the business? Four compact paths, each a single link to
@@ -28,7 +28,6 @@ export default function PersonaRouting() {
       <div className="mx-auto w-full max-w-7xl">
         <div data-reveal className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">
-            <StoryEyebrow>Find your path</StoryEyebrow>
             <StoryHeading id="personas-heading">
               Where do you sit <span className="service-accent font-normal">in the business?</span>
             </StoryHeading>

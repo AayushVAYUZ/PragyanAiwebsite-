@@ -121,10 +121,41 @@
   }
 
   /* The Gate of P.ai. — the trailing period reads as a small energy node. */
+  /* Under the fixed header once the page has scrolled: near-opaque at the top, a light blur,
+     both dissolving downward so content fades out as it slides beneath the navigation. */
+  .header-fade {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: calc(var(--header-h) + 2.5rem);
+    background: linear-gradient(to bottom, rgba(3, 4, 10, 0.94) 0%, rgba(3, 4, 10, 0.82) 45%, rgba(3, 4, 10, 0.4) 75%, transparent 100%);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    pointer-events: none;
+  }
+
   .gate-period {
     display: inline-block;
     color: var(--neon-cyan);
     animation: gate-period-pulse 5s ease-in-out infinite;
+  }
+
+  /* The Gate of P.ai: "ai" in the brand gradient, lit from within. */
+  .gate-ai {
+    display: inline-block;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+    background-image: linear-gradient(100deg, #b339ff 0%, #8b2dff 30%, #5b7bff 60%, #26c6ff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: 500;
+    filter: drop-shadow(0 0 10px rgba(139, 45, 255, 0.75)) drop-shadow(0 0 26px rgba(38, 198, 255, 0.4));
+    animation: service-accent-sweep 12s linear infinite;
   }
 
   /* Idle life for the Gate: a soft violet/cyan glow breathing behind it, on a ::after
@@ -224,10 +255,6 @@
   .film-grain {
     background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
     background-size: 24px 24px;
-  }
-
-  .scroll-indicator-dot {
-    animation: scroll-pulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
   /* ---------- Cinematic scene layers ----------
@@ -417,17 +444,6 @@ html[data-scene-intense] .header-intensity {
   opacity: 0.45;
 }
 
-@keyframes scroll-pulse {
-  0%, 100% {
-    opacity: 0.4;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translateY(4px);
-  }
-}
-
 @keyframes thought-reveal {
   to {
     opacity: 1;
@@ -503,15 +519,14 @@ html[data-scene-intense] .header-intensity {
     transition-duration: 0.01ms !important;
   }
 
-  .scroll-indicator-dot {
-    animation: none;
-    opacity: 0.7;
-  }
-
   .thought-fragment {
     animation: none !important;
     opacity: 1;
     transform: none;
+  }
+
+  .gate-ai {
+    animation: none;
   }
 
   .gate-period {
@@ -685,23 +700,6 @@ html[data-scene-intense] .header-intensity {
     background-color: rgba(14, 20, 42, 0.75);
   }
 
-  /* The stage cards double as the tabs for the offer panel below them. */
-  .prism-stage-tab {
-    cursor: pointer;
-    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s ease;
-  }
-
-  .prism-stage-tab:focus-visible {
-    outline: 2px solid var(--neon-cyan);
-    outline-offset: 3px;
-  }
-
-  .prism-stage-tab.is-selected {
-    border-color: rgba(38, 198, 255, 0.55);
-    box-shadow: 0 0 26px -6px rgba(139, 45, 255, 0.45), inset 0 0 18px rgba(38, 198, 255, 0.08);
-  }
-
   .engagement-stage-chip {
     transition: border-color 0.3s ease, background-color 0.3s ease;
   }
@@ -716,7 +714,7 @@ html[data-scene-intense] .header-intensity {
     outline-offset: 2px;
   }
 
-  /* The engagement model a stage belongs to. */
+  /* Engagement-model stage chips. */
   .prism-engagement-chip {
     padding: 0.35rem 0.8rem;
     border: 1px solid color-mix(in srgb, var(--neon-cyan) 35%, transparent);
@@ -2227,6 +2225,55 @@ html[data-scene-intense] .header-intensity {
     transition: transform 0.2s;
   }
 
+  /* Insights carousel: a native scroll-snap track (swipeable), with its scrollbar hidden. */
+  .insights-track {
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .insights-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .insights-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: rgba(160, 175, 220, 0.28);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+  }
+
+  .insights-dot.is-active {
+    width: 1.75rem;
+    background: linear-gradient(90deg, var(--electric-violet), var(--neon-cyan));
+  }
+
+  .insights-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-primary);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .insights-dot:focus-visible,
+  .insights-arrow:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) {
+    .insights-arrow:hover {
+      border-color: rgba(38, 198, 255, 0.45);
+      box-shadow: 0 0 16px -4px rgba(38, 198, 255, 0.4);
+    }
+  }
+
   /* Editorial card. The accent alternates cyan / violet / cyan (Stitch). */
   .insight-card {
     --insight-accent: 38, 198, 255;
@@ -2344,21 +2391,20 @@ html[data-scene-intense] .header-intensity {
 }
 
 @layer components {
-  /* Frame 14 — Ready to Explore. The horizon is essentially static (Stitch): a slight overscan, toned down a touch. */
-  .explore-image {
+  /* Contact block: the closing horizon behind the form, toned down a touch. */
+  .contact-horizon {
     transform: scale(1.02);
-    filter: brightness(0.9) contrast(1.05);
+    filter: brightness(0.95) contrast(1.05);
   }
 
-  /* Radial vignette, top/bottom fade and a restrained left-to-right scrim. Lighter than Stitch's so the arc
-     stays clearly visible; the bottom fades to the void so the page end and the continuum row blend in. */
-  .explore-scrims {
-    background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(3, 4, 10, 0.3) 75%, rgba(3, 4, 10, 0.65) 100%),
-      linear-gradient(to top, #03040a 0%, rgba(3, 4, 10, 0.35) 14%, transparent 30%, transparent 72%, rgba(3, 4, 10, 0.6) 100%),
-      linear-gradient(to right, rgba(3, 4, 10, 0.6) 0%, rgba(3, 4, 10, 0.2) 45%, transparent 70%);
+  /* Faded to the void at the top and bottom so the block joins the sections either side; a
+     left-to-right shade keeps the copy legible while the arc shows behind the form. */
+  .contact-scrims {
+    background: linear-gradient(to bottom, #03040a 0%, rgba(3, 4, 10, 0.4) 16%, transparent 38%, transparent 70%, rgba(3, 4, 10, 0.7) 90%, #03040a 100%),
+      linear-gradient(to right, rgba(3, 4, 10, 0.66) 0%, rgba(3, 4, 10, 0.32) 40%, transparent 70%);
   }
 
-  /* "Talk to Pragyan ai" leads to the contact form directly below. */
+  /* The shared CTA pill (StoryPill). */
   .explore-pill {
     border: 1px solid rgba(160, 175, 220, 0.22);
     background: rgba(255, 255, 255, 0.04);
@@ -2374,21 +2420,11 @@ html[data-scene-intense] .header-intensity {
     }
   }
 
-  /* The tagline sits over the brightest stretch of the arc: a soft shadow keeps it legible. */
-  .explore-tagline {
-    text-shadow: 0 0 18px rgba(3, 4, 10, 0.85), 0 0 4px rgba(3, 4, 10, 0.6);
-  }
-
   .explore-pill:focus-visible {
     outline: 2px solid var(--neon-cyan);
     outline-offset: 3px;
   }
 
-  .explore-underline {
-    height: 1.5px;
-    background: linear-gradient(90deg, #26c6ff 0%, #8b2dff 60%, transparent 100%);
-    box-shadow: 0 0 12px rgba(38, 198, 255, 0.55);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2403,7 +2439,7 @@ html[data-scene-intense] .header-intensity {
 
 @layer components {
   /* Frame 15 — Footer. Restrained scrims: the gateway on the right stays visible, the left keeps
-     enough contrast for the wordmark and the newsletter block. */
+     enough contrast for the wordmark. */
   /* Below lg the content stacks full width and the gateway runs the full height behind it, so the
      shade is vertical: darkest where the copy is dense, lifting across the middle so the portal reads. */
   .footer-scrims {
@@ -2417,30 +2453,18 @@ html[data-scene-intense] .header-intensity {
 
   @media (min-width: 1024px) {
     /* The portal is the subject here, so the shade opens across the middle and closes again at
-       both edges: dark enough on the left for the wordmark and newsletter, dark enough on the
+       both edges: dark enough on the left for the wordmark, dark enough on the
        right for the pillar words, and nearly clear where the gateway itself sits. */
     .footer-scrims {
       /* Only as dark as the copy needs: the second gateway is cropped out of the plate rather
          than shaded over, so the plain, its mountains and the wet floor are all left to read. */
-      background: linear-gradient(to right, rgba(3, 4, 10, 0.92) 0%, rgba(3, 4, 10, 0.82) 20%, rgba(3, 4, 10, 0.5) 38%, rgba(3, 4, 10, 0.16) 56%, rgba(3, 4, 10, 0.2) 78%, rgba(3, 4, 10, 0.36) 100%),
+      background: linear-gradient(to right, rgba(3, 4, 10, 0.92) 0%, rgba(3, 4, 10, 0.84) 32%, rgba(3, 4, 10, 0.62) 56%, rgba(3, 4, 10, 0.2) 74%, rgba(3, 4, 10, 0.2) 90%, rgba(3, 4, 10, 0.36) 100%),
         linear-gradient(to top, rgba(3, 4, 10, 0.62) 0%, rgba(3, 4, 10, 0.18) 20%, transparent 46%, rgba(3, 4, 10, 0.45) 100%);
     }
 
     .footer-content {
       text-shadow: none;
     }
-  }
-
-  /* The newsletter field is a visual echo of the Stitch control: no form, nothing focusable. */
-  .footer-field {
-    background: rgba(13, 18, 36, 0.55);
-    border: 1px solid rgba(160, 175, 220, 0.16);
-    cursor: default;
-  }
-
-  .footer-field-button {
-    background: rgba(139, 45, 255, 0.2);
-    border: 1px solid rgba(139, 45, 255, 0.4);
   }
 
   .footer-link {
@@ -2475,9 +2499,9 @@ html[data-scene-intense] .header-intensity {
     .footer-gate {
       display: block;
       position: absolute;
-      left: 70%;
-      bottom: 19%;
-      height: 62%;
+      left: 86%;
+      bottom: 16%;
+      height: 68%;
       /* Native proportions of gateway-portal-4k.png (1114 x 1411). */
       aspect-ratio: 1114 / 1411;
       transform: translateX(-50%);
@@ -2551,26 +2575,20 @@ html[data-scene-intense] .header-intensity {
 
 /* ============================================================
    FRAME 09 — SOVEREIGN AI
-   A tall scene with a sticky viewport. The camera is scrubbed by
-   ScrollTrigger in SovereignAI.tsx; this file only lays out the world.
+   Base styles are the stacked flow layout (below lg, short screens,
+   reduced motion). [data-motion="on"] is the pinned, stepped layout
+   driven by ScrollTrigger in SovereignAI.tsx.
    ============================================================ */
 
 @layer components {
   .sov-scene {
     position: relative;
     isolation: isolate;
-    /* One screen plus a short sticky hold. The blueprint no longer needs scroll runway to
-       assemble itself, and the long scene left a dead, empty frame ahead of the content. */
-    height: calc(118 * var(--svh));
-    --sov-mid: clamp(20rem, 30vw, 30rem);
-    --sov-gap: clamp(1rem, 2.2vw, 2.25rem);
   }
 
-  .sov-viewport {
-    position: sticky;
-    top: 0;
-    height: calc(100 * var(--svh));
-    overflow: hidden;
+  .sov-pin {
+    position: relative;
+    padding: clamp(4rem, 12vh, 7rem) max(1rem, var(--gutter-x)) 0;
   }
 
   /* --- Environment ------------------------------------------------ */
@@ -2582,74 +2600,52 @@ html[data-scene-intense] .header-intensity {
     pointer-events: none;
   }
 
-  /* A blueprint floor: the enclave is a drawing before it is a place. */
+  /* A blueprint floor behind the gate. */
   .sov-grid {
     position: absolute;
-    inset: -20%;
+    inset: 0;
     background-image:
-      linear-gradient(rgba(38, 198, 255, 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(38, 198, 255, 0.055) 1px, transparent 1px);
+      linear-gradient(rgba(38, 198, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(38, 198, 255, 0.05) 1px, transparent 1px);
     background-size: 68px 68px;
-    mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, #000 12%, transparent 76%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 46%, #000 12%, transparent 76%);
-    will-change: transform;
+    mask-image: radial-gradient(ellipse 60% 60% at 72% 50%, #000 10%, transparent 74%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 72% 50%, #000 10%, transparent 74%);
   }
 
   .sov-atmos {
     position: absolute;
-    inset: -12%;
+    inset: 0;
     background:
-      radial-gradient(38% 46% at 50% 50%, rgba(139, 45, 255, 0.22), transparent 70%),
-      radial-gradient(52% 40% at 18% 78%, rgba(23, 107, 255, 0.16), transparent 72%),
-      radial-gradient(46% 38% at 84% 22%, rgba(38, 198, 255, 0.14), transparent 74%);
-    will-change: transform, opacity;
+      radial-gradient(34% 44% at 74% 50%, rgba(139, 45, 255, 0.18), transparent 70%),
+      radial-gradient(46% 38% at 12% 82%, rgba(23, 107, 255, 0.12), transparent 72%);
   }
 
-  /* --- Blueprint grid --------------------------------------------- */
+  /* --- Layout ------------------------------------------------------ */
 
   .sov-inner {
     position: relative;
     z-index: 1;
-    height: 100%;
-    /* The header floats over the scene, so the blueprint starts below it. */
-    padding: calc(var(--header-h) + clamp(0.75rem, 2.5vh, 1.75rem)) var(--gutter-x) clamp(1.5rem, 4vh, 2.75rem);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--sov-mid) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    column-gap: var(--sov-gap);
-    row-gap: clamp(0.75rem, 2vh, 1.75rem);
-    align-items: start;
-  }
-
-  .sov-head {
-    grid-column: 1;
-    grid-row: 1;
-    will-change: transform, opacity;
+    max-width: 80rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 6vh, 3rem);
   }
 
   .sov-title {
-    margin-top: clamp(0.75rem, 1.6vh, 1.25rem);
-    font-size: clamp(1.75rem, 3vw, 3rem);
+    font-size: clamp(2rem, 5.2vw, 3.25rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
     font-weight: 300;
     color: var(--text-primary);
   }
 
-  .sov-title span {
+  .sov-title > span {
     display: block;
   }
 
   .sov-title-accent {
-    background-image: linear-gradient(
-      100deg,
-      #8b2dff 0%,
-      #a855f7 18%,
-      #5b7bff 38%,
-      #26c6ff 55%,
-      #a855f7 80%,
-      #8b2dff 100%
-    );
+    background-image: linear-gradient(100deg, #8b2dff 0%, #a855f7 18%, #5b7bff 38%, #26c6ff 55%, #a855f7 80%, #8b2dff 100%);
     background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -2659,373 +2655,315 @@ html[data-scene-intense] .header-intensity {
     animation: service-accent-sweep 20s linear infinite;
   }
 
-  .sov-title span {
-    will-change: transform, opacity;
-  }
-
-  .sov-assure {
-    transition: text-shadow 0.9s ease;
-  }
-
-  .sov-assure.is-lit {
-    text-shadow: 0 0 12px rgba(38, 198, 255, 0.45), 0 0 5px rgba(38, 198, 255, 0.3);
-  }
-
-  .sov-intro {
-    grid-column: 3;
-    grid-row: 1;
-    text-align: right;
-    will-change: transform, opacity;
-  }
-
-  .sov-intro-title {
-    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+  .sov-sub {
+    margin-top: clamp(1rem, 2.4vh, 1.5rem);
+    font-size: clamp(1rem, 1.25vw, 1.1875rem);
     font-weight: 400;
     letter-spacing: -0.01em;
     color: var(--text-primary);
   }
 
-  .sov-intro-text {
-    font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
-    line-height: 1.7;
-    color: var(--text-secondary);
-    max-width: 34ch;
-    margin-left: auto;
+  .sov-body {
+    margin-top: 0.5rem;
+    max-width: 48ch;
+    font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    line-height: 1.65;
+    font-weight: 300;
+    color: var(--text-soft);
   }
 
-  .sov-assure {
-    margin-top: clamp(0.75rem, 1.6vh, 1.15rem);
-    display: inline-flex;
+  .sov-tagline {
+    margin-top: 0.9rem;
+    display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-primary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
   }
 
-  .sov-assure svg {
-    width: 0.95rem;
-    height: 0.95rem;
-    color: var(--neon-cyan);
+  .sov-tagline svg {
+    width: 1rem;
+    height: 1rem;
     flex: none;
+    color: var(--neon-cyan);
   }
 
-  /* --- The gate and its revolving orbit --------------------------- */
+  /* --- The gate ---------------------------------------------------- */
 
   .sov-stage {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-    display: grid;
-    grid-template-areas: "core";
-    place-items: center;
-  }
-
-  /* Rotated by the camera; the stations ride it. */
-
-  /* Anchored with margins, not a translate, so the camera's counter-rotation
-     can own the transform outright without losing the centring. */
-
-  /* Set outside the ring: inside, the labels collide with the gate's own chips. */
-
-  /* Below 1280px the side columns arrive before the labels have room. */
-
-  /* Breathing room around the gate: light only, no instrumentation. */
-  .sov-aura {
-    grid-area: core;
-    width: min(26rem, 74vw);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(139, 45, 255, 0.2) 0%, rgba(38, 198, 255, 0.09) 42%, transparent 72%);
-    animation: sov-aura-breathe 14s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  .sov-portal {
-    grid-area: core;
     position: relative;
-    width: clamp(10rem, 14vw, 13rem);
-    will-change: transform, opacity;
+    display: grid;
+    place-items: center;
+    width: min(60%, 20rem);
+    margin-inline: auto;
+  }
+
+  /* Glow behind the gate. Its opacity is the step's intensity (full in flow mode); the core
+     carries the idle pulse, so the two never fight over one property. */
+  .sov-glow {
+    position: absolute;
+    inset: -22%;
+    pointer-events: none;
+    opacity: 1;
+  }
+
+  .sov-glow-core {
+    position: absolute;
+    inset: 0;
+    animation: sov-glow-pulse 4s ease-in-out infinite;
+  }
+
+  .sov-glow-core::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(139, 45, 255, 0.42), rgba(38, 198, 255, 0.16) 58%, transparent 100%);
+  }
+
+  /* The gate again, blurred: light that follows the artwork's own shape. */
+  .sov-glow-core::after {
+    content: "";
+    position: absolute;
+    inset: 18%;
+    background: url("/images/sovereign-portal.png") center / contain no-repeat;
+    filter: blur(26px) saturate(1.5);
+    opacity: 0.85;
   }
 
   .sov-portal-img {
+    position: relative;
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 0 60px rgba(139, 45, 255, 0.35));
+    filter: drop-shadow(0 0 40px rgba(139, 45, 255, 0.3));
   }
 
-  /* --- The gate, alive -------------------------------------------- */
-
-  /* A slow wedge of light turning behind the artwork's own alpha, so it can only
-     show where the neon actually is: light travelling around the outline. */
-  .sov-sheen {
-    grid-area: core;
-    position: relative;
-    width: clamp(10rem, 14vw, 13rem);
-    aspect-ratio: 1117 / 1408;
-    overflow: hidden;
-    -webkit-mask-image: url("/images/sovereign-portal.png");
-    mask-image: url("/images/sovereign-portal.png");
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    mix-blend-mode: screen;
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
-  .sov-sheen-turn {
-    position: absolute;
-    inset: -45%;
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(214, 236, 255, 0.8) 16deg,
-      transparent 48deg,
-      transparent 360deg
-    );
-    animation: sov-sheen-turn 13s linear infinite;
-  }
-
-  /* A soft light stirring inside the opening. */
-  .sov-inner-light {
-    grid-area: core;
-    width: clamp(3.5rem, 5vw, 4.75rem);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(196, 150, 255, 0.34) 0%, rgba(38, 198, 255, 0.13) 45%, transparent 72%);
-    filter: blur(5px);
-    animation: sov-inner-drift 19s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  /* Rings leaving the centre, spent well before they reach the cards. */
-  .sov-ripple {
-    grid-area: core;
-    width: clamp(6rem, 8vw, 8rem);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 1px solid rgba(139, 45, 255, 0.3);
-    opacity: 0;
-    animation: sov-ripple 5.5s ease-out infinite;
-    pointer-events: none;
-  }
-
-  .sov-ripple-b {
-    animation-delay: 2.75s;
-    border-color: rgba(38, 198, 255, 0.22);
-  }
-
-  /* The occasional mote coming off the edge. */
-  .sov-mote {
-    grid-area: core;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(198, 228, 255, 0.9);
-    opacity: 0;
-    animation: sov-mote-drift 15s ease-out infinite;
-    pointer-events: none;
-  }
-
-  /* A single pulse sent toward whichever capability is lit. Positioned by script. */
-  .sov-links {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .sov-link-pulse {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 5px;
-    height: 5px;
-    margin: -2.5px 0 0 -2.5px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232, 244, 255, 0.95) 0%, rgba(139, 45, 255, 0.45) 55%, transparent 72%);
-    opacity: 0;
-    will-change: transform, opacity;
-  }
-
-  /* A slow band crossing the blueprint grid. */
-  .sov-scan {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 34%;
-    background: linear-gradient(90deg, transparent, rgba(126, 192, 255, 0.05), transparent);
-    opacity: 0;
-    animation: sov-scan-sweep 11s linear infinite;
-    pointer-events: none;
-  }
-
-  /* Flow-mode copy of the bearings: the orbit itself is decorative. */
-
-  /* --- The four enclave layers ------------------------------------ */
+  /* --- The four layers and their rail ------------------------------- */
 
   .sov-layers {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    align-self: center;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--sov-mid) minmax(0, 1fr);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    column-gap: var(--sov-gap);
-    row-gap: clamp(0.6rem, 1.6vh, 1.25rem);
-    align-content: center;
+    list-style: none;
   }
 
-  .sov-card {
-    padding: clamp(0.85rem, 1.6vh, 1.15rem) clamp(0.9rem, 1.2vw, 1.25rem);
-    border: 1px solid var(--border-subtle);
-    border-radius: 0.75rem;
-    background: linear-gradient(140deg, rgba(10, 16, 36, 0.72), rgba(5, 7, 17, 0.58));
-    backdrop-filter: blur(6px);
-    will-change: transform, opacity;
-    transition: border-color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
+  .sov-layer {
+    position: relative;
+    padding: 0 0 clamp(0.85rem, 2vh, 1.25rem) 2rem;
   }
 
-  /* The focus scan: lit for a beat, then handed on. Nothing moves or disappears. */
-  .sov-card.is-focus {
-    border-color: rgba(150, 90, 255, 0.48);
-    background: linear-gradient(140deg, rgba(19, 27, 56, 0.8), rgba(7, 10, 24, 0.6));
-    box-shadow: 0 0 26px -8px rgba(139, 45, 255, 0.42);
+  /* Track and fill: each item draws its own segment of the rail. */
+  .sov-layer::before,
+  .sov-layer::after {
+    content: "";
+    position: absolute;
+    left: 0.34rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
   }
 
-  .sov-card-title,
-  .sov-card-tag {
-    transition: color 0.6s ease, text-shadow 0.6s ease;
+  .sov-layer::before {
+    background: rgba(160, 175, 220, 0.14);
   }
 
-  .sov-card.is-focus .sov-card-title {
-    color: #ffffff;
+  .sov-layer::after {
+    background: linear-gradient(180deg, var(--electric-violet), var(--neon-cyan));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .sov-card.is-focus .sov-card-tag {
-    text-shadow: 0 0 10px rgba(139, 45, 255, 0.6), 0 0 6px rgba(38, 198, 255, 0.4);
+  .sov-layer.is-lit::after {
+    transform: scaleY(1);
   }
 
-  .sov-card[data-slot="0"] { grid-column: 1; grid-row: 1; }
-  .sov-card[data-slot="1"] { grid-column: 1; grid-row: 2; }
-  .sov-card[data-slot="2"] { grid-column: 3; grid-row: 1; }
-  .sov-card[data-slot="3"] { grid-column: 3; grid-row: 2; }
-
-  .sov-card[data-slot="2"],
-  .sov-card[data-slot="3"] {
-    border-color: rgba(139, 45, 255, 0.22);
-  }
-
-  .sov-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .sov-card-tag {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-  }
-
-  .sov-card[data-slot="2"] .sov-card-tag,
-  .sov-card[data-slot="3"] .sov-card-tag {
-    color: #c4b5fd;
-  }
-
-  .sov-card-dot {
-    width: 0.3rem;
-    height: 0.3rem;
+  .sov-layer-node {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0.3rem;
+    width: 0.75rem;
+    height: 0.75rem;
     border-radius: 50%;
-    background: currentColor;
+    border: 1px solid rgba(160, 175, 220, 0.35);
+    background: var(--void-black);
+    transition: border-color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
   }
 
-  .sov-card-icon {
+  .sov-layer.is-lit .sov-layer-node {
+    border-color: var(--neon-cyan);
+    background: linear-gradient(135deg, var(--electric-violet), var(--neon-cyan));
+  }
+
+  .sov-layer.is-active .sov-layer-node {
+    box-shadow: 0 0 12px rgba(38, 198, 255, 0.55);
+  }
+
+  .sov-layer-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.85rem;
+    row-gap: 0.35rem;
+  }
+
+  .sov-layer-num {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
     color: var(--text-muted);
+    transition: color 0.5s ease, text-shadow 0.5s ease;
   }
 
-  .sov-card-icon svg {
-    width: 1rem;
-    height: 1rem;
+  .sov-layer.is-active .sov-layer-num {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(38, 198, 255, 0.45);
   }
 
-  .sov-card-title {
-    margin-top: 0.5rem;
-    font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
-    line-height: 1.25;
+  .sov-layer-title {
+    font-size: clamp(1rem, 1.2vw, 1.1875rem);
+    line-height: 1.35;
     font-weight: 400;
+    color: var(--text-muted);
+    transition: color 0.5s ease;
+  }
+
+  .sov-layer.is-active .sov-layer-title {
     color: var(--text-primary);
   }
 
-  .sov-card-text {
-    margin-top: 0.4rem;
-    font-size: 0.75rem;
+  .sov-layer-button {
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .sov-layer-button:hover {
+    color: var(--text-soft);
+  }
+
+  .sov-layer-button:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .sov-layer-tag {
+    padding: 0.15rem 0.55rem;
+    border: 1px solid rgba(139, 45, 255, 0.4);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c4b5fd;
+  }
+
+  /* Height and opacity together: the description opens as its layer becomes active. */
+  .sov-layer-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  }
+
+  .sov-layer-body > div {
+    min-height: 0;
+    overflow: hidden;
+    max-width: 52ch;
+    padding-top: 0.45rem;
+    font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-secondary);
   }
 
+  .sov-layer-note {
+    margin-top: 0.35rem;
+  }
+
+  .sov-layer-note span {
+    margin-right: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .sov-layer.is-active .sov-layer-body {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  /* --- Below the pinned area ----------------------------------------- */
+
+  .sov-after {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.5rem, 4vh, 2.5rem) max(1rem, var(--gutter-x)) clamp(4rem, 10vh, 6rem);
+  }
+
+  .sov-after-inner {
+    max-width: 80rem;
+    margin-inline: auto;
+    display: flex;
+  }
+
+  /* --- Pinned, stepped layout ------------------------------------------ */
+
+  .sov-scene[data-motion="on"] .sov-pin {
+    height: calc(100 * var(--svh));
+    overflow: hidden;
+    padding: 0 var(--gutter-x);
+  }
+
+  /* The header floats over the pin, so the content starts below it. */
+  .sov-scene[data-motion="on"] .sov-inner {
+    height: 100%;
+    padding: calc(var(--header-h) + clamp(1rem, 3.5vh, 2.25rem)) 0 clamp(1.25rem, 3vh, 2rem);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: 2.5rem;
+    row-gap: clamp(1.25rem, 3.5vh, 2.25rem);
+  }
+
+  .sov-scene[data-motion="on"] .sov-head {
+    grid-column: 1 / 8;
+    grid-row: 1;
+  }
+
+  .sov-scene[data-motion="on"] .sov-title {
+    font-size: clamp(2rem, min(3.4vw, calc(5.4 * var(--svh))), 3.25rem);
+  }
+
+  .sov-scene[data-motion="on"] .sov-layers {
+    grid-column: 1 / 8;
+    grid-row: 2;
+  }
+
+  .sov-scene[data-motion="on"] .sov-stage {
+    grid-column: 8 / 13;
+    grid-row: 1 / 3;
+    align-self: center;
+    justify-self: center;
+    width: min(100%, 40vw, calc(66 * var(--svh) * 1117 / 1408));
+    margin: 0;
+  }
+
+  .sov-scene[data-motion="on"] .sov-after {
+    padding-top: clamp(2.5rem, 6vh, 4rem);
+  }
 }
 
-@keyframes sov-aura-breathe {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.05); }
-}
-
-@keyframes sov-sheen-turn {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes sov-inner-drift {
-  0%, 100% { transform: translate3d(-5%, -6%, 0) scale(1); opacity: 0.75; }
-  50% { transform: translate3d(5%, 6%, 0) scale(1.12); opacity: 1; }
-}
-
-/* Spent before it reaches the cards. */
-@keyframes sov-ripple {
-  0% { transform: scale(0.55); opacity: 0; }
-  14% { opacity: 0.5; }
-  70% { opacity: 0; }
-  100% { transform: scale(2.3); opacity: 0; }
-}
-
-@keyframes sov-mote-drift {
-  0% { transform: translate3d(var(--sx, 0), var(--sy, 0), 0) scale(0.5); opacity: 0; }
-  6% { opacity: 0.7; }
-  55% { opacity: 0.35; }
-  100% { transform: translate3d(var(--ex, 0), var(--ey, 0), 0) scale(0.25); opacity: 0; }
-}
-
-@keyframes sov-scan-sweep {
-  0% { transform: translateX(-120%); opacity: 0; }
-  6% { opacity: 1; }
-  30% { opacity: 1; }
-  38% { transform: translateX(340%); opacity: 0; }
-  100% { transform: translateX(340%); opacity: 0; }
+@keyframes sov-glow-pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sov-aura {
-    animation: none;
-    opacity: 0.65;
-  }
-
   .sov-title-accent,
-  .sov-sheen-turn,
-  .sov-inner-light,
-  .sov-ripple,
-  .sov-mote,
-  .sov-scan {
+  .sov-glow-core {
     animation: none;
   }
 
@@ -3033,82 +2971,9 @@ html[data-scene-intense] .header-intensity {
     background-position: 40% 50%;
   }
 
-  .sov-ripple,
-  .sov-mote,
-  .sov-scan {
-    opacity: 0;
-  }
-}
-
-/* ============================================================
-   FRAME 09 — FLOW MODE
-   Narrow screens and reduced motion get the same content as an
-   ordinary stacked document. Nothing is left stranded invisible.
-   ============================================================ */
-
-@layer components {
-  .sov-scene[data-motion="off"] {
-    height: auto;
-    padding-block: clamp(4rem, 12vh, 7rem);
-  }
-
-  .sov-scene[data-motion="off"] .sov-viewport {
-    position: static;
-    height: auto;
-    overflow: visible;
-  }
-
-  .sov-scene[data-motion="off"] .sov-env {
-    position: absolute;
-    inset: 0;
-  }
-
-  .sov-scene[data-motion="off"] .sov-inner {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.5rem, 5vh, 2.5rem);
-    height: auto;
-    padding-block: 0;
-  }
-
-  .sov-scene[data-motion="off"] .sov-intro {
-    text-align: left;
-  }
-
-  .sov-scene[data-motion="off"] .sov-intro-text {
-    margin-left: 0;
-  }
-
-  .sov-scene[data-motion="off"] .sov-stage {
-    justify-self: center;
-  }
-
-  .sov-scene[data-motion="off"] .sov-portal {
-    width: min(16rem, 58vw);
-  }
-
-  .sov-scene[data-motion="off"] .sov-layers {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    grid-template-rows: none;
-  }
-
-  .sov-scene[data-motion="off"] .sov-card {
-    grid-column: auto !important;
-    grid-row: auto !important;
-  }
-
-  /* Whatever the camera last wrote inline is discarded in flow mode. */
-  .sov-scene[data-motion="off"] .sov-grid,
-  .sov-scene[data-motion="off"] .sov-atmos,
-  .sov-scene[data-motion="off"] .sov-head,
-  .sov-scene[data-motion="off"] .sov-intro,
-  .sov-scene[data-motion="off"] .sov-portal,
-  .sov-scene[data-motion="off"] .sov-card {
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-    visibility: visible !important;
+  .sov-layer::after,
+  .sov-layer-body {
+    transition: none;
   }
 }
 
@@ -3230,30 +3095,6 @@ html[data-scene-intense] .header-intensity {
 
   .drop-head {
     will-change: transform, opacity;
-  }
-
-  .drop-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.35rem 0.85rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: 999px;
-    background: var(--glass-surface);
-    backdrop-filter: blur(10px);
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-
-  .drop-dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-    background: var(--neon-purple);
-    box-shadow: 0 0 10px var(--neon-purple);
   }
 
   .drop-title {
@@ -3815,6 +3656,17 @@ html[data-scene-intense] .header-intensity {
     color: transparent;
   }
 
+  /* A currency scale ("lakh crore") set small under its figure, so the figure keeps its size. */
+  .story-figure-unit {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text-soft);
+    -webkit-text-fill-color: var(--text-soft);
+  }
+
   .stakes-frictions {
     border-left: 1px solid color-mix(in srgb, var(--electric-violet) 45%, transparent);
   }
@@ -3852,62 +3704,6 @@ html[data-scene-intense] .header-intensity {
     color: #F2C744;
     letter-spacing: 0.01em;
   }
-}
-
-@layer components {
-  /* PRISM offer panel (under the stage tabs in the PRISM section): the same glass as the cards. */
-  .prism-offer-panel {
-    background: linear-gradient(180deg, rgba(14, 20, 42, 0.62) 0%, rgba(7, 11, 24, 0.48) 100%);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(160, 175, 220, 0.14);
-    min-height: 100%;
-  }
-
-  .prism-offer-swap {
-    visibility: hidden;
-    opacity: 0;
-  }
-
-  .prism-offer-swap.is-selected {
-    visibility: visible;
-    opacity: 1;
-    animation: proof-swap-in 380ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .prism-offer-chip {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.75rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prism-offer-swap.is-selected {
-    animation: none;
-  }
-}
-
-@layer components {
-  /* Impact strip: one lead statement, then the rest; hairlines instead of cards. */
-  .impact-item {
-    padding: 1.75rem 0;
-    border-top: 1px solid var(--border-subtle);
-  }
-
-  .impact-item:not(:first-child) {
-    padding-right: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .impact-item:not(:first-child) {
-      padding-right: 1.5rem;
-    }
-  }
-
-  .impact-lead {
-    font-size: clamp(2.75rem, 7vw, 5.5rem);
-  }
-
 }
 
 @layer components {

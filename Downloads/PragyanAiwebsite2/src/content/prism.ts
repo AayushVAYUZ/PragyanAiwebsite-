@@ -28,9 +28,6 @@ export const PRISM_INTRO = {
   body: "Enterprise ai cannot remain an abstract experiment. PRISM brings structure to the journey — from understanding the business and exploring possibilities to identifying the right opportunities, designing the solution, and delivering measurable impact.",
 };
 
-/** Deliverables shown before "View all deliverables". */
-export const VISIBLE_DELIVERABLES = 6;
-
 export const PRISM_STAGES: PrismStage[] = [
   {
     number: "01",

@@ -29,6 +29,7 @@ export default function Header({ phase }: HeaderProps) {
   const brandRef = useRef<HTMLAnchorElement>(null);
   const [brandTransform, setBrandTransform] = useState("translate(0, 0) scale(1)");
   const [brandTransition, setBrandTransition] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const interactive = phase === "nav";
 
   // The brand lockup is one element throughout: while it is the hero identity it is
@@ -44,7 +45,7 @@ export default function Header({ phase }: HeaderProps) {
       const place = () => {
         const rect = el.getBoundingClientRect();
         const heroX = window.innerWidth / 2;
-        const heroY = window.innerHeight * 0.44;
+        const heroY = window.innerHeight * 0.465;
         const dx = heroX - (rect.left + rect.width / 2);
         const dy = heroY - (rect.top + rect.height / 2);
         setBrandTransition(false);
@@ -66,6 +67,14 @@ export default function Header({ phase }: HeaderProps) {
       return () => cancelAnimationFrame(raf);
     }
   }, [phase]);
+
+  // Once the page has moved, content passes under the header: the top fade takes over.
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 40);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   // Mobile menu: scroll lock, focus management, Escape to close, focus trap.
   useEffect(() => {
@@ -126,11 +135,19 @@ export default function Header({ phase }: HeaderProps) {
       className={`fixed inset-x-0 top-0 z-50 ${interactive ? "pointer-events-auto" : "pointer-events-none"}`}
     >
       {/* Soft top scrim keeps the navigation legible over bright cinematic moments; it
-          arrives with the header chrome, once the brand starts its move upward. */}
+          arrives with the header chrome, once the brand starts its move upward. Once the page
+          scrolls it deepens into a blurred fade, so content dissolves as it passes under the
+          navigation instead of colliding with it. */}
       <div
         aria-hidden="true"
         className={`pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[rgba(3,4,10,0.55)] to-transparent transition-opacity duration-700 ease-out ${
-          phase === "moving" || phase === "nav" ? "opacity-100" : "opacity-0"
+          (phase === "moving" || phase === "nav") && !scrolled ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        aria-hidden="true"
+        className={`header-fade transition-opacity duration-500 ease-out ${
+          (phase === "moving" || phase === "nav") && scrolled ? "opacity-100" : "opacity-0"
         }`}
       />
 
@@ -215,9 +232,9 @@ export default function Header({ phase }: HeaderProps) {
           starts travelling into the header (a header keeps only the wordmark). */}
       <p
         aria-hidden={phase !== "brand"}
-        className="pointer-events-none fixed inset-x-0 text-center text-[clamp(0.8rem,1.6vw,1rem)] font-light tracking-wide text-[var(--text-secondary)] transition-opacity duration-500 ease-out"
+        className="pointer-events-none fixed inset-x-0 text-center text-[clamp(1rem,2vw,1.375rem)] font-normal tracking-wide text-[#F2C744] transition-opacity duration-500 ease-out"
         style={{
-          top: "calc(44vh + 2.5rem)",
+          top: "calc(46.5vh + 2.75rem)",
           opacity: phase === "brand" ? 1 : 0,
           transitionDelay: phase === "brand" ? "300ms" : "0ms",
         }}

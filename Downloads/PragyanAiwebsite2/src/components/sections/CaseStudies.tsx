@@ -11,7 +11,7 @@ import { StoryPill } from "./StoryParts";
  * Frame 09 — Proof (Case Studies). Both cases in full, side by side from lg and stacked below
  * it, in the same card language as before: the photograph behind a heavy scrim, the case HUD,
  * the headline metric, the brief and the results. It sits inside the #case-studies proof block,
- * under the impact strip, and ends with the block's one contact CTA.
+ * and ends with the block's one contact CTA.
  *
  * Every word and number is the approved content (`@/content/caseStudies`). Each headline metric
  * appears once per card. The rotating stage and the "Case archive" deck are gone: with both

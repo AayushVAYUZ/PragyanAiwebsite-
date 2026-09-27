@@ -5,22 +5,13 @@ export const BELIEF_COPY = {
   headingAccent: "the right questions.",
   body: "Effective enterprise ai begins with understanding the business, the underlying friction, and the high-value questions that matter—not simply deploying an off-the-shelf model into existing complexity.",
   cta: { label: "See how PRISM answers these", href: "#prism" },
-  methodologyNote: "PRISM_METHODOLOGY // ORIENT",
 };
 
-export type QuestionTone = "cyan" | "violet";
-
-export interface BeliefQuestion {
-  label: string;
-  question: string;
-  tone: QuestionTone;
-}
-
-export const BELIEF_QUESTIONS: BeliefQuestion[] = [
-  { label: "Q.01 // Objective", question: "What are we trying to improve?", tone: "cyan" },
-  { label: "Q.02 // Velocity", question: "Where are decisions taking too long?", tone: "violet" },
-  { label: "Q.03 // Synthesis", question: "What information is hard to access?", tone: "cyan" },
-  { label: "Q.04 // Value", question: "Where can ai create real business value?", tone: "violet" },
-  { label: "Q.05 // Assets", question: "What data do we already have?", tone: "cyan" },
-  { label: "Q.06 // Architecture", question: "What should not be rebuilt?", tone: "violet" },
+export const BELIEF_QUESTIONS = [
+  "What are we trying to improve?",
+  "Where are decisions taking too long?",
+  "What information is hard to access?",
+  "Where can ai create real business value?",
+  "What data do we already have?",
+  "What should not be rebuilt?",
 ];

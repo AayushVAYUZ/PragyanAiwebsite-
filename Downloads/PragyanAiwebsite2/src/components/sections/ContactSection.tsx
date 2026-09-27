@@ -12,9 +12,8 @@ import {
 } from "@/lib/contactValidation";
 
 /**
- * The contact form (#contact-form): the second half of the merged final block (#contact, see
- * FinalContact), directly under "What needs to work better?". Every contact CTA on the page
- * lands on this block, some with an area of interest pre-selected.
+ * The contact form (#contact-form), inside the contact block (#contact, see FinalContact).
+ * Every contact CTA on the page lands on this block, some with an area of interest pre-selected.
  */
 
 type Status =
@@ -107,7 +106,7 @@ export default function ContactSection() {
   const address = CONTACT_DETAILS.address.filter(Boolean);
 
   return (
-    <div id="contact-form" className="relative isolate px-[var(--gutter-x)] pt-10 pb-28 lg:pt-12 lg:pb-36">
+    <div id="contact-form" className="relative z-10 px-[var(--gutter-x)] pt-28 pb-20 lg:pt-32 lg:pb-28">
       <div className="mx-auto grid w-full max-w-[1152px] grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
         {/* Invitation and direct details */}
         <div className="flex flex-col lg:col-span-5">

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { PROBLEM } from "@/content/story";
 import { useReveal } from "@/lib/storyMotion";
-import { StoryEyebrow, StoryHeading } from "./StoryParts";
+import { StoryHeading } from "./StoryParts";
 
 /**
  * Problem / Stakes: why does this matter? The enterprise ai gap on the left, the market
@@ -24,7 +24,6 @@ export default function ProblemStakes() {
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="flex flex-col lg:col-span-6 lg:pr-6">
           <div data-reveal>
-            <StoryEyebrow>{PROBLEM.label}</StoryEyebrow>
             <StoryHeading id="stakes-heading">
               <span className="block">{PROBLEM.heading[0]}</span>
               <span className="service-accent block font-normal">{PROBLEM.heading[1]}</span>
@@ -47,7 +46,10 @@ export default function ProblemStakes() {
               data-reveal
               className="stakes-evidence grid grid-cols-1 gap-x-8 gap-y-2 py-6 sm:grid-cols-[minmax(0,15rem)_1fr] sm:items-center"
             >
-              <p className="story-figure">{item.value}</p>
+              <p className="story-figure">
+                {item.value}
+                {"unit" in item && item.unit && <span className="story-figure-unit">{item.unit}</span>}
+              </p>
               <div>
                 <p className="text-sm leading-relaxed font-light text-[var(--text-soft)] sm:text-base">{item.detail}</p>
                 <p className="mt-2 text-xs text-[var(--text-muted)]">

@@ -37,14 +37,3 @@ export const FOOTER = {
   ] as NavLink[],
   copyright: "© 2026 Pragyan ai. All rights reserved.",
 };
-
-/**
- * The newsletter proposition, shown once, in the Insights section.
- * No publishing cadence is promised: none has been established.
- */
-export const NEWSLETTER = {
-  label: "Stay in the loop",
-  heading: "Practical thinking on enterprise ai.",
-  body: "Receive occasional insights on where ai can create business value, how enterprises can prepare for adoption, and what it takes to move from prototype to production.",
-  placeholder: "Enter your email",
-};

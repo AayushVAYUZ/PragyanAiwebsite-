@@ -3,9 +3,9 @@
 import { useCallback, useRef, useState } from "react";
 import { ENGAGEMENT } from "@/content/story";
 import { requestContact } from "@/lib/contact";
+import { navigateToHash } from "@/lib/navigation";
 import { useReveal, useScrollIndex } from "@/lib/storyMotion";
-import { showPrismStage } from "@/lib/prismLink";
-import { StoryEyebrow, StoryHeading, StoryPill } from "./StoryParts";
+import { StoryHeading, StoryPill } from "./StoryParts";
 
 /**
  * Engagement models: how can we work together? Four proposed starting points, each mapped to
@@ -29,7 +29,6 @@ export default function EngagementModels() {
       <div className="mx-auto w-full max-w-7xl">
         <div data-reveal className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-5">
-            <StoryEyebrow>{ENGAGEMENT.label}</StoryEyebrow>
             <StoryHeading id="engage-heading">
               Start where the business <span className="service-accent font-normal">needs it.</span>
             </StoryHeading>
@@ -75,8 +74,8 @@ export default function EngagementModels() {
                 {model.stages.map((stage) => (
                   <li key={stage.label}>
                     <a
-                      href="#prism"
-                      onClick={(event) => showPrismStage(event, stage.index)}
+                      href="#prism-stages"
+                      onClick={(event) => navigateToHash(event, "#prism-stages")}
                       className="prism-engagement-chip engagement-stage-chip inline-block"
                     >
                       {stage.label}

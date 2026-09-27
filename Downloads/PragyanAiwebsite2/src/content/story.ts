@@ -11,7 +11,6 @@
 /* ---------------------------------------------------------------- */
 
 export const PROBLEM = {
-  label: "The enterprise ai gap",
   heading: ["ai is easy to explore.", "Making it work in the enterprise is harder."],
   lead: "Enterprises don't lack access to ai. The harder problem is turning ai into something useful, measurable and operational.",
   frictions: [
@@ -36,7 +35,9 @@ export const PROBLEM = {
       source: { publisher: "Dun & Bradstreet India", year: "2026", url: "https://cxotoday.com/research/indian-firms-rush-into-ai-but-96-lack-data-readiness/" },
     },
     {
-      value: "~$967B",
+      // ~$967B in the source, at about ₹88 to the dollar. TODO: confirm the rate/figure with the owner.
+      value: "~₹85",
+      unit: "lakh crore",
       detail: "potential ai contribution to India's economy by 2035",
       source: {
         publisher: "Parliamentary Standing Committee on Communications & IT",
@@ -53,7 +54,6 @@ export const PROBLEM = {
 /* ---------------------------------------------------------------- */
 
 export const WHY_PRAGYAN = {
-  label: "Our difference",
   heading: "Why Pragyan ai",
   lead: "We don't begin with the model. We begin with the business, the data and the way work actually happens.",
   pillars: [
@@ -93,12 +93,11 @@ export interface EngagementModel {
   summary: string;
   includes: string[];
   bestFor: string;
-  /** PRISM stages this model covers; each chip opens that stage's tab (0-based index). */
+  /** PRISM stages this model covers (0-based index); each chip links to the PRISM stages. */
   stages: { label: string; index: number }[];
 }
 
 export const ENGAGEMENT = {
-  label: "Engagement models",
   heading: "Start where the business needs it.",
   lead: "Not every enterprise starts from the same point. Pragyan ai engages at any stage — from identifying the opportunity to building, deploying and scaling the solution.",
   cta: { label: "Find your starting point", interest: "ai Strategy & Transformation" as const },
@@ -138,19 +137,3 @@ export const ENGAGEMENT = {
   ] as EngagementModel[],
 };
 
-/* ---------------------------------------------------------------- */
-/* Impact: what has changed in real work?                           */
-/* Every figure is already published in the case studies or the     */
-/* use cases section; `source` says where.                          */
-/* ---------------------------------------------------------------- */
-
-export const IMPACT = {
-  label: "Impact",
-  heading: "Built for outcomes.",
-  outcomes: [
-    { value: "5 days → 3 seconds", label: "Decision turnaround", source: "Case Study 01" },
-    { value: "90%", label: "Fewer billing errors", source: "Case Study 02" },
-    { value: "70%", label: "Time saved", source: "Case Study 02" },
-    { value: "40+", label: "Ready-to-demo ai accelerators", source: "Accelerators" },
-  ],
-};
