@@ -330,7 +330,9 @@ export default function Capabilities() {
       id="capabilities"
       ref={sectionRef}
       aria-labelledby="capabilities-heading"
-      className="relative isolate min-h-[clamp(40rem,calc(var(--svh)*100),46rem)] overflow-hidden"
+      // overflow-clip, not overflow-hidden: hidden makes the section a scroll container, which
+      // would stop the editorial column from sticking to the viewport.
+      className="relative isolate min-h-[clamp(40rem,calc(var(--svh)*100),46rem)] overflow-clip"
     >
       {/* Crystalline intelligence environment (artwork unchanged) */}
       <div data-service-background className="absolute inset-0">
@@ -426,9 +428,10 @@ export default function Capabilities() {
 
       <div className="relative z-10 flex min-h-[inherit] w-full flex-col justify-center px-[var(--gutter-x)] pt-10 pb-20">
         {/* Top-aligned from lg: the editorial column starts level with the first service card
-            rather than centring against the taller grid, which left it sitting low. */}
+            rather than centring against the taller grid, which left it sitting low. It then stays
+            pinned beside the cards (sticky, below the header) until the last one has scrolled by. */}
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:items-start lg:gap-10">
-          <div className="flex flex-col lg:col-span-5 lg:pr-8">
+          <div className="flex flex-col lg:sticky lg:top-28 lg:col-span-5 lg:self-start lg:pr-8">
             <p
               data-service-label
               className="mb-5 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.3em] text-[var(--neon-cyan)]/70 uppercase"
