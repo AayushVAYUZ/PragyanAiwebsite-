@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navigateToHash } from "@/lib/navigation";
 import { FOOTER, PRIMARY_NAV, type NavLink } from "@/content/navigation";
-import NewsletterPrompt from "./NewsletterPrompt";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
  * Frame 02: it is given a tall panel and a light scrim so the portal reads as a full scene
  * rather than a sliver behind the copy.
  *
- * Left: the wordmark, tagline, positioning line and the newsletter proposition. Then the
+ * Left: the wordmark, tagline and positioning line (the newsletter lives in Insights). Then the
  * Navigate and Company columns, stacked from lg so the right is left to the Gate. Entries without a destination
  * (see `@/content/navigation`) render as plain text, never as dead links; the newsletter field
  * is a visual echo until a provider exists.
@@ -119,8 +118,6 @@ export default function Footer() {
                 <p className="mt-3 text-base font-light tracking-[0.18em] text-[#A2A8BC]">{FOOTER.tagline}</p>
                 <p className="mt-5 max-w-md text-sm leading-relaxed font-light text-[var(--text-soft)]">{FOOTER.description}</p>
               </div>
-
-              <NewsletterPrompt />
             </div>
 
             {/* Navigate + Company: side by side below lg; stacked from lg, so the column stays clear

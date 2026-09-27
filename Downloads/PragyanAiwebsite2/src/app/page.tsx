@@ -21,8 +21,7 @@ import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
 import TrustSection from "@/components/sections/TrustSection";
 import HowWeThink from "@/components/sections/HowWeThink";
-import ReadyToExplore from "@/components/sections/ReadyToExplore";
-import ContactSection from "@/components/sections/ContactSection";
+import FinalContact from "@/components/sections/FinalContact";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -51,41 +50,40 @@ export default function Home() {
       {/* Frame 05 questions in normal flow on screens without room for the node network */}
       <BeliefQuestions />
 
-      {/* Phase 2A content frames: normal scroll sections */}
-      <OurJourney />
-
-      {/* Business context: why enterprise ai is hard, then why Pragyan ai */}
+      {/* Business context: the enterprise ai gap, then why Pragyan ai, then find your path */}
       <ProblemStakes />
       <WhyPragyan />
-
-      {/* Persona routing: points each role at the sections closest to its questions */}
       <PersonaRouting />
 
-      {/* How to engage, then the method and the offers it packages */}
-      <EngagementModels />
+      {/* The method, then how to engage with it */}
       <PrismApproach />
+      <EngagementModels />
 
       <Capabilities />
 
-      {/* ai Droplets — making what the client already runs intelligent */}
-      <AiDroplets />
+      {/* Signature capabilities: ai Droplets and Sovereign ai */}
+      <div id="signature">
+        <AiDroplets />
+        <SovereignAI />
+      </div>
 
-      {/* Frame 09 — Sovereign AI: the enclave blueprint assembles as you scroll */}
-      <SovereignAI />
+      {/* Proof: outcomes first, then the case studies behind them */}
+      <section id="case-studies" aria-label="Proof">
+        <ImpactStrip />
+        <CaseStudies />
+        <TrustSection />
+      </section>
 
-      {/* Phase 2B content frames */}
-      <CaseStudies />
-      <ImpactStrip />
       <BuiltProducts />
       <UseCases />
 
-      {/* Client proof / trust */}
-      <TrustSection />
+      {/* Heritage: the journey behind the new name */}
+      <OurJourney />
 
-      {/* Phase 3 content frames */}
       <HowWeThink />
-      <ReadyToExplore />
-      <ContactSection />
+
+      {/* Final CTA + contact, one continuous block */}
+      <FinalContact />
       <Footer />
     </main>
   );

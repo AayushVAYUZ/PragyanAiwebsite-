@@ -210,7 +210,7 @@ export default function CaseStudies() {
 
   return (
     <section
-      id="case-studies"
+      id="case-study-details"
       ref={sectionRef}
       aria-labelledby="case-studies-heading"
       data-motion="off"

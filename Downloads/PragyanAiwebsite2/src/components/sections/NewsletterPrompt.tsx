@@ -1,7 +1,7 @@
 import { NEWSLETTER } from "@/content/navigation";
 
 /**
- * The newsletter proposition, shared word for word by the footer and the Insights section.
+ * The newsletter proposition. It appears once, in the Insights section.
  * No newsletter backend exists, so the field is the footer's visual echo: not a form, no
  * input or button, nothing focusable, and hidden from assistive tech.
  * TODO: wire to a newsletter provider, then make this a real form.

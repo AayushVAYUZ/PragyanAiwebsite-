@@ -12,8 +12,9 @@ import {
 } from "@/lib/contactValidation";
 
 /**
- * The contact form (#contact), directly after "What needs to work better?". Every CTA on the
- * page that asks for a conversation lands here, most with an area of interest pre-selected.
+ * The contact form (#contact-form): the second half of the merged final block (#contact, see
+ * FinalContact), directly under "What needs to work better?". Every contact CTA on the page
+ * lands on this block, some with an area of interest pre-selected.
  */
 
 type Status =
@@ -106,11 +107,7 @@ export default function ContactSection() {
   const address = CONTACT_DETAILS.address.filter(Boolean);
 
   return (
-    <section
-      id="contact"
-      aria-labelledby="contact-heading"
-      className="relative isolate px-[var(--gutter-x)] pt-24 pb-28 lg:pt-28 lg:pb-36"
-    >
+    <div id="contact-form" className="relative isolate px-[var(--gutter-x)] pt-10 pb-28 lg:pt-12 lg:pb-36">
       <div className="mx-auto grid w-full max-w-[1152px] grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
         {/* Invitation and direct details */}
         <div className="flex flex-col lg:col-span-5">
@@ -309,7 +306,7 @@ export default function ContactSection() {
           </p>
         </form>
       </div>
-    </section>
+    </div>
   );
 }
 

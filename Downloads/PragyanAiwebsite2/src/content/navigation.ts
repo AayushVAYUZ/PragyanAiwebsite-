@@ -39,7 +39,7 @@ export const FOOTER = {
 };
 
 /**
- * One newsletter proposition, used word for word in the footer and the Insights section.
+ * The newsletter proposition, shown once, in the Insights section.
  * No publishing cadence is promised: none has been established.
  */
 export const NEWSLETTER = {

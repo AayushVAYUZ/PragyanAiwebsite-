@@ -14,10 +14,11 @@ gsap.registerPlugin(ScrollTrigger);
  * horizon arc, the closing question on the left seven columns and the brand tagline,
  * right-aligned with a cyan/violet underline, on the right five.
  *
- * The contact form (#contact) follows directly, and the "Talk to Pragyan ai" pill leads to it.
+ * The opening half of the merged final block (#contact, see FinalContact): the closing question,
+ * then the contact form directly below it. The "Talk to Pragyan ai" pill leads to the form.
  */
 export default function ReadyToExplore() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -51,11 +52,10 @@ export default function ReadyToExplore() {
   }, []);
 
   return (
-    <section
+    <div
       id="ready-to-explore"
       ref={sectionRef}
-      aria-labelledby="ready-to-explore-heading"
-      className="relative isolate min-h-[max(calc(var(--svh)*100),52rem)] overflow-hidden"
+      className="relative isolate min-h-[36rem] overflow-hidden lg:min-h-[42rem]"
     >
       {/* Decorative horizon: full-bleed, scoped to this section */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -71,7 +71,7 @@ export default function ReadyToExplore() {
         <div className="explore-scrims absolute inset-0" />
       </div>
 
-      <div className="relative z-10 flex min-h-[inherit] w-full flex-col justify-center px-[var(--gutter-x)] pt-28 pb-24">
+      <div className="relative z-10 flex min-h-[inherit] w-full flex-col justify-center px-[var(--gutter-x)] pt-28 pb-12">
         <div className="mx-auto grid w-full max-w-[1152px] grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Closing question */}
           <div className="flex flex-col items-start lg:col-span-7">
@@ -90,8 +90,8 @@ export default function ReadyToExplore() {
             {/* The reveal animates the wrapper, so its inline transform never cancels the pill's hover lift. */}
             <div data-explore-copy>
               <a
-                href="#contact"
-                onClick={(event) => navigateToHash(event, "#contact")}
+                href="#contact-form"
+                onClick={(event) => navigateToHash(event, "#contact-form")}
                 className="explore-pill inline-flex items-center gap-3 rounded-full px-6 py-3 text-xs font-medium tracking-widest whitespace-nowrap uppercase"
               >
                 <span>{keepAiLowercase("Talk to Pragyan ai")}</span>
@@ -113,6 +113,6 @@ export default function ReadyToExplore() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
