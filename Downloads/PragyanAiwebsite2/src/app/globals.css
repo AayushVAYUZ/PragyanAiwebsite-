@@ -685,6 +685,50 @@ html[data-scene-intense] .header-intensity {
     background-color: rgba(14, 20, 42, 0.75);
   }
 
+  /* The stage cards double as the tabs for the offer panel below them. */
+  .prism-stage-tab {
+    cursor: pointer;
+    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s ease;
+  }
+
+  .prism-stage-tab:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+
+  .prism-stage-tab.is-selected {
+    border-color: rgba(38, 198, 255, 0.55);
+    box-shadow: 0 0 26px -6px rgba(139, 45, 255, 0.45), inset 0 0 18px rgba(38, 198, 255, 0.08);
+  }
+
+  .engagement-stage-chip {
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .engagement-stage-chip:hover {
+    border-color: color-mix(in srgb, var(--neon-cyan) 70%, transparent);
+    background: rgba(38, 198, 255, 0.14);
+  }
+
+  .engagement-stage-chip:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+  }
+
+  /* The engagement model a stage belongs to. */
+  .prism-engagement-chip {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--neon-cyan) 35%, transparent);
+    border-radius: 999px;
+    background: rgba(38, 198, 255, 0.07);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
   .prism-ring {
     animation: prism-spin 60s linear infinite;
   }
@@ -3957,27 +4001,7 @@ html[data-scene-intense] .header-intensity {
 }
 
 @layer components {
-  /* PRISM offers: the phase list reuses the service card; the panel is the same glass. */
-  .prism-offer-tab {
-    cursor: pointer;
-  }
-
-  .prism-offer-tab:focus-visible {
-    outline: 2px solid var(--neon-cyan);
-    outline-offset: 2px;
-  }
-
-  .prism-offer-arrow {
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .prism-offer-tab.is-active .prism-offer-arrow {
-    opacity: 1;
-    transform: none;
-  }
-
+  /* PRISM offer panel (under the stage tabs in the PRISM section): the same glass as the cards. */
   .prism-offer-panel {
     background: linear-gradient(180deg, rgba(14, 20, 42, 0.62) 0%, rgba(7, 11, 24, 0.48) 100%);
     -webkit-backdrop-filter: blur(14px);

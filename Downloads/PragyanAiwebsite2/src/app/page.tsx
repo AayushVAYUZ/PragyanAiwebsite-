@@ -12,7 +12,6 @@ import WhyPragyan from "@/components/sections/WhyPragyan";
 import PersonaRouting from "@/components/sections/PersonaRouting";
 import EngagementModels from "@/components/sections/EngagementModels";
 import PrismApproach from "@/components/sections/PrismApproach";
-import PrismOffers from "@/components/sections/PrismOffers";
 import Capabilities from "@/components/sections/Capabilities";
 import AiDroplets from "@/components/sections/AiDroplets";
 import SovereignAI from "@/components/sections/SovereignAI";
@@ -65,7 +64,6 @@ export default function Home() {
       {/* How to engage, then the method and the offers it packages */}
       <EngagementModels />
       <PrismApproach />
-      <PrismOffers />
 
       <Capabilities />
 

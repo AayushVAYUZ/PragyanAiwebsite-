@@ -1,51 +1,21 @@
 "use client";
 
-import { useEffect, useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navigateToHash } from "@/lib/navigation";
+import { onPrismStageRequest } from "@/lib/prismLink";
+import { PRISM_INTRO, PRISM_STAGES, VISIBLE_DELIVERABLES } from "@/content/prism";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Frame 07 — PRISM / Our Approach. Copy from the approved Stitch reference and DESIGN.md §22. */
-const STAGES = [
-  {
-    number: "01",
-    name: "Orient",
-    statement: "Understand the problem.",
-    description: "Understand the business, existing bottlenecks, and core strategic intent.",
-    tone: "cyan",
-  },
-  {
-    number: "02",
-    name: "Disperse",
-    statement: "Explore the possibilities.",
-    description: "Explore possibilities across autonomous cognition, generative workflows, and intelligent depth.",
-    tone: "violet",
-  },
-  {
-    number: "03",
-    name: "Spectrum",
-    statement: "Find what matters.",
-    description: "Evaluate what matters. Filter noise, assess feasibility, and measure tangible enterprise return.",
-    tone: "focus",
-  },
-  {
-    number: "04",
-    name: "Refract",
-    statement: "Design the right solution.",
-    description: "Design the right solution architecture, governance frameworks, and precision data pipelines.",
-    tone: "violet",
-  },
-  {
-    number: "05",
-    name: "Emerge",
-    statement: "Deliver and improve.",
-    description: "Continuous feedback loops amplifying real-world operational impact.",
-    tone: "cyan",
-  },
-] as const;
+/**
+ * Frame 07 — PRISM / Our Approach, unified: the methodology and the offers it packages in one
+ * section. The artwork, beams and stage cards are unchanged; the stage cards are now the tabs
+ * that choose which offer the panel below shows. Content lives in `@/content/prism`.
+ */
+const STAGES = PRISM_STAGES;
 
 /**
  * Where the painted beam meets the glass, in the artwork's own pixels (1680 × 936). A
@@ -87,9 +57,55 @@ const REVEALED_NAME = "brightness(1.12) drop-shadow(0 0 6px rgba(139,45,255,0.4)
 
 export default function PrismApproach() {
   const sectionRef = useRef<HTMLElement>(null);
+  const visualRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [selected, setSelected] = useState(0);
+  const [showAll, setShowAll] = useState(false);
+
+  const choose = (index: number, focus = false) => {
+    setSelected(index);
+    setShowAll(false);
+    if (focus) tabRefs.current[index]?.focus();
+  };
+
+  /** A click on a stage: if the offer panel is below the fold, bring its top into view. */
+  const chooseAndReveal = (index: number) => {
+    choose(index);
+    const panel = document.getElementById("prism-offer");
+    if (!panel) return;
+    const { top } = panel.getBoundingClientRect();
+    if (top > window.innerHeight - 160) {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollBy({ top: top - window.innerHeight * 0.3, behavior: reducedMotion ? "auto" : "smooth" });
+    }
+  };
+
+  // Engagement-model chips elsewhere on the page open a stage directly.
+  useEffect(
+    () =>
+      onPrismStageRequest((index) => {
+        if (index < 0 || index >= STAGES.length) return;
+        setSelected(index);
+        setShowAll(false);
+      }),
+    [],
+  );
+
+  const onTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const step: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+    if (event.key in step) {
+      event.preventDefault();
+      choose((selected + step[event.key] + STAGES.length) % STAGES.length, true);
+    } else if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      choose(event.key === "Home" ? 0 : STAGES.length - 1, true);
+    }
+  };
 
   useEffect(() => {
-    const section = sectionRef.current;
+    // Everything below is scoped to the artwork block, so the offer panel under it never
+    // changes the artwork's crop, the beam aiming or the scroll positions of the reveal.
+    const section = visualRef.current;
     if (!section) return;
 
     const beamLayer = section.querySelector<HTMLElement>("[data-prism-beam-layer]");
@@ -366,12 +382,8 @@ export default function PrismApproach() {
   }, []);
 
   return (
-    <section
-      id="prism"
-      ref={sectionRef}
-      aria-labelledby="prism-heading"
-      className="relative isolate min-h-[clamp(53rem,calc(var(--svh)*100),55rem)] overflow-hidden"
-    >
+    <section id="prism" ref={sectionRef} aria-labelledby="prism-heading" className="relative">
+      <div ref={visualRef} className="relative isolate min-h-[clamp(53rem,calc(var(--svh)*100),55rem)] overflow-hidden">
       {/* Crystalline prism: the dominant visual (subtle parallax) */}
       <div data-prism-parallax className="absolute inset-x-0 -top-[3%] -bottom-[3%]">
         <Image
@@ -533,21 +545,19 @@ export default function PrismApproach() {
         <div className="col-span-12 flex flex-col justify-center gap-5 lg:col-span-4 lg:pr-4">
           <div data-prism-copy className="flex flex-col gap-3">
             <h2 id="prism-heading" className="text-4xl leading-[1.12] font-light tracking-[0.12em] xl:text-5xl">
-              <span className="prism-title-sweep font-normal">PRISM</span>
+              <span className="prism-title-sweep font-normal">{PRISM_INTRO.title}</span>
             </h2>
             <p className="text-xs font-semibold tracking-[0.2em] text-[var(--text-soft)] uppercase">
-              Pragyan Responsible Intelligence &amp; Solution Methodology
+              {PRISM_INTRO.subtitle}
             </p>
           </div>
 
           <p data-prism-copy className="max-w-[420px] text-base leading-relaxed font-light text-[var(--text-soft)]">
-            Our approach to turning ai possibilities into measurable business value.
+            {PRISM_INTRO.lead}
           </p>
 
           <p data-prism-copy className="max-w-[420px] text-sm leading-relaxed text-[var(--text-secondary)]">
-            Enterprise ai cannot remain an abstract experiment. PRISM brings structure to the journey — from
-            understanding the business and exploring possibilities to identifying the right opportunities, designing
-            the solution, and delivering measurable impact.
+            {PRISM_INTRO.body}
           </p>
 
           <p
@@ -560,8 +570,8 @@ export default function PrismApproach() {
 
           <div data-prism-copy className="pt-1">
             <a
-              href="#prism-offers"
-              onClick={(event: MouseEvent<HTMLAnchorElement>) => navigateToHash(event, "#prism-offers")}
+              href="#prism-offer"
+              onClick={(event: MouseEvent<HTMLAnchorElement>) => navigateToHash(event, "#prism-offer")}
               className="group inline-flex items-center gap-3 rounded-full border border-[var(--border-active)] bg-[#0A0F23]/80 px-6 py-3 text-xs font-medium tracking-[0.16em] text-[var(--text-primary)] transition-[border-color,background-color,box-shadow] duration-300 hover:border-[var(--electric-violet)] hover:bg-[var(--electric-violet)]/15 hover:shadow-[0_0_24px_-4px_rgba(139,45,255,0.4)]"
             >
               <span>Explore PRISM</span>
@@ -578,71 +588,141 @@ export default function PrismApproach() {
           <div className="absolute h-[460px] w-[460px] rounded-full border border-[var(--electric-violet)]/10 opacity-20" />
         </div>
 
-        {/* The five methodology stages, lit one by one by the prism's light */}
+        {/* The five methodology stages, lit one by one by the prism's light. They are also the
+            tabs that choose which offer the panel below shows. */}
         <ol
           id="prism-stages"
-          aria-label="PRISM methodology stages"
+          role="tablist"
+          aria-label="PRISM stages"
+          aria-orientation="vertical"
           className="col-span-12 flex flex-col justify-center gap-3 lg:col-span-4 lg:pl-2"
         >
-          {STAGES.map((stage) => (
-            <li key={stage.number} data-prism-stage className="relative flex items-center">
-              <span
-                aria-hidden="true"
-                className={`mr-2 -ml-8 hidden h-px w-8 bg-gradient-to-r from-transparent lg:block ${
-                  stage.tone === "violet"
-                    ? "to-[var(--electric-violet)]/40"
-                    : stage.tone === "focus"
-                      ? "to-[var(--neon-cyan)]/70"
-                      : "to-[var(--neon-cyan)]/40"
-                }`}
-              />
-              <div
-                className={`prism-stage flex-1 rounded-xl p-4 ${
-                  stage.tone === "focus"
-                    ? "border border-[var(--electric-violet)]/40 bg-[var(--midnight-blue)]/60"
-                    : "border border-[rgba(160,175,220,0.15)] bg-[var(--void-black)]/40"
-                }`}
-              >
-                <div className="flex items-center gap-3">
+          {STAGES.map((stage, index) => {
+            const isSelected = index === selected;
+            return (
+              <li key={stage.number} role="presentation" data-prism-stage className="relative flex items-center">
+                <span
+                  aria-hidden="true"
+                  className={`mr-2 -ml-8 hidden h-px w-8 bg-gradient-to-r from-transparent lg:block ${
+                    stage.tone === "violet"
+                      ? "to-[var(--electric-violet)]/40"
+                      : stage.tone === "focus"
+                        ? "to-[var(--neon-cyan)]/70"
+                        : "to-[var(--neon-cyan)]/40"
+                  }`}
+                />
+                <button
+                  ref={(el) => void (tabRefs.current[index] = el)}
+                  id={`prism-tab-${stage.number}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  aria-controls="prism-offer"
+                  tabIndex={isSelected ? 0 : -1}
+                  onClick={() => chooseAndReveal(index)}
+                  onKeyDown={onTabKeyDown}
+                  className={`prism-stage prism-stage-tab flex-1 rounded-xl p-4 text-left ${
+                    stage.tone === "focus"
+                      ? "border border-[var(--electric-violet)]/40 bg-[var(--midnight-blue)]/60"
+                      : "border border-[rgba(160,175,220,0.15)] bg-[var(--void-black)]/40"
+                  }${isSelected ? " is-selected" : ""}`}
+                >
+                  <span className="flex items-center gap-3">
+                    <span
+                      data-prism-number
+                      className={`font-[family-name:var(--font-mono)] text-xs font-medium tracking-wider ${
+                        stage.tone === "violet"
+                          ? "text-[var(--electric-violet)]"
+                          : stage.tone === "focus"
+                            ? "text-[var(--text-soft)]"
+                            : "text-[var(--neon-cyan)]"
+                      }`}
+                    >
+                      {stage.number}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={`h-3 w-1 rounded-full ${
+                        stage.tone === "violet"
+                          ? "bg-[var(--electric-violet)]/60"
+                          : stage.tone === "focus"
+                            ? "bg-gradient-to-b from-[var(--electric-violet)] to-[var(--neon-cyan)]"
+                            : "bg-[var(--neon-cyan)]/60"
+                      }`}
+                    />
+                    <span data-prism-name className="text-xs font-semibold tracking-[0.2em] text-[var(--text-primary)] uppercase">
+                      {stage.name}
+                    </span>
+                  </span>
+                  <span className="mt-2 block pl-7 text-[13px] leading-snug font-semibold text-[var(--text-primary)]">{stage.statement}</span>
                   <span
-                    data-prism-number
-                    className={`font-[family-name:var(--font-mono)] text-xs font-medium tracking-wider ${
-                      stage.tone === "violet"
-                        ? "text-[var(--electric-violet)]"
-                        : stage.tone === "focus"
-                          ? "text-[var(--text-soft)]"
-                          : "text-[var(--neon-cyan)]"
+                    className={`mt-1 block pl-7 text-xs leading-relaxed ${
+                      stage.tone === "focus" ? "text-[var(--text-soft)]" : "text-[var(--text-secondary)]"
                     }`}
                   >
-                    {stage.number}
+                    {stage.description}
                   </span>
-                  <span
-                    aria-hidden="true"
-                    className={`h-3 w-1 rounded-full ${
-                      stage.tone === "violet"
-                        ? "bg-[var(--electric-violet)]/60"
-                        : stage.tone === "focus"
-                          ? "bg-gradient-to-b from-[var(--electric-violet)] to-[var(--neon-cyan)]"
-                          : "bg-[var(--neon-cyan)]/60"
-                    }`}
-                  />
-                  <h3 data-prism-name className="text-xs font-semibold tracking-[0.2em] text-[var(--text-primary)] uppercase">
-                    {stage.name}
-                  </h3>
-                </div>
-                <p className="mt-2 pl-7 text-[13px] leading-snug font-semibold text-[var(--text-primary)]">{stage.statement}</p>
-                <p
-                  className={`mt-1 pl-7 text-xs leading-relaxed ${
-                    stage.tone === "focus" ? "text-[var(--text-soft)]" : "text-[var(--text-secondary)]"
-                  }`}
-                >
-                  {stage.description}
-                </p>
-              </div>
-            </li>
-          ))}
+                </button>
+              </li>
+            );
+          })}
         </ol>
       </div>
+      </div>
+
+      <PrismOfferPanel stageIndex={selected} showAll={showAll} onShowAll={() => setShowAll(true)} />
     </section>
+  );
+}
+
+/** The selected stage as an offer: stage one-liner, offer, outcome, deliverables, engagement. */
+function PrismOfferPanel({
+  stageIndex,
+  showAll,
+  onShowAll,
+}: {
+  stageIndex: number;
+  showAll: boolean;
+  onShowAll: () => void;
+}) {
+  const stage = STAGES[stageIndex];
+  const hidden = stage.deliverables.length - VISIBLE_DELIVERABLES;
+  const deliverables = showAll ? stage.deliverables : stage.deliverables.slice(0, VISIBLE_DELIVERABLES);
+
+  return (
+    <div className="relative z-10 px-[var(--gutter-x)] pb-20 lg:pb-24">
+      <div
+        id="prism-offer"
+        role="tabpanel"
+        aria-labelledby={`prism-tab-${stage.number}`}
+        className="prism-offer-panel mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 rounded-2xl p-6 sm:p-8 lg:grid-cols-12 lg:gap-10"
+      >
+        <div key={stage.number} className="prism-offer-swap is-selected flex flex-col lg:col-span-5">
+          <p className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.24em] text-[var(--neon-cyan)]/70 uppercase">
+            {stage.number} · {stage.name} — {stage.statement}
+          </p>
+          <h3 className="mt-2 text-2xl leading-snug font-light tracking-tight text-[var(--text-primary)] sm:text-3xl">{stage.offer}</h3>
+          <p className="service-label mt-6">Outcome</p>
+          <p className="mt-1 max-w-xl text-base leading-relaxed font-light text-[var(--text-soft)]">{stage.outcome}</p>
+          <p className="prism-engagement-chip mt-6 self-start">Engagement: {stage.engagement.join(" → ")}</p>
+        </div>
+
+        <div key={`${stage.number}-deliverables`} className="prism-offer-swap is-selected lg:col-span-7">
+          <p className="service-label">Key deliverables</p>
+          <ul className="proof-chips" aria-label={`${stage.offer} deliverables`}>
+            {deliverables.map((item) => (
+              <li key={item} className="proof-chip prism-offer-chip">
+                {item}
+              </li>
+            ))}
+          </ul>
+          {!showAll && hidden > 0 && (
+            <button type="button" onClick={onShowAll} className="service-link mt-4" aria-expanded={false}>
+              View all deliverables ({stage.deliverables.length}) <span aria-hidden="true">→</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

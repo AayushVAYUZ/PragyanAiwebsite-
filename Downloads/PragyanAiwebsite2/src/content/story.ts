@@ -56,7 +56,8 @@ export const WHY_PRAGYAN = {
     {
       number: "03",
       title: "From opportunity to production",
-      text: "Move from identifying the right opportunity through prioritisation, solution design, prototype, deployment and continuous improvement.",
+      text: "PRISM takes you from opportunity to production — one method, four ways to engage.",
+      link: { label: "See how PRISM works", href: "#prism" },
     },
     {
       number: "04",
@@ -64,7 +65,7 @@ export const WHY_PRAGYAN = {
       equation: "Human Intelligence + Artificial Intelligence = Augmented Intelligence",
       text: "The goal is not to replace how people work. It is to expand what people and enterprises can achieve.",
     },
-  ] as { number: string; title: string; text: string; equation?: string }[],
+  ] as { number: string; title: string; text: string; equation?: string; link?: { label: string; href: `#${string}` } }[],
 };
 
 /* ---------------------------------------------------------------- */
@@ -78,13 +79,15 @@ export interface EngagementModel {
   summary: string;
   includes: string[];
   bestFor: string;
-  cta: string;
+  /** PRISM stages this model covers; each chip opens that stage's tab (0-based index). */
+  stages: { label: string; index: number }[];
 }
 
 export const ENGAGEMENT = {
   label: "Engagement models",
   heading: "Start where the business needs it.",
-  lead: "Not every enterprise starts from the same point. Pragyan ai can engage from identifying the opportunity through building, deploying and improving the solution.",
+  lead: "Not every enterprise starts from the same point. Pragyan ai engages at any stage — from identifying the opportunity to building, deploying and scaling the solution.",
+  cta: { label: "Find your starting point", interest: "ai Strategy & Transformation" as const },
   models: [
     {
       number: "01",
@@ -92,7 +95,7 @@ export const ENGAGEMENT = {
       summary: "Identify where ai can create meaningful business value.",
       includes: ["Business problem discovery", "Opportunity identification", "Data and process understanding", "Priority opportunities"],
       bestFor: "Enterprises starting their ai journey.",
-      cta: "Explore",
+      stages: [{ label: "Orient", index: 0 }, { label: "Disperse", index: 1 }],
     },
     {
       number: "02",
@@ -100,7 +103,7 @@ export const ENGAGEMENT = {
       summary: "Turn one high-value opportunity into a working proof of concept.",
       includes: ["Use-case definition", "Data assessment", "Solution design", "Working prototype", "Business validation"],
       bestFor: "Enterprises that need evidence before scaling.",
-      cta: "Prove",
+      stages: [{ label: "Spectrum", index: 2 }, { label: "Refract", index: 3 }],
     },
     {
       number: "03",
@@ -108,7 +111,7 @@ export const ENGAGEMENT = {
       summary: "Take a validated solution into production.",
       includes: ["Solution architecture", "Integration", "Engineering", "Deployment", "Production readiness"],
       bestFor: "Enterprises ready to operationalise ai.",
-      cta: "Build",
+      stages: [{ label: "Emerge", index: 4 }],
     },
     {
       number: "04",
@@ -116,118 +119,9 @@ export const ENGAGEMENT = {
       summary: "Extend intelligence across existing workflows, systems and business functions.",
       includes: ["Continuous improvement", "Additional use cases", "Embedded intelligence", "Workflow expansion", "Operational measurement"],
       bestFor: "Enterprises moving from individual use cases to broader adoption.",
-      cta: "Scale",
+      stages: [{ label: "Emerge — continuous improvement", index: 4 }],
     },
   ] as EngagementModel[],
-};
-
-/* ---------------------------------------------------------------- */
-/* PRISM packaged offers: what happens when we start?               */
-/* Engagement offers derived from the methodology: no prices,       */
-/* durations or contractual terms.                                  */
-/* ---------------------------------------------------------------- */
-
-export interface PrismOffer {
-  number: string;
-  phase: string;
-  offer: string;
-  outcome: string;
-  deliverables: string[];
-}
-
-export const PRISM_OFFERS = {
-  label: "PRISM",
-  heading: "From methodology to action.",
-  lead: "PRISM gives enterprises a structured way to move from ai possibility to practical business value.",
-  cta: "Explore PRISM",
-  offers: [
-    {
-      number: "01",
-      phase: "Orient",
-      offer: "ai Opportunity Assessment",
-      outcome: "Understand the business, priorities, current processes, systems, data and success measures.",
-      deliverables: [
-        "Business goals",
-        "Key challenges",
-        "Stakeholder inputs",
-        "Success measures",
-        "Process map",
-        "System overview",
-        "Data sources",
-        "Current gaps",
-      ],
-    },
-    {
-      number: "02",
-      phase: "Disperse",
-      offer: "ai Opportunity & Readiness Sprint",
-      outcome: "Identify where ai can help and determine whether the enterprise is ready to move forward.",
-      deliverables: [
-        "ai opportunities",
-        "Priority use cases",
-        "Process improvement areas",
-        "Data sources",
-        "Knowledge sources",
-        "Data gaps",
-        "Technology readiness",
-        "Security requirements",
-        "People and skill gaps",
-      ],
-    },
-    {
-      number: "03",
-      phase: "Spectrum",
-      offer: "ai Value & Prioritisation Blueprint",
-      outcome: "Determine which opportunities should move forward first.",
-      deliverables: [
-        "Opportunity list",
-        "Use-case list",
-        "Business impact",
-        "Priority areas",
-        "Business case",
-        "Value assessment",
-        "Investment roadmap",
-      ],
-    },
-    {
-      number: "04",
-      phase: "Refract",
-      offer: "ai Solution Architecture",
-      outcome: "Translate the selected opportunity into a practical solution design.",
-      deliverables: [
-        "Solution requirements",
-        "User needs",
-        "Process changes",
-        "ai requirements",
-        "Solution design",
-        "System integration plan",
-        "Data flow",
-        "Solution architecture",
-        "Technology comparison",
-        "Build vs Buy assessment",
-      ],
-    },
-    {
-      number: "05",
-      phase: "Emerge",
-      offer: "ai Prototype to Production",
-      outcome: "Build, deploy, measure and improve the selected solution.",
-      deliverables: [
-        "Working prototype",
-        "User feedback",
-        "Results & KPIs",
-        "Go / No-Go decision",
-        "Working solution",
-        "System integration",
-        "Production deployment",
-        "User training",
-        "Monitoring",
-        "Support",
-        "Security",
-        "Improvement roadmap",
-      ],
-    },
-  ] as PrismOffer[],
 };
 
 /* ---------------------------------------------------------------- */

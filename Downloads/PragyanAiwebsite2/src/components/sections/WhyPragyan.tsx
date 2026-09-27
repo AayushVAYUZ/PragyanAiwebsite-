@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { WHY_PRAGYAN } from "@/content/story";
 import { useReveal, useScrollIndex } from "@/lib/storyMotion";
+import { navigateToHash } from "@/lib/navigation";
 import { StoryEyebrow, StoryHeading } from "./StoryParts";
 
 /**
@@ -56,10 +57,19 @@ export default function WhyPragyan() {
               <p className="relative max-w-lg text-sm leading-relaxed font-light text-[var(--text-secondary)] sm:text-base">
                 {pillar.text}
               </p>
+              {pillar.link && <PillarLink label={pillar.link.label} href={pillar.link.href} />}
             </li>
           ))}
         </ol>
       </div>
     </section>
+  );
+}
+
+function PillarLink({ label, href }: { label: string; href: `#${string}` }) {
+  return (
+    <a href={href} onClick={(event) => navigateToHash(event, href)} className="service-link relative self-start">
+      {label} <span aria-hidden="true">→</span>
+    </a>
   );
 }

@@ -4,11 +4,13 @@ import { useCallback, useRef, useState } from "react";
 import { ENGAGEMENT } from "@/content/story";
 import { requestContact } from "@/lib/contact";
 import { useReveal, useScrollIndex } from "@/lib/storyMotion";
+import { showPrismStage } from "@/lib/prismLink";
 import { StoryEyebrow, StoryHeading, StoryPill } from "./StoryParts";
 
 /**
- * Engagement models: how can we work together? Four proposed starting points, from finding
- * the opportunity to scaling it. Each CTA opens the contact form with that model attached.
+ * Engagement models: how can we work together? Four proposed starting points, each mapped to
+ * the PRISM stages it covers; a stage chip opens that stage in the PRISM section above. One
+ * section-level CTA leads to the contact form.
  */
 export default function EngagementModels() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,7 +21,7 @@ export default function EngagementModels() {
 
   return (
     <section
-      id="engage"
+      id="engagement"
       ref={sectionRef}
       aria-labelledby="engage-heading"
       className="relative px-[var(--gutter-x)] py-20 lg:py-24"
@@ -68,18 +70,32 @@ export default function EngagementModels() {
               <p className="service-label relative mt-5">Best for</p>
               <p className="relative mt-1 text-sm leading-relaxed text-[var(--text-soft)]">{model.bestFor}</p>
 
-              <div className="relative mt-auto pt-6">
-                <StoryPill
-                  href="#contact"
-                  onClick={(event) => requestContact(event, undefined, `Engagement model: ${model.name}`)}
-                  label={`${model.cta}: talk to us about the ${model.name} engagement`}
-                >
-                  {model.cta}
-                </StoryPill>
-              </div>
+              <p className="service-label relative mt-5">PRISM stages</p>
+              <ul className="relative mt-2 flex flex-wrap gap-2" aria-label={`PRISM stages for ${model.name}`}>
+                {model.stages.map((stage) => (
+                  <li key={stage.label}>
+                    <a
+                      href="#prism"
+                      onClick={(event) => showPrismStage(event, stage.index)}
+                      className="prism-engagement-chip engagement-stage-chip inline-block"
+                    >
+                      {stage.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
         </ol>
+
+        <div data-reveal className="mt-10">
+          <StoryPill
+            href="#contact"
+            onClick={(event) => requestContact(event, ENGAGEMENT.cta.interest)}
+          >
+            {ENGAGEMENT.cta.label}
+          </StoryPill>
+        </div>
       </div>
     </section>
   );
