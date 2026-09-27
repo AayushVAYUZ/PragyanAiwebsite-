@@ -299,6 +299,21 @@ export default function CaseStudies() {
                     ))}
                   </ul>
 
+                  {study.scale && (
+                    <div className="proof-scale">
+                      <p className="proof-brief-label">Scale of delivery</p>
+                      <ul className="proof-scale-row" aria-label="Scale of delivery">
+                        {study.scale.items.map((item) => (
+                          <li key={item.label} className="proof-scale-item">
+                            <span className="proof-stat-value">{item.value}</span>
+                            <span className="proof-stat-text">{item.label}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="proof-brief-text proof-scale-context">{study.scale.context}</p>
+                    </div>
+                  )}
+
                   {/* No detail page is published yet, so the CTA leads to the contact form. */}
                   <a
                     ref={(el) => void (els.current.cta = el)}

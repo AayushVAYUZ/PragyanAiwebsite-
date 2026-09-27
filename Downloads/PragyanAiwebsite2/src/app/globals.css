@@ -1333,6 +1333,23 @@ html[data-scene-intense] .header-intensity {
     color: var(--text-muted);
   }
 
+  .proof-scale-row {
+    margin-top: 0.4rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .proof-scale-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .proof-scale-context {
+    margin-top: 0.5rem;
+  }
+
   /* No detail page is published yet: the CTA leads to the contact form. */
   .proof-cta {
     display: inline-flex;
@@ -3964,6 +3981,24 @@ html[data-scene-intense] .header-intensity {
     border-top: 1px solid var(--border-subtle);
   }
 
+  .stakes-source {
+    text-decoration: underline;
+    text-decoration-color: rgba(160, 175, 220, 0.3);
+    text-underline-offset: 3px;
+    transition: color 0.3s ease, text-decoration-color 0.3s ease;
+  }
+
+  .stakes-source:hover {
+    color: var(--text-secondary);
+    text-decoration-color: var(--neon-cyan);
+  }
+
+  .stakes-source:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   .stakes-closing-rule {
     background: linear-gradient(90deg, var(--neon-cyan), var(--electric-violet));
   }
@@ -4011,7 +4046,7 @@ html[data-scene-intense] .header-intensity {
 }
 
 @layer components {
-  /* Impact strip: one lead statement, then four; hairlines instead of cards. */
+  /* Impact strip: one lead statement, then the rest; hairlines instead of cards. */
   .impact-item {
     padding: 1.75rem 0;
     border-top: 1px solid var(--border-subtle);
@@ -4031,13 +4066,6 @@ html[data-scene-intense] .header-intensity {
     font-size: clamp(2.75rem, 7vw, 5.5rem);
   }
 
-  .trust-cell {
-    background: rgba(5, 7, 17, 0.88);
-  }
-
-  .trust-figure {
-    font-size: clamp(2.25rem, 4vw, 3.25rem);
-  }
 }
 
 @layer components {

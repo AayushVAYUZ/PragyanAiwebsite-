@@ -2,8 +2,8 @@
  * The business story between the opening and the proof: why enterprise ai is hard, why
  * Pragyan ai, how to engage, what PRISM delivers, the outcomes and the trust behind them.
  *
- * Copy is the approved P1 story brief, with "ai" in the brand's lowercase. Figures come from
- * the Pragyan ai deck as quoted in that brief; the deck itself is not in the repository.
+ * Copy is the approved P1 story brief, with "ai" in the brand's lowercase. The market figures
+ * are cited to their publisher; outcome figures come from the case studies.
  */
 
 /* ---------------------------------------------------------------- */
@@ -21,14 +21,28 @@ export const PROBLEM = {
     "The right use cases are not always obvious.",
     "And moving from prototype to production requires more than a model.",
   ],
-  // TODO: cite the primary source for each figure as it appears in the deck.
+  // The earlier 92% / 58% / ₹91.5T figures had no traceable source, so they were replaced.
+  // Each figure below was checked against its linked article.
+  // TODO: replace each source URL with the primary report URL.
   evidence: [
-    { value: "92%", label: "Enterprise ai scaling challenge", detail: "of Indian enterprises still struggle to scale ai." },
-    { value: "58%", label: "Digitization readiness challenge", detail: "say low enterprise digitization is holding back ai adoption." },
     {
-      value: "₹91.5T",
-      label: "Potential economic impact by 2035",
-      detail: "could be added to India's economy by 2035 as ai contributes to economic growth.",
+      value: "4%",
+      detail: "of Indian organisations say their enterprise data is fully ready for ai at scale",
+      source: { publisher: "Dun & Bradstreet India", year: "2026", url: "https://cxotoday.com/research/indian-firms-rush-into-ai-but-96-lack-data-readiness/" },
+    },
+    {
+      value: "44%",
+      detail: "of Indian organisations are still planning or piloting ai",
+      source: { publisher: "Dun & Bradstreet India", year: "2026", url: "https://cxotoday.com/research/indian-firms-rush-into-ai-but-96-lack-data-readiness/" },
+    },
+    {
+      value: "~$967B",
+      detail: "potential ai contribution to India's economy by 2035",
+      source: {
+        publisher: "Parliamentary Standing Committee on Communications & IT",
+        year: "2026",
+        url: "https://southasianherald.com/ai-set-to-add-nearly-1-trillion-to-indias-economy-by-2035-panel-says/",
+      },
     },
   ],
   closing: ["The opportunity is significant.", "The path to value needs to be deliberate."],
@@ -144,38 +158,4 @@ export const IMPACT = {
       source: "Accelerators",
     },
   ],
-};
-
-/* ---------------------------------------------------------------- */
-/* Trust: who / what supports the claim?                            */
-/* ---------------------------------------------------------------- */
-
-export interface TrustQuote {
-  text: string;
-  name: string;
-  role: string;
-  organisation: string;
-}
-
-export interface LeadershipVoice {
-  name: string;
-  role: string;
-  /** Path under /public; omitted until an approved headshot exists. */
-  image?: string;
-}
-
-export const TRUST = {
-  label: "Client proof",
-  heading: "Real work. Real systems. Real outcomes.",
-  // TODO: say which engagement these operating-scale figures come from once confirmed.
-  scale: [
-    { value: "8", label: "Branches" },
-    { value: "24", label: "Practices" },
-    { value: "1,399", label: "Documents" },
-    { value: "12", label: "Weeks to go live" },
-  ],
-  // TODO: client quote, held until the client approves being named and quoted.
-  quote: null as TrustQuote | null,
-  // TODO: leadership voices, held until names and roles are confirmed in approved source material.
-  leadership: [] as LeadershipVoice[],
 };

@@ -3,13 +3,12 @@
 import { useRef } from "react";
 import { PROBLEM } from "@/content/story";
 import { useReveal } from "@/lib/storyMotion";
-import { keepAiLowercase } from "@/lib/brandText";
 import { StoryEyebrow, StoryHeading } from "./StoryParts";
 
 /**
  * Problem / Stakes: why does this matter? The enterprise ai gap on the left, the market
- * evidence as three large editorial figures on the right, then one line that turns the
- * stakes into the reason for a deliberate approach.
+ * evidence as three large editorial figures on the right, each with its source, then one line
+ * that turns the stakes into the reason for a deliberate approach.
  */
 export default function ProblemStakes() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -46,14 +45,17 @@ export default function ProblemStakes() {
             <li
               key={item.value}
               data-reveal
-              className="stakes-evidence grid grid-cols-1 gap-x-8 gap-y-2 py-6 sm:grid-cols-[minmax(0,11rem)_1fr] sm:items-center"
+              className="stakes-evidence grid grid-cols-1 gap-x-8 gap-y-2 py-6 sm:grid-cols-[minmax(0,15rem)_1fr] sm:items-center"
             >
               <p className="story-figure">{item.value}</p>
               <div>
-                <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-[0.24em] text-[var(--neon-cyan)]/70 uppercase">
-                  {keepAiLowercase(item.label)}
+                <p className="text-sm leading-relaxed font-light text-[var(--text-soft)] sm:text-base">{item.detail}</p>
+                <p className="mt-2 text-xs text-[var(--text-muted)]">
+                  Source:{" "}
+                  <a href={item.source.url} target="_blank" rel="noopener noreferrer" className="stakes-source">
+                    {item.source.publisher}, {item.source.year}
+                  </a>
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed font-light text-[var(--text-soft)] sm:text-base">{item.detail}</p>
               </div>
             </li>
           ))}

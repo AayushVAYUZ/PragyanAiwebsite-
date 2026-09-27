@@ -16,6 +16,8 @@ export interface CaseStudy {
   challenge: string;
   solution: string[];
   impact: { value: string; text: string }[];
+  /** How large the delivery was, where the owner has confirmed it. */
+  scale?: { items: { value: string; label: string }[]; context: string };
   cta: string;
   /** Pre-selected in the contact form by the CTA. */
   interest: ContactInterest;
@@ -59,6 +61,17 @@ export const CASE_STUDIES: CaseStudy[] = [
       { value: "100%", text: "real-time operational visibility" },
       { value: "70%", text: "time saved" },
     ],
+    // Owner-confirmed as this engagement's figures (formerly the standalone "Client proof").
+    // TODO: confirm "migrated" is the right verb for the 1,399 documents.
+    scale: {
+      items: [
+        { value: "8", label: "Branches" },
+        { value: "24", label: "Practices" },
+        { value: "1,399", label: "Documents" },
+        { value: "12", label: "Weeks to go live" },
+      ],
+      context: "Delivered across 8 branches and 24 practices — 1,399 documents migrated, live in 12 weeks.",
+    },
     cta: "Get similar results",
     interest: "Agentic ai & Automation",
     // TODO: replace CS02 image. It used to share case-study-02-manufacturing.png with the

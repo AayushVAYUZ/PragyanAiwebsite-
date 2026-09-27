@@ -19,7 +19,6 @@ import CaseStudies from "@/components/sections/CaseStudies";
 import ImpactStrip from "@/components/sections/ImpactStrip";
 import BuiltProducts from "@/components/sections/BuiltProducts";
 import UseCases from "@/components/sections/UseCases";
-import TrustSection from "@/components/sections/TrustSection";
 import HowWeThink from "@/components/sections/HowWeThink";
 import FinalContact from "@/components/sections/FinalContact";
 import { StoryPill } from "@/components/sections/StoryParts";
@@ -80,7 +79,6 @@ export default function Home() {
       <section id="case-studies" aria-label="Proof">
         <ImpactStrip />
         <CaseStudies />
-        <TrustSection />
       </section>
 
       <BuiltProducts />
