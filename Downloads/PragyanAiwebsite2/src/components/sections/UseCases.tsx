@@ -5,7 +5,6 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { INDUSTRIES as ALL_INDUSTRIES, USE_CASES_CLOSING, type IndustryIcon } from "@/content/industries";
-import { requestContact } from "@/lib/contact";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -305,14 +304,6 @@ export default function UseCases() {
 
           <div ref={(el) => void (els.current.closing = el)} className="uc-closing">
             <p className="uc-closing-text">{USE_CASES_CLOSING.text}</p>
-            <a
-              href="#contact"
-              onClick={(event) => requestContact(event, USE_CASES_CLOSING.interest)}
-              className="uc-cta"
-            >
-              <span>{USE_CASES_CLOSING.cta}</span>
-              <span aria-hidden="true">→</span>
-            </a>
           </div>
         </div>
       </div>

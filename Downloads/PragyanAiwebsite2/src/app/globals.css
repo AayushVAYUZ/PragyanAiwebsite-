@@ -1704,6 +1704,12 @@ html[data-scene-intense] .header-intensity {
     gap: clamp(1rem, 3vw, 2.5rem);
   }
 
+  @media (min-width: 1024px) {
+    .built-head-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
   .built-head {
     will-change: transform, opacity;
   }
@@ -1889,35 +1895,6 @@ html[data-scene-intense] .header-intensity {
     transform: translateY(-0.15em);
   }
 
-  /* No product page exists yet: the CTA books a demo through the contact form. */
-  .built-cta {
-    margin-top: auto;
-    padding-top: clamp(0.6rem, 1.4vh, 1rem);
-    display: inline-flex;
-    align-self: flex-start;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    color: var(--text-primary);
-    transition: color 0.3s ease;
-  }
-
-  .built-cta span:last-child {
-    color: var(--tone, var(--neon-cyan));
-    transition: transform 0.3s ease;
-  }
-
-  .built-cta:hover span:last-child {
-    transform: translateX(3px);
-  }
-
-  .built-cta:focus-visible {
-    outline: 2px solid var(--neon-cyan);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
 }
 
 /* ============================================================

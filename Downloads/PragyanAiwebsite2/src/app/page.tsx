@@ -22,6 +22,8 @@ import UseCases from "@/components/sections/UseCases";
 import TrustSection from "@/components/sections/TrustSection";
 import HowWeThink from "@/components/sections/HowWeThink";
 import FinalContact from "@/components/sections/FinalContact";
+import { StoryPill } from "@/components/sections/StoryParts";
+import { requestContact } from "@/lib/contact";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -65,6 +67,13 @@ export default function Home() {
       <div id="signature">
         <AiDroplets />
         <SovereignAI />
+        <div className="px-[var(--gutter-x)] pb-16">
+          <div className="mx-auto w-full max-w-7xl">
+            <StoryPill href="#contact" onClick={(event) => requestContact(event)}>
+              Talk to us about Droplets or Sovereign ai
+            </StoryPill>
+          </div>
+        </div>
       </div>
 
       {/* Proof: outcomes first, then the case studies behind them */}

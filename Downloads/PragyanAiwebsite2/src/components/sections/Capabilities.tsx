@@ -4,11 +4,12 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SERVICES, type Service, type ServiceId } from "@/content/services";
+import { SERVICES, SERVICES_CTA, type Service, type ServiceId } from "@/content/services";
 import { requestContact } from "@/lib/contact";
 import { showCaseStudy } from "@/lib/caseStudyLink";
 import { navigateToHash } from "@/lib/navigation";
 import { keepAiLowercase } from "@/lib/brandText";
+import { StoryPill } from "./StoryParts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -491,19 +492,16 @@ export default function Capabilities() {
                     <ServiceProofLine proof={service.proof} />
                   </div>
                 )}
-                <div className="relative mt-auto pt-4">
-                  <a
-                    href="#contact"
-                    onClick={(event) => requestContact(event, service.interest)}
-                    className="service-link"
-                    aria-label={`Discuss ${service.title}`}
-                  >
-                    Discuss this <span aria-hidden="true">→</span>
-                  </a>
-                </div>
               </li>
             ))}
           </ul>
+
+          {/* One conversation for every service, under the grid. */}
+          <div className="lg:col-span-7 lg:col-start-6">
+            <StoryPill href="#contact" onClick={(event) => requestContact(event)}>
+              {SERVICES_CTA}
+            </StoryPill>
+          </div>
         </div>
       </div>
     </section>

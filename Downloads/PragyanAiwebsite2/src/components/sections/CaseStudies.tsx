@@ -303,7 +303,7 @@ export default function CaseStudies() {
                   <a
                     ref={(el) => void (els.current.cta = el)}
                     href="#contact"
-                    onClick={(event) => requestContact(event, study.interest)}
+                    onClick={(event) => requestContact(event)}
                     className="proof-cta"
                   >
                     <span>{study.cta}</span>

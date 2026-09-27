@@ -30,9 +30,12 @@ export interface Service {
   problem: string;
   deliver: string;
   proof?: ServiceProof;
-  /** Pre-selected in the contact form by "Discuss this". */
+  /** The contact-form interest that matches this service line. */
   interest: ContactInterest;
 }
+
+/** The one section-level contact CTA under the services grid. */
+export const SERVICES_CTA = "Discuss your use case";
 
 export const SERVICES: Service[] = [
   {

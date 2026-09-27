@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { requestContact } from "@/lib/contact";
+import { StoryPill } from "./StoryParts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +28,6 @@ const PRODUCTS = [
     tagline: "ai for Recruitment",
     text: "Built internally to make hiring faster, more consistent and more intelligence-driven.",
     features: ["JD Generation", "Candidate Scoring & Benchmarking", "ai-powered Interview Assessment"],
-    cta: "Explore ReX",
     image: "/images/rex-product-approved.png",
     alt: "Dark-mode recruitment intelligence interface with candidate matching visuals",
     tone: "cyan",
@@ -39,12 +39,14 @@ const PRODUCTS = [
     tagline: "ai for Meetings & Collaboration",
     text: "Built internally to capture conversations, decisions and actions without adding work to the team.",
     features: ["Live Captions & Auto-transcription", "Decision & Action Item Tracking", "Ready-to-send MoM"],
-    cta: "Explore Minuta",
     image: "/images/minuta-product-approved.png",
     alt: "Dark-mode meeting intelligence interface with waveform and transcript panels",
     tone: "violet",
   },
 ] as const;
+
+/** One demo request for both products, in the header row (no product pages exist yet). */
+const PRODUCTS_CTA = { label: "Request a product demo", interest: "Product / accelerator demo" } as const;
 
 /** The tagline is set in uppercase by the design, so "ai" is opted out of the transform —
  * the same treatment the header gives "Ask P.ai". */
@@ -198,6 +200,9 @@ export default function BuiltProducts() {
                 <span className="built-title-accent">put it into real workflows, and use it ourselves.</span>
               </h2>
             </div>
+            <StoryPill href="#contact" onClick={(event) => requestContact(event, PRODUCTS_CTA.interest)}>
+              {PRODUCTS_CTA.label}
+            </StoryPill>
           </header>
 
           <ul className="built-grid" aria-label="Products">
@@ -237,16 +242,6 @@ export default function BuiltProducts() {
                     ))}
                   </ul>
 
-                  {/* No product page exists yet, so the CTA books a demo through the contact form.
-                      TODO: link to the product page once it is published. */}
-                  <a
-                    href="#contact"
-                    onClick={(event) => requestContact(event, "Product / accelerator demo")}
-                    className="built-cta"
-                  >
-                    <span>{product.cta}</span>
-                    <span aria-hidden="true">→</span>
-                  </a>
                 </div>
               </li>
             ))}

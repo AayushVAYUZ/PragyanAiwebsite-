@@ -5,7 +5,6 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { keepAiLowercase } from "@/lib/brandText";
-import { requestContact } from "@/lib/contact";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -222,16 +221,6 @@ export default function AiDroplets() {
             <p>Don&rsquo;t rebuild what already works. Make it intelligent.</p>
           </blockquote>
 
-          {/* No ai Droplets page exists yet, so the CTA leads to the contact form. */}
-          <a
-            ref={(el) => void (els.current.cta = el)}
-            href="#contact"
-            onClick={(event) => requestContact(event, "ai Droplets")}
-            className="drop-cta"
-          >
-            <span>{keepAiLowercase("Explore ai Droplets")}</span>
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
 
         {/* Visual stage */}
