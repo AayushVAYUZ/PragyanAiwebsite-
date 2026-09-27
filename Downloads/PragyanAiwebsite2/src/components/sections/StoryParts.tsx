@@ -26,7 +26,8 @@ export function StoryHeading({ id, children }: { id: string; children: ReactNode
   );
 }
 
-/** The final CTA's pill ("Talk to Pragyan ai"), reused as-is for every new CTA. */
+/** The final CTA's pill ("Talk to Pragyan ai"), reused as-is for every new CTA. Long labels
+ * may wrap on narrow screens rather than push the page wider than the viewport. */
 export function StoryPill({
   href,
   onClick,
@@ -43,7 +44,7 @@ export function StoryPill({
       href={href}
       onClick={onClick}
       aria-label={label}
-      className="explore-pill inline-flex items-center gap-3 self-start rounded-full px-6 py-3 text-xs font-medium tracking-widest whitespace-nowrap uppercase"
+      className="explore-pill inline-flex max-w-full items-center gap-3 self-start rounded-full px-6 py-3 text-left text-xs leading-snug font-medium tracking-widest uppercase sm:whitespace-nowrap"
     >
       <span>{keepAiLowercase(children)}</span>
       <span aria-hidden="true" className="text-[var(--neon-cyan)]">
