@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SERVICES, SERVICES_CTA, type Service, type ServiceId } from "@/content/services";
 import { requestContact } from "@/lib/contact";
-import { showCaseStudy } from "@/lib/caseStudyLink";
 import { navigateToHash } from "@/lib/navigation";
 import { keepAiLowercase } from "@/lib/brandText";
 import { StoryPill } from "./StoryParts";
@@ -516,10 +515,10 @@ function ServiceProofLine({ proof }: { proof: NonNullable<Service["proof"]> }) {
       </a>
     );
   }
-  if (proof.kind === "result" && proof.caseStudyId) {
-    const caseStudyId = proof.caseStudyId;
+  if (proof.kind === "result" && proof.href) {
+    const href = proof.href;
     return (
-      <a href="#case-studies" onClick={(event) => showCaseStudy(event, caseStudyId)} className="service-proof service-proof-link">
+      <a href={href} onClick={(event) => navigateToHash(event, href)} className="service-proof service-proof-link">
         {proof.text}
       </a>
     );

@@ -17,7 +17,7 @@ export type ServiceId =
 
 export type ServiceProof =
   /** A documented result, optionally linked to the case study that backs it. */
-  | { kind: "result"; text: string; caseStudyId?: string }
+  | { kind: "result"; text: string; href?: `#${string}` }
   /** A plain statement of where the service is in use. */
   | { kind: "note"; text: string }
   /** A link to the homepage section that covers the service in depth. */
@@ -68,7 +68,7 @@ export const SERVICES: Service[] = [
     title: "Predictive & Decision Intelligence",
     problem: "Decisions depend on slow, manual analysis.",
     deliver: "Forecasting, risk scoring and decision dashboards built on your operational data.",
-    proof: { kind: "result", text: "Credit decisions: 5 days → 3 seconds", caseStudyId: "risk" },
+    proof: { kind: "result", text: "Credit decisions: 5 days → 3 seconds", href: "#case-studies" },
     interest: "Predictive & Decision Intelligence",
   },
   {

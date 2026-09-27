@@ -151,11 +151,6 @@ export const IMPACT = {
     { value: "5 days → 3 seconds", label: "Decision turnaround", source: "Case Study 01" },
     { value: "90%", label: "Fewer billing errors", source: "Case Study 02" },
     { value: "70%", label: "Time saved", source: "Case Study 02" },
-    { value: "100%", label: "Real-time operational visibility", source: "Case Study 02" },
-    {
-      value: "40+",
-      label: "Production-ready ai model prototypes available for rapid customer demonstrations",
-      source: "Accelerators",
-    },
+    { value: "40+", label: "Ready-to-demo ai accelerators", source: "Accelerators" },
   ],
 };

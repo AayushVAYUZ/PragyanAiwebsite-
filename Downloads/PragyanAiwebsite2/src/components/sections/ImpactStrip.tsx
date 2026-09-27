@@ -31,8 +31,8 @@ export default function ImpactStrip() {
           </StoryHeading>
         </div>
 
-        <ul aria-label="Outcomes" className="impact-grid mt-10 grid grid-cols-2 lg:grid-cols-4">
-          <li data-reveal className="impact-item col-span-2 lg:col-span-4">
+        <ul aria-label="Outcomes" className="impact-grid mt-10 grid grid-cols-2 lg:grid-cols-3">
+          <li data-reveal className="impact-item col-span-2 lg:col-span-3">
             <p className="story-figure impact-lead">{lead.value}</p>
             <ImpactCaption label={lead.label} source={lead.source} />
           </li>

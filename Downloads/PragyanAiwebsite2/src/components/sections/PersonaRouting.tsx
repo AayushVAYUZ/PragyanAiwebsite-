@@ -3,7 +3,6 @@
 import { useRef, type MouseEvent } from "react";
 import { PERSONAS, type Persona } from "@/content/personas";
 import { navigateToHash } from "@/lib/navigation";
-import { showCaseStudy } from "@/lib/caseStudyLink";
 import { keepAiLowercase } from "@/lib/brandText";
 import { useReveal } from "@/lib/storyMotion";
 import { StoryEyebrow, StoryHeading } from "./StoryParts";
@@ -17,10 +16,7 @@ export default function PersonaRouting() {
   const sectionRef = useRef<HTMLElement>(null);
   useReveal(sectionRef);
 
-  const go = (event: MouseEvent<HTMLAnchorElement>, persona: Persona) => {
-    if (persona.caseStudyId) showCaseStudy(event, persona.caseStudyId);
-    else navigateToHash(event, persona.href);
-  };
+  const go = (event: MouseEvent<HTMLAnchorElement>, persona: Persona) => navigateToHash(event, persona.href);
 
   return (
     <section

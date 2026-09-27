@@ -1209,12 +1209,6 @@ html[data-scene-intense] .header-intensity {
   }
 
   /* Remounted on selection, so the whole dossier eases in together. */
-  .proof-swap {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.65rem, 1.6vh, 1.1rem);
-    animation: proof-swap-in 380ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
 
   .proof-copy,
   .proof-brief,
@@ -1333,6 +1327,31 @@ html[data-scene-intense] .header-intensity {
     color: var(--text-muted);
   }
 
+  /* Both case studies in full: side by side from lg, stacked below it. */
+  .proof-cases {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  @media (min-width: 1024px) {
+    .proof-cases {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .proof-case-body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.9rem, 2vh, 1.25rem);
+  }
+
+  .proof-client {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
   .proof-scale-row {
     margin-top: 0.4rem;
     display: grid;
@@ -1394,167 +1413,6 @@ html[data-scene-intense] .header-intensity {
       linear-gradient(135deg, #0b0f24 0%, #05060f 100%);
   }
 
-  /* --- Archive deck ----------------------------------------------- */
-
-  .proof-deck {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.5rem, 1.2vh, 0.85rem);
-    min-height: 0;
-  }
-
-  .proof-deck-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0 0.15rem;
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    will-change: transform, opacity;
-  }
-
-  /* Two approved cases, so the cards share the column's full height rather than
-     leaving a dead band under the deck. */
-  .proof-deck-list {
-    list-style: none;
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.5rem, 1.2vh, 0.85rem);
-  }
-
-  .proof-card-anchor {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    will-change: transform, opacity;
-  }
-
-  .proof-card {
-    flex: 1;
-    width: 100%;
-    display: grid;
-    grid-template-columns: clamp(5rem, 7vw, 6.5rem) minmax(0, 1fr);
-    gap: 0.85rem;
-    align-items: stretch;
-    text-align: left;
-    padding: 0.7rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: 0.75rem;
-    background: rgba(7, 11, 24, 0.78);
-    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  }
-
-  .proof-card[data-tone="cyan"] { --tone: var(--neon-cyan); }
-  .proof-card[data-tone="violet"] { --tone: var(--electric-violet); }
-
-  .proof-card[data-active] {
-    border-color: color-mix(in srgb, var(--tone) 50%, transparent);
-    background: rgba(10, 16, 36, 0.92);
-    box-shadow: 0 0 26px color-mix(in srgb, var(--tone) 16%, transparent);
-  }
-
-  /* The neon border carries the active state; the thumbnail and title only lift with it. */
-  .proof-card-img {
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
-  }
-
-  .proof-card[data-active] .proof-card-img {
-    filter: brightness(1);
-  }
-
-  .proof-card-title {
-    transition: color 0.45s ease;
-  }
-
-  .proof-card[data-active] .proof-card-title {
-    color: #ffffff;
-  }
-
-  @media (hover: hover) {
-    .proof-card:hover {
-      border-color: color-mix(in srgb, var(--tone) 42%, transparent);
-      transform: translateY(-2px);
-    }
-  }
-
-  .proof-card:focus-visible {
-    outline: 2px solid var(--neon-cyan);
-    outline-offset: 2px;
-  }
-
-  .proof-card-media {
-    position: relative;
-    display: block;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-  }
-
-  .proof-card-img {
-    object-fit: cover;
-    object-position: center;
-    filter: brightness(0.82);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @media (hover: hover) {
-    .proof-card:hover .proof-card-img {
-      transform: scale(1.08);
-    }
-  }
-
-  .proof-card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.3rem;
-    min-width: 0;
-  }
-
-  .proof-card-id {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--tone, var(--neon-cyan));
-    font-weight: 600;
-  }
-
-  .proof-card-dot {
-    width: 0.3rem;
-    height: 0.3rem;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  .proof-card-title {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    line-height: 1.3;
-    color: var(--text-primary);
-  }
-
-  .proof-card-metric {
-    font-size: 0.75rem;
-    color: var(--text-soft);
-  }
-
-  .proof-card-sector {
-    font-family: var(--font-mono);
-    font-size: 0.5rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
 }
 
 @keyframes proof-media-in {
@@ -1617,9 +1475,7 @@ html[data-scene-intense] .header-intensity {
   .proof-scene[data-motion="off"] .proof-copy,
   .proof-scene[data-motion="off"] .proof-brief,
   .proof-scene[data-motion="off"] .proof-stat,
-  .proof-scene[data-motion="off"] .proof-cta,
-  .proof-scene[data-motion="off"] .proof-deck-label,
-  .proof-scene[data-motion="off"] .proof-card-anchor {
+  .proof-scene[data-motion="off"] .proof-cta {
     transform: none !important;
     opacity: 1 !important;
     filter: none !important;
@@ -1628,19 +1484,10 @@ html[data-scene-intense] .header-intensity {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .proof-stage-img,
-  .proof-swap {
+  .proof-stage-img {
     animation: none;
   }
 
-  .proof-card,
-  .proof-card-img {
-    transition: none;
-  }
-
-  .proof-card:hover {
-    transform: none;
-  }
 }
 
 @layer components {
@@ -2884,8 +2731,6 @@ html[data-scene-intense] .header-intensity {
   /* Set outside the ring: inside, the labels collide with the gate's own chips. */
 
   /* Below 1280px the side columns arrive before the labels have room. */
-  @media (max-width: 1279.98px) {
-  }
 
   /* Breathing room around the gate: light only, no instrumentation. */
   .sov-aura {
@@ -3265,9 +3110,6 @@ html[data-scene-intense] .header-intensity {
     filter: none !important;
     visibility: visible !important;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
 }
 
 @layer components {

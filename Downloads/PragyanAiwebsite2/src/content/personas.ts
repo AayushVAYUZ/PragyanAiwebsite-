@@ -13,8 +13,6 @@ export interface Persona {
   href: `#${string}`;
   /** Plain-language name of that destination, for the link's accessible name. */
   destination: string;
-  /** Case study to put on stage when the destination is #case-studies. */
-  caseStudyId?: string;
 }
 
 export const PERSONAS = {
@@ -43,8 +41,7 @@ export const PERSONAS = {
       roles: "CFOs, finance and risk leaders",
       focus: ["Forecasting", "Risk intelligence", "Finance automation", "Decision support", "Operational control"],
       href: "#case-studies",
-      destination: "the credit risk case study",
-      caseStudyId: "risk",
+      destination: "the case studies",
     },
     {
       number: "04",
