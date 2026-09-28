@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import { lockScroll } from "@/lib/scrollLock";
 import { navigateToHash } from "@/lib/navigation";
+import { openAssistant } from "@/lib/assistant";
 import { PRIMARY_NAV } from "@/content/navigation";
 import type { IntroPhase } from "@/components/cinematic/EyeBlinkPreloader";
 
@@ -15,7 +16,6 @@ const CTA_TEXT = (
     Ask P.<span className="normal-case">ai</span>
   </>
 );
-const CONTACT_HREF = "#contact";
 
 interface HeaderProps {
   /** Drives the opening choreography: brand appears over the hero, then moves into the header, then nav settles in. */
@@ -191,16 +191,17 @@ export default function Header({ phase }: HeaderProps) {
             phase === "nav" ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
-          <a
-            href={CONTACT_HREF}
-            onClick={(event) => onNavClick(event, CONTACT_HREF)}
+          <button
+            type="button"
+            onClick={openAssistant}
+            aria-controls="ask-pai"
             tabIndex={interactive ? 0 : -1}
             className="glass-pill group hidden items-center gap-1.5 rounded-full px-5 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 sm:flex"
           >
             <span className="opacity-40 transition-opacity group-hover:opacity-70">[</span>
             <span>{CTA_TEXT}</span>
             <span className="opacity-40 transition-opacity group-hover:opacity-70">]</span>
-          </a>
+          </button>
 
           <button
             ref={toggleRef}
@@ -264,13 +265,17 @@ export default function Header({ phase }: HeaderProps) {
               </li>
             ))}
           </ul>
-          <a
-            href={CONTACT_HREF}
-            onClick={(event) => onNavClick(event, CONTACT_HREF)}
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              openAssistant();
+            }}
+            aria-controls="ask-pai"
             className="glass-pill inline-flex items-center justify-center gap-2 self-start rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em] text-white/90"
           >
             {CTA_TEXT} <span aria-hidden="true" className="text-[var(--neon-cyan)]">→</span>
-          </a>
+          </button>
         </nav>
       </div>
     </header>

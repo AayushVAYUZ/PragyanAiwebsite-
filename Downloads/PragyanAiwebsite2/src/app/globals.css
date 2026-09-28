@@ -3742,3 +3742,309 @@ html[data-scene-intense] .header-intensity {
     transform: none;
   }
 }
+
+@layer components {
+  /* Ask P.ai — floating launcher (bottom right, after the intro) and the chat panel. */
+  .pai-launcher {
+    position: fixed;
+    right: max(1rem, var(--gutter-x));
+    bottom: 1.25rem;
+    z-index: 55;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(38, 198, 255, 0.35);
+    background: linear-gradient(135deg, rgba(20, 24, 56, 0.92), rgba(9, 12, 28, 0.92));
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 26px -6px rgba(139, 45, 255, 0.55), 0 10px 30px -12px rgba(0, 0, 0, 0.8);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+  }
+
+  .pai-launcher.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .pai-launcher:hover {
+    box-shadow: 0 0 34px -4px rgba(139, 45, 255, 0.7), 0 10px 30px -12px rgba(0, 0, 0, 0.8);
+  }
+
+  .pai-launcher:focus-visible,
+  .pai-close:focus-visible,
+  .pai-chip:focus-visible,
+  .pai-send:focus-visible,
+  .pai-links a:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 3px;
+  }
+
+  .pai-launcher-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--electric-violet), var(--neon-cyan));
+    box-shadow: 0 0 10px rgba(38, 198, 255, 0.8);
+    animation: pai-pulse 2.6s ease-in-out infinite;
+  }
+
+  .pai-panel {
+    position: fixed;
+    right: max(1rem, var(--gutter-x));
+    bottom: 1.25rem;
+    z-index: 56;
+    display: flex;
+    flex-direction: column;
+    width: min(24rem, calc(100vw - 2rem));
+    height: min(38rem, calc(100 * var(--svh) - var(--header-h) - 2.5rem));
+    border-radius: 1.25rem;
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    background: linear-gradient(180deg, rgba(14, 18, 40, 0.96) 0%, rgba(6, 8, 20, 0.97) 100%);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 0 40px -12px rgba(139, 45, 255, 0.5), 0 24px 60px -20px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transform-origin: bottom right;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.35s;
+  }
+
+  .pai-panel.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+  }
+
+  @media (max-width: 639.98px) {
+    .pai-panel {
+      right: 0.5rem;
+      left: 0.5rem;
+      bottom: 0.5rem;
+      width: auto;
+      height: calc(100 * var(--svh) - 1rem);
+    }
+  }
+
+  .pai-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .pai-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--electric-violet), var(--neon-cyan));
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 0 16px -2px rgba(139, 45, 255, 0.6);
+  }
+
+  .pai-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--text-secondary);
+    transition: color 0.2s, background-color 0.2s;
+  }
+
+  .pai-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .pai-log {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .pai-msg {
+    max-width: 88%;
+    padding: 0.7rem 0.9rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .pai-msg-bot {
+    align-self: flex-start;
+    border: 1px solid var(--border-subtle);
+    border-bottom-left-radius: 0.35rem;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--text-soft);
+  }
+
+  .pai-msg-user {
+    align-self: flex-end;
+    border-bottom-right-radius: 0.35rem;
+    background: linear-gradient(135deg, rgba(139, 45, 255, 0.55), rgba(38, 150, 255, 0.45));
+    color: #fff;
+  }
+
+  .pai-bullet {
+    position: relative;
+    padding-left: 0.9rem;
+  }
+
+  .pai-bullet::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+  }
+
+  .pai-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-top: 0.15rem;
+  }
+
+  .pai-links a {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--neon-cyan);
+  }
+
+  .pai-links a:hover {
+    text-decoration: underline;
+  }
+
+  .pai-typing {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .pai-replies {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0 1rem 0.75rem;
+    scrollbar-width: none;
+  }
+
+  .pai-replies::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pai-chip {
+    flex: none;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(38, 198, 255, 0.3);
+    background: rgba(38, 198, 255, 0.06);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  .pai-chip:hover {
+    border-color: rgba(38, 198, 255, 0.6);
+    background: rgba(38, 198, 255, 0.12);
+  }
+
+  .pai-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .pai-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(160, 175, 220, 0.16);
+    background: rgba(3, 4, 10, 0.6);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+  }
+
+  .pai-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .pai-input:focus {
+    outline: none;
+    border-color: rgba(38, 198, 255, 0.5);
+  }
+
+  .pai-send {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--electric-violet), var(--neon-cyan));
+    color: #fff;
+    transition: opacity 0.2s;
+  }
+
+  .pai-send:disabled {
+    opacity: 0.35;
+  }
+}
+
+@keyframes pai-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pai-launcher,
+  .pai-panel,
+  .pai-panel.is-open {
+    transition: none;
+  }
+
+  .pai-launcher-dot {
+    animation: none;
+  }
+}
