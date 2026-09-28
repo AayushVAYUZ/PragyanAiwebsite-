@@ -142,6 +142,21 @@
     animation: gate-period-pulse 5s ease-in-out infinite;
   }
 
+  /* Idle-blink eyelids over the hero eye: the preloader's lid mechanism (a void-black layer
+     with an elliptical opening), held wide open and hidden until a blink runs. */
+  .hero-idle-lids {
+    --rx: 92%;
+    --ry: 140%;
+    --cy: 50%;
+    position: absolute;
+    inset: 0;
+    background: var(--void-black);
+    -webkit-mask-image: radial-gradient(var(--rx) var(--ry) at 50% var(--cy), transparent 93%, #000 100%);
+    mask-image: radial-gradient(var(--rx) var(--ry) at 50% var(--cy), transparent 93%, #000 100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
   /* The Gate of P.ai: "ai" in the brand gradient, lit from within. */
   .gate-ai {
     display: inline-block;

@@ -72,6 +72,9 @@ interface FrameCopy {
   rightContent?: ReactNode;
 }
 
+/** Seconds between idle blinks while the visitor rests on the hero. */
+const IDLE_BLINK_SECONDS = 5;
+
 /** Frames of the opening scene, keyframed by scroll. The Belief frame follows as its resting state. */
 const FRAMES: FrameCopy[] = [
   {
@@ -253,6 +256,7 @@ export default function CinematicOpening({
   const textRef = useRef<(HTMLElement | null)[]>([]);
   const vignetteRef = useRef<HTMLDivElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
+  const idleLidsRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleFieldHandle>(null);
   const beliefGradeRef = useRef<HTMLDivElement | null>(null);
   const gateRevealRef = useRef({ v: 0 });
@@ -271,6 +275,43 @@ export default function CinematicOpening({
   const bindText = (index: number) => (element: HTMLElement | null) => {
     textRef.current[index] = element;
   };
+
+  // Idle blink: once the opening's two blinks are done, the eye blinks again every few
+  // seconds for as long as the visitor rests on the hero without scrolling. Only the eye
+  // closes; the heading, buttons and header stay put above the lids.
+  useEffect(() => {
+    const lids = idleLidsRef.current;
+    if (!introComplete || !lids || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let timer = 0;
+    let blink: gsap.core.Timeline | null = null;
+    const atRest = () => window.scrollY < 8 && !document.hidden;
+    const schedule = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (atRest()) {
+          blink?.kill();
+          blink = gsap
+            .timeline()
+            .set(lids, { opacity: 1 })
+            .to(lids, { "--ry": "0.4%", "--cy": "52%", duration: 0.14, ease: "power2.in" })
+            .to(lids, { "--ry": "140%", "--cy": "50%", duration: 0.32, ease: "power2.out" }, "+=0.06")
+            .set(lids, { opacity: 0 });
+        }
+        schedule();
+      }, IDLE_BLINK_SECONDS * 1000);
+    };
+    // Any scroll restarts the idle clock, so the eye only blinks during a genuine pause.
+    const onScroll = () => schedule();
+    schedule();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      blink?.kill();
+      gsap.set(lids, { opacity: 0, "--ry": "140%", "--cy": "50%" });
+    };
+  }, [introComplete]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -468,6 +509,9 @@ export default function CinematicOpening({
 
         <LightBloom layerRef={bindLayer("bloom")} />
         <Vignette layerRef={(element) => void (vignetteRef.current = element)} />
+
+        {/* Eyelids for the idle blink: open (and invisible) at rest, above the eye and below the copy */}
+        <div ref={idleLidsRef} aria-hidden="true" className="hero-idle-lids" />
 
         {/* Readability scrim for the editorial typography */}
         <div
