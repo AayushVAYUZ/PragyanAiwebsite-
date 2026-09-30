@@ -169,7 +169,7 @@ export default function Header({ phase }: HeaderProps) {
 
         <nav
           aria-label="Primary"
-          className={`hidden items-center gap-9 lg:flex transition-opacity duration-500 ease-out ${
+          className={`hidden items-center gap-6 xl:gap-9 lg:flex transition-opacity duration-500 ease-out ${
             phase === "nav" ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
@@ -191,17 +191,8 @@ export default function Header({ phase }: HeaderProps) {
             phase === "nav" ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
-          <button
-            type="button"
-            onClick={openAssistant}
-            aria-controls="ask-pai"
-            tabIndex={interactive ? 0 : -1}
-            className="glass-pill group hidden items-center gap-1.5 rounded-full px-5 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 sm:flex"
-          >
-            <span className="opacity-40 transition-opacity group-hover:opacity-70">[</span>
-            <span>{CTA_TEXT}</span>
-            <span className="opacity-40 transition-opacity group-hover:opacity-70">]</span>
-          </button>
+          {/* The Ask P.ai launcher (see AskPai) docks here at the top of the page. */}
+          <span aria-hidden="true" className="hidden w-[9.5rem] sm:block" />
 
           <button
             ref={toggleRef}

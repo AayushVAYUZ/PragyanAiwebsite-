@@ -220,7 +220,8 @@ export default function UseCases() {
             <div ref={(el) => void (els.current.head = el)} className="uc-head">
               <h2 id="use-cases-heading" className="uc-title">
                 <span>Different industries.</span>
-                <span className="uc-title-accent">Different problems.</span>
+                <span>Different use cases.</span>
+                <span className="uc-title-accent">Intelligent solutions.</span>
               </h2>
             </div>
 

@@ -117,7 +117,7 @@ export default function ContactSection() {
             id="contact-heading"
             className="mb-6 text-4xl leading-[1.12] font-extralight tracking-[-0.03em] text-[var(--text-primary)] sm:text-5xl"
           >
-            Book a <span className="font-normal text-white">discovery call.</span>
+            Let&apos;s start with <span className="font-normal text-white">your business challenge.</span>
           </h2>
           <p className="max-w-md text-base leading-relaxed font-light text-[var(--text-soft)] sm:text-lg">
             Tell us where ai should make a difference, and we&apos;ll come back to you to set up the conversation.

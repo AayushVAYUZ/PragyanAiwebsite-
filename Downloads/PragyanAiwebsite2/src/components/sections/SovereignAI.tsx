@@ -136,7 +136,6 @@ export default function SovereignAI() {
               quality={90}
               sizes="(min-width: 1024px) 34vw, 60vw"
               className="sov-portal-img"
-              onLoad={() => ScrollTrigger.refresh()}
             />
           </div>
 

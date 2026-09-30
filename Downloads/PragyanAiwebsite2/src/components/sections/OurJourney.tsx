@@ -627,32 +627,17 @@ export default function OurJourney() {
               className="mb-4 text-4xl leading-[1.08] font-light tracking-tight text-[var(--text-primary)] drop-shadow-[0_4px_24px_rgba(3,4,10,0.8)] sm:text-5xl lg:text-6xl"
             >
               <span data-journey-word className="inline-block">
-                Pragyan
-              </span>{" "}
-              <span
-                data-journey-word
-                className="journey-text-glow inline-block bg-gradient-to-r from-[var(--electric-violet)] via-[#7B4DFF] to-[var(--neon-cyan)] bg-clip-text font-normal text-transparent"
-              >
-                ai
-              </span>{" "}
-              <span data-journey-word className="inline-block">
-                is
-              </span>{" "}
-              <span data-journey-word className="inline-block">
-                new.
-              </span>
-              <br />
-              <span data-journey-word className="inline-block">
                 Our
               </span>{" "}
-              <span data-journey-word data-journey-ai data-journey-ai-for="6,7,8,9" className="inline-block">
+              <span data-journey-word className="inline-block">
+                Tryst
+              </span>{" "}
+              <span data-journey-word className="inline-block">
+                with
+              </span>{" "}
+              {/* "ai" in the wordmark's gradient; it still lights with the ai-era milestones */}
+              <span data-journey-word data-journey-ai data-journey-ai-for="6,7,8,9" className="journey-ai-badge inline-block">
                 ai
-              </span>{" "}
-              <span data-journey-word className="inline-block">
-                journey
-              </span>{" "}
-              <span data-journey-word className="inline-block">
-                isn&apos;t.
               </span>
             </h2>
             <p className="mb-6 max-w-xl text-base leading-relaxed font-light text-[var(--text-soft)]/80 drop-shadow-[0_2px_12px_rgba(3,4,10,0.9)] sm:text-lg">

@@ -4,9 +4,9 @@
  */
 
 export const CONTACT_DETAILS = {
-  email: "hello@vayuz.com",
+  email: "hello@paiinnovations.com",
   phones: ["+91 120-4259095", "+91 966-738-9913"],
-  address: ["VAYUZ Technologies", "Add India Center, Plot #9,", "Floor #8, Sector 125,", "Noida, India 201303"],
+  address: ["Pragyan ai", "Add India Center, Plot #9,", "Floor #8, Sector 125,", "Noida, India 201303"],
 };
 
 export const CONTACT_INTERESTS = [

@@ -17,6 +17,10 @@ import { keepAiLowercase } from "@/lib/brandText";
  * `@/content/assistant`) and books discovery calls by collecting a few details in the chat
  * and sending them through the contact form's endpoint. If that endpoint can't send, it hands
  * the visitor a pre-filled email instead, so no request is lost.
+ *
+ * The launcher docks in the header at the top of the page and glides down to float in the
+ * bottom-right corner once the visitor starts scrolling (always floating on small screens,
+ * where the header's right side belongs to the menu button).
  */
 
 interface Message {
@@ -65,6 +69,7 @@ export default function AskPai({ visible }: { visible: boolean }) {
   const [input, setInput] = useState("");
   const [booking, setBooking] = useState<Booking | null>(null);
   const [sending, setSending] = useState(false);
+  const [docked, setDocked] = useState(true);
   const nextId = useRef(0);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -85,6 +90,13 @@ export default function AskPai({ visible }: { visible: boolean }) {
   }, []);
 
   useEffect(() => onAssistantOpen(show), [show]);
+
+  useEffect(() => {
+    const update = () => setDocked(window.scrollY < 40);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   // Newest message in view; the input ready to type into.
   useEffect(() => {
@@ -282,7 +294,7 @@ export default function AskPai({ visible }: { visible: boolean }) {
         aria-label="Ask P.ai, the site assistant"
         aria-expanded={open}
         aria-controls="ask-pai"
-        className={`pai-launcher ${visible && !open ? "is-visible" : ""}`}
+        className={`pai-launcher${visible && !open ? " is-visible" : ""}${docked ? " is-docked" : ""}`}
         tabIndex={visible && !open ? 0 : -1}
       >
         <span aria-hidden="true" className="pai-launcher-dot" />

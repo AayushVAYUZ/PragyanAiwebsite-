@@ -14,17 +14,18 @@ export const PRIMARY_NAV: NavLink[] = [
   { label: "What We Do", href: "#prism" },
   { label: "What We Think", href: "#insights" },
   { label: "Work With Us", href: "#capabilities" },
+  { label: "ai Droplets", href: "#ai-droplets" },
   { label: "Connect With Us", href: "#contact" },
 ];
 
 export const FOOTER = {
   tagline: "Intelligence for Efficient Results",
   description: "ai engineering for enterprises — from identifying the opportunity to taking intelligence into production.",
-  // TODO: destinations for VAYUZ Technologies, Careers, Security, Privacy and Terms. Until
+  // TODO: destinations for Careers, Security, Privacy and Terms. Until
   // they exist those entries render as plain text, never as dead links.
   company: [
     { label: "About Pragyan ai", href: "#journey" },
-    { label: "VAYUZ Technologies", href: null },
+    { label: "VAYUZ Technologies", href: "https://vayuz.com/" },
     { label: "Careers", href: null },
     { label: "Security", href: null },
     { label: "Privacy", href: null },

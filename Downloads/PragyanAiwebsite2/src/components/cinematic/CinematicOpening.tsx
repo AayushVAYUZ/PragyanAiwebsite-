@@ -138,7 +138,7 @@ const FRAMES: FrameCopy[] = [
       <p className="max-w-[24rem] text-lg leading-snug font-light text-[var(--text-primary)] sm:text-xl">
         Human Intelligence + Artificial Intelligence ={" "}
         <span className="relative inline-block pb-1.5">
-          Infinite Possibilities
+          Augmented Intelligence
           <span
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-[2px] overflow-hidden rounded-full bg-[#F2C744]/20"
@@ -291,12 +291,16 @@ export default function CinematicOpening({
       timer = window.setTimeout(() => {
         if (atRest()) {
           blink?.kill();
+          // Paced like a human blink: the lids start where they first touch the edge of the
+          // view (70%), so the whole movement is seen rather than a snap at the end; they close
+          // a little faster than they reopen, rest shut for a beat, and the upper lid travels
+          // further than the lower one (the opening's centre dips as it closes).
           blink = gsap
             .timeline()
-            .set(lids, { opacity: 1 })
-            .to(lids, { "--ry": "0.4%", "--cy": "52%", duration: 0.14, ease: "power2.in" })
-            .to(lids, { "--ry": "140%", "--cy": "50%", duration: 0.32, ease: "power2.out" }, "+=0.06")
-            .set(lids, { opacity: 0 });
+            .set(lids, { opacity: 1, "--ry": "70%", "--cy": "50%" })
+            .to(lids, { "--ry": "0.4%", "--cy": "53%", duration: 0.22, ease: "sine.in" })
+            .to(lids, { "--ry": "70%", "--cy": "50%", duration: 0.46, ease: "sine.out" }, "+=0.09")
+            .set(lids, { opacity: 0, "--ry": "140%" });
         }
         schedule();
       }, IDLE_BLINK_SECONDS * 1000);
